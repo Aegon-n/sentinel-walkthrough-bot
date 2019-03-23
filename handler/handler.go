@@ -33,6 +33,10 @@ func HandlerWalkThrough(Bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 func HandleCallbackQuery(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 
 	switch update.CallbackQuery.Data {
+
+	case "Home":
+		handleHome(bot, update, update.CallbackQuery.From.UserName)
+
 	case "Sentinel-Desktop":
 		handleAppVersion(bot, update, "Desktop")
 
@@ -60,6 +64,20 @@ func HandleCallbackQuery(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 		msg := tgbotapi.NewMessage(chatID, txt)
 		bot.Send(msg)
 	}
+}
+
+func handleHome(Bot *tgbotapi.BotAPI, update *tgbotapi.Update ,username string){
+
+	queryID := update.CallbackQuery.ID
+	answeredCallback(Bot, queryID)
+	chatID := update.CallbackQuery.Message.Chat.ID
+	msgID := update.CallbackQuery.Message.MessageID
+
+	msg := tgbotapi.NewEditMessageText(chatID, msgID, fmt.Sprintf(messages.WelcomeGreetMsg, username)+"\n"+messages.AppSelectMsg)
+	btns := tgbotapi.NewEditMessageReplyMarkup(chatID, msgID, buttons.HomeButtons("Sentinel-Desktop","Sentinel-Mobile"))
+
+	Bot.Send(msg)
+	Bot.Send(btns)
 }
 
 func handleAppVersion(Bot *tgbotapi.BotAPI, update *tgbotapi.Update, version string){
