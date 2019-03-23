@@ -2,6 +2,7 @@ package modules
 
 import (
 	"github.com/Aegon-n/sentinel-bot/handler/buttons"
+	"github.com/Aegon-n/sentinel-bot/handler/constants"
 	"github.com/Aegon-n/sentinel-bot/handler/messages"
 	"gopkg.in/telegram-bot-api.v4"
 	"log"
@@ -117,15 +118,15 @@ func handleTMModuleList(Bot *tgbotapi.BotAPI, queryID string, chatID int64, msgI
 	btn := tgbotapi.EditMessageReplyMarkupConfig{}
 	if platform == "Linux"{
 		btn = tgbotapi.NewEditMessageReplyMarkup(chatID,
-			msgID, buttons.ModulesListButton("TM-Linux-Module"+next))
+			msgID, buttons.ModulesListButton("TM-Linux-Module"+next, constants.DownloadUrl ,constants.VideoUrl))
 	}
 	if platform == "Windows" {
 		btn = tgbotapi.NewEditMessageReplyMarkup(chatID,
-			msgID, buttons.ModulesListButton("TM-Windows-Module"+next))
+			msgID, buttons.ModulesListButton("TM-Windows-Module"+next, constants.DownloadUrl ,constants.VideoUrl))
 	}
 	if platform == "Mac" {
 		btn = tgbotapi.NewEditMessageReplyMarkup(chatID,
-			msgID, buttons.ModulesListButton("TM-Mac-Module"+next))
+			msgID, buttons.ModulesListButton("TM-Mac-Module"+next, constants.DownloadUrl ,constants.VideoUrl))
 	}
 	Bot.Send(msg)
 	Bot.Send(btn)

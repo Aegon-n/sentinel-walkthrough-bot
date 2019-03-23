@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/Aegon-n/sentinel-bot/handler/buttons"
 	"github.com/Aegon-n/sentinel-bot/handler/messages"
+	"github.com/Aegon-n/sentinel-bot/handler/constants"
 	"gopkg.in/telegram-bot-api.v4"
 )
 
@@ -86,12 +87,15 @@ func handleAppVersion(Bot *tgbotapi.BotAPI, update *tgbotapi.Update, version str
 	chatID := update.CallbackQuery.Message.Chat.ID
 	msgID := update.CallbackQuery.Message.MessageID
 
-	msg := tgbotapi.NewEditMessageText(chatID, msgID, messages.OSSelectMsg)
+	msg := tgbotapi.EditMessageTextConfig{}
+
 	replyMarkup := tgbotapi.InlineKeyboardMarkup{}
 	if version == "Desktop" {
+		msg = tgbotapi.NewEditMessageText(chatID, msgID, messages.DesktopOSSelectMsg)
 		replyMarkup = buttons.DesktopOsButtons("Linux","Windows","Mac")
 	}
 	if version == "Mobile" {
+		msg = tgbotapi.NewEditMessageText(chatID, msgID, messages.MobileOSSelectMsg)
 		replyMarkup = buttons.MobileOsButtons("Android","IOS")
 	}
 	btns := tgbotapi.NewEditMessageReplyMarkup(chatID, msgID, replyMarkup)
@@ -109,7 +113,9 @@ func handleOs(Bot *tgbotapi.BotAPI, update *tgbotapi.Update, os string){
 	if os == "Android"{
 
 		msg := tgbotapi.NewEditMessageText(chatID, msgID, messages.MobileListOfMOdulesMsg)
-		btns := tgbotapi.NewEditMessageReplyMarkup(chatID, msgID, buttons.ModulesListButton("Android10"))
+		btns := tgbotapi.NewEditMessageReplyMarkup(chatID, msgID,
+			buttons.ModulesListButton("Android10",constants.DownloadUrl ,constants.VideoUrl))
+
 		Bot.Send(msg)
 		Bot.Send(btns)
 
@@ -117,28 +123,29 @@ func handleOs(Bot *tgbotapi.BotAPI, update *tgbotapi.Update, os string){
 	if os == "IOS" {
 
 		msg := tgbotapi.NewEditMessageText(chatID, msgID, messages.MobileListOfMOdulesMsg)
-		btns := tgbotapi.NewEditMessageReplyMarkup(chatID, msgID, buttons.ModulesListButton("IOS10"))
+		btns := tgbotapi.NewEditMessageReplyMarkup(chatID, msgID,
+			buttons.ModulesListButton("IOS10",constants.DownloadUrl ,constants.VideoUrl))
 		Bot.Send(msg)
 		Bot.Send(btns)
 
 	}
 	if os == "Linux" {
 
-		msg := tgbotapi.NewEditMessageText(chatID, msgID, messages.NetworkSelectMsg)
+		msg := tgbotapi.NewEditMessageText(chatID, msgID, messages.LinuxNetworkSelectMsg)
 		btns := tgbotapi.NewEditMessageReplyMarkup(chatID, msgID, buttons.TestNetButtons("ETH-Linux-Module00", "TM-Linux-Module00"))
 		Bot.Send(msg)
 		Bot.Send(btns)
 
 	}
 	if os == "Windows" {
-		msg := tgbotapi.NewEditMessageText(chatID, msgID, messages.NetworkSelectMsg)
+		msg := tgbotapi.NewEditMessageText(chatID, msgID, messages.WindowsNetworkSelectMsg)
 		btns := tgbotapi.NewEditMessageReplyMarkup(chatID, msgID, buttons.TestNetButtons("ETH-Windows-Module00", "TM-Windows-Module00"))
 		Bot.Send(msg)
 		Bot.Send(btns)
 
 	}
 	if os == "Mac" {
-		msg := tgbotapi.NewEditMessageText(chatID, msgID, messages.NetworkSelectMsg)
+		msg := tgbotapi.NewEditMessageText(chatID, msgID, messages.MacNetworkSelectMsg)
 		btns := tgbotapi.NewEditMessageReplyMarkup(chatID, msgID, buttons.TestNetButtons("ETH-Mac-Module00", "TM-Mac-Module00"))
 		Bot.Send(msg)
 		Bot.Send(btns)

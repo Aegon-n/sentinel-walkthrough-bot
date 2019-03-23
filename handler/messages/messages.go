@@ -4,8 +4,14 @@ const (
 	SelectwalkthroughMsg = "Please select /walkthrough for sentinel App walkthrough "
 	WelcomeGreetMsg = "Hey %s , Welcome to sentinel App walkthrough session."
 	AppSelectMsg = "Choose App from the list below: "
-	OSSelectMsg = "Choose OS from the list below: "
-	NetworkSelectMsg = "Choose a network from the list below: "
+	DesktopOSSelectMsg = "Sentinel->Desktop\n\nChoose OS from the list below: "
+	MobileOSSelectMsg = "Sentinel->Mobile\n\nChoose OS from the list below: "
+
+	LinuxNetworkSelectMsg = "Sentinel->Desktop->Linux\n\nChoose a network from the list below: "
+	WindowsNetworkSelectMsg = "Sentinel->Desktop->Windows\n\nChoose a network from the list below: "
+	MacNetworkSelectMsg = "Sentinel->Desktop->Mac\n\nChoose a network from the list below: "
+	AndroidNetworkSelectMsg = "Sentinel->Desktop->Android\n\nChoose a network from the list below: "
+	IOSNetworkSelectMsg = "Sentinel->Desktop->IOS\n\nChoose a network from the list below: "
 
 	EthWinListOfModulesMsg = `
 						Here is the list of Modules

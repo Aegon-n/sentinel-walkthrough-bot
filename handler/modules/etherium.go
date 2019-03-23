@@ -1,6 +1,7 @@
 package modules
 
 import (
+	"github.com/Aegon-n/sentinel-bot/handler/constants"
 	"github.com/Aegon-n/sentinel-bot/handler/messages"
 	"github.com/Aegon-n/sentinel-bot/handler/buttons"
 	"gopkg.in/telegram-bot-api.v4"
@@ -29,7 +30,7 @@ func handleETHWindowsModules(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 	switch module {
 
 	case "ETH-Windows-Module00":
-		handleETHModuleList(bot, queryID, chatID, msgID,"10","Windows", messages.EthWinListOfModulesMsg)
+		handleETHModuleList(bot, queryID, chatID, "10","Windows", messages.EthWinListOfModulesMsg)
 
 	case "ETH-Windows-Module10":
 		handleETHModule(bot, queryID, chatID, msgID,"20","Windows", messages.EthWindowsModule10)
@@ -61,7 +62,7 @@ func handleETHLinuxModules(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 	switch module {
 
 	case "ETH-Linux-Module00":
-		handleETHModuleList(bot, queryID, chatID, msgID,"10","Linux", messages.EthWinListOfModulesMsg)
+		handleETHModuleList(bot, queryID, chatID, "10","Linux", messages.EthWinListOfModulesMsg)
 
 	case "ETH-Linux-Module10":
 		handleETHModule(bot, queryID, chatID, msgID,"20","Linux", messages.EthWindowsModule10)
@@ -93,7 +94,7 @@ func handleETHMacModules(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 	switch module {
 
 	case "ETH-Mac-Module00":
-		handleETHModuleList(bot, queryID, chatID, msgID,"10","Mac", messages.EthWinListOfModulesMsg)
+		handleETHModuleList(bot, queryID, chatID, "10","Mac", messages.EthWinListOfModulesMsg)
 
 	case "ETH-Mac-Module10":
 		handleETHModule(bot, queryID, chatID, msgID,"20","Mac", messages.EthWindowsModule10)
@@ -115,24 +116,21 @@ func handleETHMacModules(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 
 	}
 }
-func handleETHModuleList(Bot *tgbotapi.BotAPI, queryID string, chatID int64, msgID int, next, platform, txt string){
+func handleETHModuleList(Bot *tgbotapi.BotAPI, queryID string, chatID int64, next, platform, txt string){
 	answeredCallback(Bot, queryID)
-	msg := tgbotapi.NewEditMessageText(chatID, msgID, txt)
-	btn := tgbotapi.EditMessageReplyMarkupConfig{}
+	msg := tgbotapi.NewMessage(chatID, txt)
+
 	if platform == "Linux"{
-		btn = tgbotapi.NewEditMessageReplyMarkup(chatID,
-			msgID, buttons.ModulesListButton("ETH-Linux-Module"+next))
+		msg.ReplyMarkup =  buttons.ModulesListButton("ETH-Linux-Module"+next,constants.DownloadUrl ,constants.VideoUrl)
 	}
 	if platform == "Windows" {
-		btn = tgbotapi.NewEditMessageReplyMarkup(chatID,
-			msgID, buttons.ModulesListButton("ETH-Windows-Module"+next))
+		msg.ReplyMarkup = buttons.ModulesListButton("ETH-Windows-Module"+next,constants.DownloadUrl ,constants.VideoUrl)
 	}
 	if platform == "Mac" {
-		btn = tgbotapi.NewEditMessageReplyMarkup(chatID,
-			msgID, buttons.ModulesListButton("ETH-Mac-Module"+next))
+		msg.ReplyMarkup = buttons.ModulesListButton("ETH-Mac-Module"+next,constants.DownloadUrl ,constants.VideoUrl)
 	}
+
 	Bot.Send(msg)
-	Bot.Send(btn)
 }
 
 func handleETHModule(Bot *tgbotapi.BotAPI, queryID string, chatID int64, msgID int, next, platform, txt string) {
