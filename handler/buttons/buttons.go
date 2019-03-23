@@ -46,10 +46,13 @@ func PersistentNavButtons(data1, data2, data3 string) tgbotapi.InlineKeyboardMar
 }
 
 func ModulesListButton(data string) tgbotapi.InlineKeyboardMarkup {
+
 	home := tgbotapi.NewInlineKeyboardButtonData("Home","Home")
-	btn1 := tgbotapi.NewInlineKeyboardButtonData("Next",data)
+	btn1 := tgbotapi.NewInlineKeyboardButtonData("View Chapters",data)
+	down := tgbotapi.NewInlineKeyboardButtonURL("Download Full Process PDF file","http://sentinel.co")
+	video := tgbotapi.NewInlineKeyboardButtonURL("Watch Walkthrough Video","https://www.youtube.com/watch?v=Iaa7Jwd5sy8")
 	btns := tgbotapi.InlineKeyboardMarkup{
-		InlineKeyboard: [][]tgbotapi.InlineKeyboardButton{{home,btn1}},
+		InlineKeyboard: [][]tgbotapi.InlineKeyboardButton{{home,btn1},{down},{video}},
 	}
 	return btns
 }
