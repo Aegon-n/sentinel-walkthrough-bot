@@ -44,9 +44,9 @@ func main() {
 			log.Println(module)
 			switch module {
 			case "ETH":
-				modules.HandleEthModules(bot, &update)
+				modules.HandleEthModules(bot, &update, strings.Split(update.CallbackQuery.Data,"-")[1])
 			case "TM":
-				modules.HandleTMModules(bot, &update)
+				modules.HandleTMModules(bot, &update, strings.Split(update.CallbackQuery.Data,"-")[1])
 			default:
 				handler.HandleCallbackQuery(bot, &update)
 			}

@@ -2,109 +2,168 @@ package modules
 
 import (
 	"github.com/Aegon-n/sentinel-bot/handler/messages"
+	"github.com/Aegon-n/sentinel-bot/handler/buttons"
 	"gopkg.in/telegram-bot-api.v4"
 	"log"
 	"strconv"
 )
 
-func HandleEthModules(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
+func HandleEthModules(bot *tgbotapi.BotAPI, update *tgbotapi.Update, platform string) {
+	if platform == "Linux" {
+		handleETHLinuxModules(bot, update)
+	}
+	if platform == "Windows" {
+		handleETHWindowsModules(bot, update)
+	}
+	if platform == "Mac" {
+		handleETHMacModules(bot, update)
+	}
+}
+
+func handleETHWindowsModules(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 	module := update.CallbackQuery.Data
 	queryID := update.CallbackQuery.ID
 	chatID := update.CallbackQuery.Message.Chat.ID
 	msgID := update.CallbackQuery.Message.MessageID
 
 	switch module {
-	case "ETH-WinModule10":
-		HandleETHModule(bot, queryID, chatID, msgID,"20", messages.EthWindowsModule10)
 
-	case "ETH-WinModule20":
-		HandleETHModule(bot, queryID, chatID, msgID, "30",messages.EthWindowsModule20)
+	case "ETH-Windows-Module00":
+		handleETHModuleList(bot, queryID, chatID, msgID,"10","Windows", messages.EthWinListOfModulesMsg)
 
-	case "ETH-WinModule30":
-		HandleETHModule(bot, queryID, chatID, msgID, "40",messages.EthWindowsModule30)
+	case "ETH-Windows-Module10":
+		handleETHModule(bot, queryID, chatID, msgID,"20","Windows", messages.EthWindowsModule10)
 
-	case "ETH-WinModule40":
-		HandleETHModule(bot, queryID, chatID, msgID, "50",messages.EthWindowsModule40)
+	case "ETH-Windows-Module20":
+		handleETHModule(bot, queryID, chatID, msgID, "30","Windows", messages.EthWindowsModule20)
 
-	case "ETH-WinModule50":
-		HandleETHModule(bot, queryID, chatID, msgID, "60", messages.EthWindowsModule50)
+	case "ETH-Windows-Module30":
+		handleETHModule(bot, queryID, chatID, msgID, "40","Windows", messages.EthWindowsModule30)
 
-	case "ETH-WinModule60":
-		HandleETHModule(bot, queryID, chatID, msgID, "70", messages.EthWindowsModule60)
+	case "ETH-Windows-Module40":
+		handleETHModule(bot, queryID, chatID, msgID, "50","Windows", messages.EthWindowsModule40)
 
-	case "WinModule30":
+	case "ETH-Windows-Module50":
+		handleETHModule(bot, queryID, chatID, msgID, "60","Windows", messages.EthWindowsModule50)
 
-	case "WinModule31":
-
-	case "WinModule32":
-
-	case "WinModule40":
+	case "ETH-Windows-Module60":
+		handleETHModule(bot, queryID, chatID, msgID, "70","Windows", messages.EthWindowsModule60)
 
 	}
 }
 
-func HandleEthModule(Bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
+func handleETHLinuxModules(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
+	module := update.CallbackQuery.Data
 	queryID := update.CallbackQuery.ID
-	answeredCallback(Bot, queryID)
 	chatID := update.CallbackQuery.Message.Chat.ID
 	msgID := update.CallbackQuery.Message.MessageID
 
-	txt := messages.EthWindowsModule10
-	msg := tgbotapi.NewEditMessageText(chatID,msgID, txt)
+	switch module {
 
-	btn1 := tgbotapi.NewInlineKeyboardButtonData("Prev","EthWinModule10")
-	btn2 := tgbotapi.NewInlineKeyboardButtonData("Next","EthWinModule12")
-	markup := tgbotapi.InlineKeyboardMarkup{
-		InlineKeyboard: [][]tgbotapi.InlineKeyboardButton{{btn1,btn2}},
+	case "ETH-Linux-Module00":
+		handleETHModuleList(bot, queryID, chatID, msgID,"10","Linux", messages.EthWinListOfModulesMsg)
+
+	case "ETH-Linux-Module10":
+		handleETHModule(bot, queryID, chatID, msgID,"20","Linux", messages.EthWindowsModule10)
+
+	case "ETH-Linux-Module20":
+		handleETHModule(bot, queryID, chatID, msgID, "30","Linux", messages.EthWindowsModule20)
+
+	case "ETH-Linux-Module30":
+		handleETHModule(bot, queryID, chatID, msgID, "40","Linux", messages.EthWindowsModule30)
+
+	case "ETH-Linux-Module40":
+		handleETHModule(bot, queryID, chatID, msgID, "50","Linux", messages.EthWindowsModule40)
+
+	case "ETH-Linux-Module50":
+		handleETHModule(bot, queryID, chatID, msgID, "60","Linux", messages.EthWindowsModule50)
+
+	case "ETH-Linux-Module60":
+		handleETHModule(bot, queryID, chatID, msgID, "70","Linux", messages.EthWindowsModule60)
+
 	}
-	msg2 := tgbotapi.NewEditMessageReplyMarkup(chatID, msgID, markup)
-	Bot.Send(msg)
-	Bot.Send(msg2)
 }
-func HandleSKip(Bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
+
+func handleETHMacModules(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
+	module := update.CallbackQuery.Data
 	queryID := update.CallbackQuery.ID
-	answeredCallback(Bot, queryID)
 	chatID := update.CallbackQuery.Message.Chat.ID
 	msgID := update.CallbackQuery.Message.MessageID
-	txt := messages.EthWindowsModule20
-	msg := tgbotapi.NewEditMessageText(chatID,msgID, txt)
-	btn1 := tgbotapi.NewInlineKeyboardButtonData("Prev","EthWinModule12")
-	btn2 := tgbotapi.NewInlineKeyboardButtonData("Prev","EthWinModule30")
-	btn3 := tgbotapi.NewInlineKeyboardButtonData("Next","EthWinModule21")
-	markup := tgbotapi.InlineKeyboardMarkup{
-		InlineKeyboard: [][]tgbotapi.InlineKeyboardButton{{btn1,btn2,btn3}},
+
+	switch module {
+
+	case "ETH-Mac-Module00":
+		handleETHModuleList(bot, queryID, chatID, msgID,"10","Mac", messages.EthWinListOfModulesMsg)
+
+	case "ETH-Mac-Module10":
+		handleETHModule(bot, queryID, chatID, msgID,"20","Mac", messages.EthWindowsModule10)
+
+	case "ETH-Mac-Module20":
+		handleETHModule(bot, queryID, chatID, msgID, "30","Mac", messages.EthWindowsModule20)
+
+	case "ETH-Mac-Module30":
+		handleETHModule(bot, queryID, chatID, msgID, "40","Mac", messages.EthWindowsModule30)
+
+	case "ETH-Mac-Module40":
+		handleETHModule(bot, queryID, chatID, msgID, "50","Mac", messages.EthWindowsModule40)
+
+	case "ETH-Mac-Module50":
+		handleETHModule(bot, queryID, chatID, msgID, "60","Mac", messages.EthWindowsModule50)
+
+	case "ETH-Mac-Module60":
+		handleETHModule(bot, queryID, chatID, msgID, "70","Mac", messages.EthWindowsModule60)
+
 	}
-	msg2 := tgbotapi.NewEditMessageReplyMarkup(chatID, msgID, markup)
-	Bot.Send(msg)
-	Bot.Send(msg2)
 }
-func answeredCallback(Bot *tgbotapi.BotAPI, queryId string){
-	config := tgbotapi.CallbackConfig{queryId,"",false,"",0}
-	Bot.AnswerCallbackQuery(config)
+func handleETHModuleList(Bot *tgbotapi.BotAPI, queryID string, chatID int64, msgID int, next, platform, txt string){
+	answeredCallback(Bot, queryID)
+	msg := tgbotapi.NewEditMessageText(chatID, msgID, txt)
+	btn := tgbotapi.EditMessageReplyMarkupConfig{}
+	if platform == "Linux"{
+		btn = tgbotapi.NewEditMessageReplyMarkup(chatID,
+			msgID, buttons.ModulesListButton("ETH-Linux-Module"+next))
+	}
+	if platform == "Windows" {
+		btn = tgbotapi.NewEditMessageReplyMarkup(chatID,
+			msgID, buttons.ModulesListButton("ETH-Windows-Module"+next))
+	}
+	if platform == "Mac" {
+		btn = tgbotapi.NewEditMessageReplyMarkup(chatID,
+			msgID, buttons.ModulesListButton("ETH-Mac-Module"+next))
+	}
+	Bot.Send(msg)
+	Bot.Send(btn)
 }
 
-func HandleETHModule(Bot *tgbotapi.BotAPI, queryID string, chatID int64, msgID int, id, txt string) {
+func handleETHModule(Bot *tgbotapi.BotAPI, queryID string, chatID int64, msgID int, next, platform, txt string) {
 	answeredCallback(Bot, queryID)
-	log.Println("in handleEthmodule")
-	present,_ := strconv.Atoi(id)
-	prev := present -20
+	log.Println("in handleTMmodule")
+	nextIdx,_ := strconv.Atoi(next)
+	prev := nextIdx -20
 	prevstr := strconv.Itoa(prev)
 
 	msg := tgbotapi.NewEditMessageText(chatID, msgID, txt)
-	btns := tgbotapi.NewEditMessageReplyMarkup(chatID,
-		msgID,persistentButtons("ETH-WinModule"+prevstr,"ETH-WinModule"+id,"ETH-WinModule"+id))
+	btns := tgbotapi.EditMessageReplyMarkupConfig{}
+
+	if platform == "Linux" {
+		btns = tgbotapi.NewEditMessageReplyMarkup(chatID,
+			msgID, buttons.PersistentNavButtons("ETH-Linux-Module"+prevstr, "ETH-Linux-Module"+next, "ETH-Linux-Module"+next))
+	}
+	if platform == "Windows" {
+		btns = tgbotapi.NewEditMessageReplyMarkup(chatID,
+			msgID, buttons.PersistentNavButtons("ETH-Windows-Module"+prevstr, "ETH-Windows-Module"+next, "ETH-Windows-Module"+next))
+	}
+	if platform == "Mac" {
+		btns = tgbotapi.NewEditMessageReplyMarkup(chatID,
+			msgID, buttons.PersistentNavButtons("ETH-Mac-Module"+prevstr, "ETH-Mac-Module"+next, "ETH-Mac-Module"+next))
+	}
 
 	Bot.Send(msg)
 	Bot.Send(btns)
 
 }
 
-func persistentButtons(data1, data2, data3 string) tgbotapi.InlineKeyboardMarkup {
-	btn1 := tgbotapi.NewInlineKeyboardButtonData("Prev",data1)
-	btn2 := tgbotapi.NewInlineKeyboardButtonData("Skip",data2)
-	btn3 := tgbotapi.NewInlineKeyboardButtonData("Next",data3)
-	btns := tgbotapi.InlineKeyboardMarkup{
-		InlineKeyboard: [][]tgbotapi.InlineKeyboardButton{{btn1,btn2,btn3}},
-	}
-	return btns
+func answeredCallback(Bot *tgbotapi.BotAPI, queryId string){
+	config := tgbotapi.CallbackConfig{queryId,"",false,"",0}
+	Bot.AnswerCallbackQuery(config)
 }
