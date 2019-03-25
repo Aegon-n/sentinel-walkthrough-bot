@@ -20,6 +20,7 @@ func main() {
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
 
+
 	updates, err := bot.GetUpdatesChan(u)
 	if err != nil {
 		color.Red("error while receiving messages: %s", err)
@@ -29,7 +30,7 @@ func main() {
 	color.Green("%s", "started the bot successfully")
 
 	for update := range updates {
-		log.Println(update.CallbackQuery)
+
 		if update.Message != nil && update.Message.IsCommand() {
 			switch(update.Message.Command()) {
 			case "walkthrough":
@@ -40,6 +41,7 @@ func main() {
 		}
 
 		if update.CallbackQuery != nil {
+			log.Println(update.CallbackQuery)
 			module := strings.Split(update.CallbackQuery.Data,"-")[0]
 			log.Println(module)
 			switch module {

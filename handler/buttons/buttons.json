@@ -1,0 +1,79 @@
+{
+  "AppButtonsList": [
+    {"💻Sentinel-Desktop": "Sentinel-Desktop"},
+    {"📱Sentinel-Mobile": "Sentinel-Mobile"}
+    ],
+  "DesktopOSButtonsList": [
+    {"🏠Home": "Home"},
+    {"Linux": "Linux"},
+    {"Windows": "Windows"},
+    {"Mac": "Mac"}
+  ],
+  "MobileOSButtonsList": [
+    {"🏠Home": "Home"},
+    {"Android": "Android"},
+    {"IOS": "IOS"}
+  ],
+  "LinuxNetworkButtonList": [
+    {"🏠Home": "Home"},
+    {"Ethereum": "ETH-Linux-Module0"},
+    {"Tendermint": "TM-Linux-Module0"}
+  ],
+  "WindowsNetworkButtonList": [
+    {"🏠Home": "Home"},
+    {"Ethereum": "ETH-Windows-Module0"}, {"Tendermint": "TM-Windows-Module0"}
+  ],
+  "MacNetworkButtonList": [
+    {"🏠Home": "Home"},
+    {"Ethereum": "ETH-Mac-Module0"},
+    {"Tendermint": "TM-Mac-Module0"}
+  ],
+  "LinuxEthModulesButtonList": [
+    {"🏠Home": "Home"},
+    {"📁View Chapters": "ETH-Linux-Module10"},
+    {"⇩Download Full Process PDF file": "ETH-Linux-DownloadDoc"},
+    {"📹Watch Full Video": "ETH-Linux-VideoSend"}
+  ],
+  "LinuxTMModulesButtonList":[
+    {"🏠Home": "Home"},
+    {"📁View Chapters": "TM-Linux-Module10"},
+    {"⇩Download Full Process PDF file": "TM-Linux-DownloadDoc"},
+    {"📹Watch Full Video": "TM-Linux-VideoSend"}
+  ],
+  "WindowsEthModulesButtonList":[
+    {"🏠Home": "Home"},
+    {"📁View Chapters": "ETH-Windows-Module10"},
+    {"⇩Download Full Process PDF file": "ETH-Windows-DownloadDoc"},
+    {"📹Watch Full Video": "ETH-Windows-VideoSend"}
+  ],
+  "WindowsTMModulesButtonList":[
+    {"🏠Home": "Home"},
+    {"📁View Chapters": "TM-Windows-Module10"},
+    {"⇩Download Full Process PDF file": "TM-Windows-DownloadDoc"},
+    {"📹Watch Full Video": "TM-Windows-VideoSend"}
+  ],
+  "MacEthModulesButtonList":[
+    {"🏠Home": "Home"},
+    {"📁View Chapters": "ETH-Mac-Module10"},
+    {"⇩Download Full Process PDF file": "ETH-Mac-DownloadDoc"},
+    {"📹Watch Full Video": "ETH-Mac-VideoSend"}
+  ],
+  "MacTMModulesButtonList":[
+    {"🏠Home": "Home"},
+    {"📁View Chapters": "TM-Mac-Module10"},
+    {"⇩Download Full Process PDF file": "TM-Mac-DownloadDoc"},
+    {"📹Watch Full Video": "TM-Mac-VideoSend"}
+  ],
+  "AndroidModulesButtonList": [
+    {"🏠Home": "Home"},
+    {"📁View Chapters": "Android-Module10"},
+    {"⇩Download Full Process PDF file": "Android-DownloadDoc"},
+    {"📹Watch Full Video": "Android-VideoSend"}
+  ],
+  "IOSModulesButtonList": [
+    {"🏠Home": "Home"},
+    {"📁View Chapters": "IOS-Module10"},
+    {"⇩Download Full Process PDF file": "IOS-DownloadDoc"},
+    {"📹Watch Full Video": "IOS-VideoSend"}
+  ]
+}

@@ -1,75 +1,62 @@
 package buttons
 
-import "gopkg.in/telegram-bot-api.v4"
+import (
+	"encoding/json"
+	"github.com/Aegon-n/sentinel-bot/handler/constants"
+	"gopkg.in/telegram-bot-api.v4"
+	"io/ioutil"
+	"log"
+)
 
+type B struct {
+	Text string
+	Data string
+}
+var ButtonList Buttons
 
-func DesktopOsButtons(data1, data2, data3 string) tgbotapi.InlineKeyboardMarkup {
-	home := tgbotapi.NewInlineKeyboardButtonData("Home","Home")
-	btn1 := tgbotapi.NewInlineKeyboardButtonData("Linux",data1)
-	btn2 := tgbotapi.NewInlineKeyboardButtonData("Windows",data2)
-	btn3 := tgbotapi.NewInlineKeyboardButtonData("Mac OS",data3)
-	btns := tgbotapi.InlineKeyboardMarkup{
-		InlineKeyboard: [][]tgbotapi.InlineKeyboardButton{{home,btn1,btn2,btn3}},
-	}
-	return btns
+type Buttons struct {
+	AppButtonsList 				[]map[string]string  	`json: "AppButtonsList"`
+	DesktopOSButtonsList 		[]map[string]string 	`json: "DesktopOSButtonsList"`
+	MobileOSButtonsList 		[]map[string]string  	`json: "MobileOSButtonsList"`
+	LinuxNetworkButtonList 		[]map[string]string  	`json: "LinuxNetworkButtonList"`
+	WindowsNetworkButtonList 	[]map[string]string  	`json: "WindowsNetworkButtonList"`
+	MacNetworkButtonList 		[]map[string]string  	`json: "MacNetworkButtonList"`
+	LinuxEthModulesButtonList   []map[string]string 	`json: "LinuxEthModulesButtonList"`
+	LinuxTMModulesButtonList	[]map[string]string		`json: "LinuxTMModulesButtonList"`
+	WindowsEthModulesButtonList	[]map[string]string		`json: "WindowsEthModulesButtonList"`
+	WindowsTMModulesButtonList	[]map[string]string		`json: "WindowsTMModulesButtonList"`
+	MacEthModulesButtonList		[]map[string]string		`json: "MacEthModulesButtonList"`
+	MacTMModulesButtonList		[]map[string]string		`json: "MacTMModulesButtonList"`
+	AndroidModulesButtonList	[]map[string]string		`json: "AndroidModulesButtonList"`
+	IOSModulesButtonList		[]map[string]string		`json: "IOSModulesButtonList"`
+
 }
 
-func MobileOsButtons(data1, data2 string) tgbotapi.InlineKeyboardMarkup {
-	home := tgbotapi.NewInlineKeyboardButtonData("Home","Home")
-	btn1 := tgbotapi.NewInlineKeyboardButtonData("Android",data1)
-	btn2 := tgbotapi.NewInlineKeyboardButtonData("IOS",data2)
-	btns := tgbotapi.InlineKeyboardMarkup{
-		InlineKeyboard: [][]tgbotapi.InlineKeyboardButton{{home,btn1,btn2}},
+func init() {
+	data, err := ioutil.ReadFile(constants.ButtonsFilePath)
+	if err != nil {
+		log.Fatal("File Not Found")
 	}
-	return btns
+	json.Unmarshal(data, &ButtonList)
+	log.Println("Json File loaded")
+	log.Println(ButtonList)
 }
 
-func TestNetButtons(data1, data2 string) tgbotapi.InlineKeyboardMarkup {
-	home := tgbotapi.NewInlineKeyboardButtonData("Home","Home")
-	btn1 := tgbotapi.NewInlineKeyboardButtonData("Ethereum", data1)
-	btn2 := tgbotapi.NewInlineKeyboardButtonData("Tendermint", data2)
-	btns := tgbotapi.InlineKeyboardMarkup{
-		InlineKeyboard: [][]tgbotapi.InlineKeyboardButton{{home, btn1, btn2}},
-	}
-	return btns
-}
 
 func PersistentNavButtons(data1, data2, data3 string) tgbotapi.InlineKeyboardMarkup {
-	home := tgbotapi.NewInlineKeyboardButtonData("Home","Home")
-	btn1 := tgbotapi.NewInlineKeyboardButtonData("Prev",data1)
-	btn2 := tgbotapi.NewInlineKeyboardButtonData("Skip",data2)
-	btn3 := tgbotapi.NewInlineKeyboardButtonData("Next",data3)
+	home := tgbotapi.NewInlineKeyboardButtonData("🏠Home","Home")
+	btn1 := tgbotapi.NewInlineKeyboardButtonData("⯇Prev",data1)
+	btn2 := tgbotapi.NewInlineKeyboardButtonData("Skip⏭",data2)
+	btn3 := tgbotapi.NewInlineKeyboardButtonData("Next⯈",data3)
 	btns := tgbotapi.InlineKeyboardMarkup{
 		InlineKeyboard: [][]tgbotapi.InlineKeyboardButton{{home, btn1,btn2,btn3}},
 	}
 	return btns
 }
 
-func ModulesListButton(data, downloaddata, videourl  string) tgbotapi.InlineKeyboardMarkup {
-
-	home := tgbotapi.NewInlineKeyboardButtonData("Home","Home")
-	btn1 := tgbotapi.NewInlineKeyboardButtonData("View Chapters",data)
-	down := tgbotapi.NewInlineKeyboardButtonData("Download Full Process PDF file", downloaddata)
-
-	video := tgbotapi.NewInlineKeyboardButtonURL("Watch Walkthrough Video",videourl)
-	btns := tgbotapi.InlineKeyboardMarkup{
-		InlineKeyboard: [][]tgbotapi.InlineKeyboardButton{{home,btn1},{down},{video}},
-	}
-	return btns
-}
-func HomeButtons(data1, data2 string) tgbotapi.InlineKeyboardMarkup {
-
-	btn1 := tgbotapi.NewInlineKeyboardButtonData("Sentinel-Desktop App",data1)
-	btn2 := tgbotapi.NewInlineKeyboardButtonData("Sentinel-Mobile App",data2)
-
-	btns := tgbotapi.InlineKeyboardMarkup{
-		InlineKeyboard: [][]tgbotapi.InlineKeyboardButton{{btn1,btn2}},
-	}
-	return btns
-}
 func LastModuleButtons(data1 string) tgbotapi.InlineKeyboardMarkup {
-	home := tgbotapi.NewInlineKeyboardButtonData("Home", "Home")
-	prev := tgbotapi.NewInlineKeyboardButtonData("Prev",data1)
+	home := tgbotapi.NewInlineKeyboardButtonData("🏠Home", "Home")
+	prev := tgbotapi.NewInlineKeyboardButtonData("«Prev",data1)
 	exit := tgbotapi.NewInlineKeyboardButtonData("Exit","Exit")
 
 	btns := tgbotapi.InlineKeyboardMarkup{
@@ -79,3 +66,91 @@ func LastModuleButtons(data1 string) tgbotapi.InlineKeyboardMarkup {
 	return btns
 }
 
+func GetButtons(buttontype string) tgbotapi.InlineKeyboardMarkup {
+	list := [][]tgbotapi.InlineKeyboardButton{{},{}}
+	if buttontype == "AppButtonsList" {
+		return genBtnRow(ButtonList.AppButtonsList)
+
+	}
+	if buttontype == "DesktopOSButtonsList" {
+		return genBtnRow(ButtonList.DesktopOSButtonsList)
+
+	}
+	if buttontype == "MobileOSButtonsList" {
+		return genBtnRow(ButtonList.MobileOSButtonsList)
+
+	}
+	if buttontype == "LinuxNetworkButtonList" {
+		return genBtnRow(ButtonList.LinuxNetworkButtonList)
+
+	}
+	if buttontype == "WindowsNetworkButtonList" {
+		return genBtnRow(ButtonList.WindowsNetworkButtonList)
+
+	}
+	if buttontype == "MacNetworkButtonList" {
+		return genBtnRow(ButtonList.MacNetworkButtonList)
+
+	}
+	if buttontype == "LinuxEthModulesButtonList" {
+		return genModuleButtonList(ButtonList.LinuxEthModulesButtonList)
+
+	}
+	if buttontype == "LinuxTMModulesButtonList" {
+		return genModuleButtonList(ButtonList.LinuxTMModulesButtonList)
+
+	}
+	if buttontype == "WindowsEthModulesButtonList" {
+		return genModuleButtonList(ButtonList.WindowsEthModulesButtonList)
+
+	}
+	if buttontype == "WindowsTMModulesButtonList" {
+		return genModuleButtonList(ButtonList.WindowsTMModulesButtonList)
+
+	}
+	if buttontype == "MacEthModulesButtonList" {
+		return genModuleButtonList(ButtonList.MacEthModulesButtonList)
+
+	}
+	if buttontype == "MacTMModulesButtonList" {
+		return genModuleButtonList(ButtonList.MacTMModulesButtonList)
+
+	}
+	if buttontype == "AndroidModulesButtonList" {
+		return genModuleButtonList(ButtonList.AndroidModulesButtonList)
+
+	}
+	if buttontype == "IOSModulesButtonList" {
+		return genModuleButtonList(ButtonList.IOSModulesButtonList)
+
+	}
+	return tgbotapi.InlineKeyboardMarkup{InlineKeyboard:list}
+}
+
+func genModuleButtonList(data []map[string]string) tgbotapi.InlineKeyboardMarkup {
+	list := [][]tgbotapi.InlineKeyboardButton{{},{}}
+	log.Println(data)
+	for i, b := range data {
+		i+=1
+		if i > 2{
+			for k,v := range b {
+				list[1] = append(list[1], tgbotapi.NewInlineKeyboardButtonData(k, v))
+			}
+		}else {
+			for k,v := range b {
+				list[0] = append(list[0], tgbotapi.NewInlineKeyboardButtonData(k, v))
+			}
+		}
+
+	}
+	return tgbotapi.InlineKeyboardMarkup{InlineKeyboard: list}
+}
+func genBtnRow(data []map[string]string) tgbotapi.InlineKeyboardMarkup {
+	list := [][]tgbotapi.InlineKeyboardButton{{},{}}
+	for _, b := range data {
+		for k,v := range b {
+			list[0] = append(list[0], tgbotapi.NewInlineKeyboardButtonData(k, v))
+		}
+	}
+	return tgbotapi.InlineKeyboardMarkup{InlineKeyboard: list}
+}

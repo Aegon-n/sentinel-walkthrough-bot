@@ -3,15 +3,14 @@ package handler
 import (
 	"fmt"
 	"github.com/Aegon-n/sentinel-bot/handler/buttons"
-	"github.com/Aegon-n/sentinel-bot/handler/constants"
-	"github.com/Aegon-n/sentinel-bot/handler/messages"
+	"github.com/Aegon-n/sentinel-bot/handler/messages/en_messages"
 	"gopkg.in/telegram-bot-api.v4"
 )
 
 func HandleGreet(Bot *tgbotapi.BotAPI, update *tgbotapi.Update )  {
 	username := update.Message.From.UserName
 	chatID := update.Message.Chat.ID
-	txt := fmt.Sprintf(messages.WelcomeGreetMsg, username)+"\n"+messages.SelectwalkthroughMsg
+	txt := fmt.Sprintf(en_messages.WelcomeGreetMsg, username)+"\n"+en_messages.SelectwalkthroughMsg
 	msg := tgbotapi.NewMessage(chatID,txt)
 	msg.ParseMode = tgbotapi.ModeMarkdown
 	Bot.Send(msg)
@@ -21,15 +20,9 @@ func HandlerWalkThrough(Bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 
 	username := update.Message.From.UserName
 	chatID := update.Message.Chat.ID
-	txt := fmt.Sprintf(messages.WelcomeGreetMsg, username)+"\n"+messages.AppSelectMsg
+	txt := fmt.Sprintf(en_messages.WelcomeGreetMsg, username)+"\n"+en_messages.AppSelectMsg
 	msg := tgbotapi.NewMessage(chatID,txt)
-
-	btn1 := tgbotapi.NewInlineKeyboardButtonData("Sentinel-Desktop App","Sentinel-Desktop")
-	btn2 := tgbotapi.NewInlineKeyboardButtonData("Sentinel-Mobile App","Sentinel-Mobile")
-
-	msg.ReplyMarkup = tgbotapi.InlineKeyboardMarkup{
-		InlineKeyboard: [][]tgbotapi.InlineKeyboardButton{{btn1,btn2}},
-	}
+	msg.ReplyMarkup = buttons.GetButtons("AppButtonsList")
 	msg.ParseMode = tgbotapi.ModeMarkdown
 	Bot.Send(msg)
 }
@@ -79,9 +72,9 @@ func handleHome(Bot *tgbotapi.BotAPI, update *tgbotapi.Update ,username string){
 	chatID := update.CallbackQuery.Message.Chat.ID
 	msgID := update.CallbackQuery.Message.MessageID
 
-	msg := tgbotapi.NewEditMessageText(chatID, msgID, fmt.Sprintf(messages.WelcomeGreetMsg, username)+"\n"+messages.AppSelectMsg)
+	msg := tgbotapi.NewEditMessageText(chatID, msgID, fmt.Sprintf(en_messages.WelcomeGreetMsg, username)+"\n"+en_messages.AppSelectMsg)
 	msg.ParseMode = tgbotapi.ModeMarkdown
-	btns := tgbotapi.NewEditMessageReplyMarkup(chatID, msgID, buttons.HomeButtons("Sentinel-Desktop","Sentinel-Mobile"))
+	btns := tgbotapi.NewEditMessageReplyMarkup(chatID, msgID, buttons.GetButtons("AppButtonsList"))
 
 	msg.ParseMode = tgbotapi.ModeMarkdown
 	Bot.Send(msg)
@@ -98,12 +91,12 @@ func handleAppVersion(Bot *tgbotapi.BotAPI, update *tgbotapi.Update, version str
 
 	replyMarkup := tgbotapi.InlineKeyboardMarkup{}
 	if version == "Desktop" {
-		msg = tgbotapi.NewEditMessageText(chatID, msgID, messages.DesktopOSSelectMsg)
-		replyMarkup = buttons.DesktopOsButtons("Linux","Windows","Mac")
+		msg = tgbotapi.NewEditMessageText(chatID, msgID, en_messages.DesktopOSSelectMsg)
+		replyMarkup = buttons.GetButtons("DesktopOSButtonsList")
 	}
 	if version == "Mobile" {
-		msg = tgbotapi.NewEditMessageText(chatID, msgID, messages.MobileOSSelectMsg)
-		replyMarkup = buttons.MobileOsButtons("Android","IOS")
+		msg = tgbotapi.NewEditMessageText(chatID, msgID, en_messages.MobileOSSelectMsg)
+		replyMarkup = buttons.GetButtons("MobileOSButtonsList")
 	}
 	btns := tgbotapi.NewEditMessageReplyMarkup(chatID, msgID, replyMarkup)
 	msg.ParseMode = tgbotapi.ModeMarkdown
@@ -120,32 +113,32 @@ func handleOs(Bot *tgbotapi.BotAPI, update *tgbotapi.Update, os string){
 	btns := tgbotapi.EditMessageReplyMarkupConfig{}
 	if os == "Android"{
 
-		msg = tgbotapi.NewEditMessageText(chatID, msgID, messages.MobileListOfMOdulesMsg)
+		msg = tgbotapi.NewEditMessageText(chatID, msgID, en_messages.MobileListOfMOdulesMsg)
 		btns = tgbotapi.NewEditMessageReplyMarkup(chatID, msgID,
-			buttons.ModulesListButton("Android10",constants.DownloadUrl ,constants.VideoUrl))
+			buttons.GetButtons("AndroidModulesButtonList"))
 
 	}
 	if os == "IOS" {
 
-		msg = tgbotapi.NewEditMessageText(chatID, msgID, messages.MobileListOfMOdulesMsg)
+		msg = tgbotapi.NewEditMessageText(chatID, msgID, en_messages.MobileListOfMOdulesMsg)
 		btns = tgbotapi.NewEditMessageReplyMarkup(chatID, msgID,
-			buttons.ModulesListButton("IOS10",constants.DownloadUrl ,constants.VideoUrl))
+			buttons.GetButtons("IOSModulesButtonList"))
 
 	}
 	if os == "Linux" {
 
-		msg = tgbotapi.NewEditMessageText(chatID, msgID, messages.LinuxNetworkSelectMsg)
-		btns = tgbotapi.NewEditMessageReplyMarkup(chatID, msgID, buttons.TestNetButtons("ETH-Linux-Module0", "TM-Linux-Module0"))
+		msg = tgbotapi.NewEditMessageText(chatID, msgID, en_messages.LinuxNetworkSelectMsg)
+		btns = tgbotapi.NewEditMessageReplyMarkup(chatID, msgID, buttons.GetButtons("LinuxNetworkButtonList"))
 
 	}
 	if os == "Windows" {
-		msg = tgbotapi.NewEditMessageText(chatID, msgID, messages.WindowsNetworkSelectMsg)
-		btns = tgbotapi.NewEditMessageReplyMarkup(chatID, msgID, buttons.TestNetButtons("ETH-Windows-Module0", "TM-Windows-Module0"))
+		msg = tgbotapi.NewEditMessageText(chatID, msgID, en_messages.WindowsNetworkSelectMsg)
+		btns = tgbotapi.NewEditMessageReplyMarkup(chatID, msgID, buttons.GetButtons("WindowsNetworkButtonList"))
 
 	}
 	if os == "Mac" {
-		msg = tgbotapi.NewEditMessageText(chatID, msgID, messages.MacNetworkSelectMsg)
-		btns = tgbotapi.NewEditMessageReplyMarkup(chatID, msgID, buttons.TestNetButtons("ETH-Mac-Module0", "TM-Mac-Module0"))
+		msg = tgbotapi.NewEditMessageText(chatID, msgID, en_messages.MacNetworkSelectMsg)
+		btns = tgbotapi.NewEditMessageReplyMarkup(chatID, msgID, buttons.GetButtons("MacNetworkButtonList"))
 
 	}
 	msg.ParseMode = tgbotapi.ModeMarkdown
@@ -162,7 +155,7 @@ func handleExit(Bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 	answeredCallback(Bot, queryID)
 	chatID := update.CallbackQuery.Message.Chat.ID
 	msgID := update.CallbackQuery.Message.MessageID
-	msg := tgbotapi.NewEditMessageText(chatID, msgID, messages.ExitMsg)
+	msg := tgbotapi.NewEditMessageText(chatID, msgID, en_messages.ExitMsg)
 	msg.ParseMode = tgbotapi.ModeMarkdown
 	Bot.Send(msg)
 

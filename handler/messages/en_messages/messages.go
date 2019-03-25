@@ -1,4 +1,4 @@
-package messages
+package en_messages
 
 const (
 	SelectwalkthroughMsg = "Please select /walkthrough for sentinel App walkthrough "

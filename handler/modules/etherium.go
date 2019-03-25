@@ -1,9 +1,9 @@
 package modules
 
 import (
-	"github.com/Aegon-n/sentinel-bot/handler/constants"
-	"github.com/Aegon-n/sentinel-bot/handler/messages"
 	"github.com/Aegon-n/sentinel-bot/handler/buttons"
+	"github.com/Aegon-n/sentinel-bot/handler/constants"
+	"github.com/Aegon-n/sentinel-bot/handler/messages/en_messages"
 	"gopkg.in/telegram-bot-api.v4"
 	"log"
 	"strconv"
@@ -30,32 +30,36 @@ func handleETHWindowsModules(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 	switch module {
 
 	case "ETH-Windows-Module0":
-		handleETHModuleList(bot, queryID, chatID, "10","Windows", messages.EthWinListOfModulesMsg)
+		handleETHModuleList(bot, queryID, chatID, "10","Windows", en_messages.EthWinListOfModulesMsg)
 
 	case "ETH-Windows-Module10":
-		//log.Println(messages.NewEthWindowsModule10)
-		handleETHModule(bot, queryID, chatID, msgID,"20","Windows", messages.EthWindowsModule10)
+		//log.Println(en_messages.NewEthWindowsModule10)
+		handleETHModule(bot, queryID, chatID, msgID,"20","Windows", en_messages.EthWindowsModule10)
 
 	case "ETH-Windows-Module20":
-		handleETHModule(bot, queryID, chatID, msgID, "30","Windows", messages.EthWindowsModule20)
+		handleETHModule(bot, queryID, chatID, msgID, "30","Windows", en_messages.EthWindowsModule20)
 
 	case "ETH-Windows-Module30":
-		handleETHModule(bot, queryID, chatID, msgID, "40","Windows", messages.EthWindowsModule30)
+		handleETHModule(bot, queryID, chatID, msgID, "40","Windows", en_messages.EthWindowsModule30)
 
 	case "ETH-Windows-Module40":
-		handleETHModule(bot, queryID, chatID, msgID, "50","Windows", messages.EthWindowsModule40)
+		handleETHModule(bot, queryID, chatID, msgID, "50","Windows", en_messages.EthWindowsModule40)
 
 	case "ETH-Windows-Module50":
-		handleETHModule(bot, queryID, chatID, msgID, "60","Windows", messages.EthWindowsModule50)
+		handleETHModule(bot, queryID, chatID, msgID, "60","Windows", en_messages.EthWindowsModule50)
 
 	case "ETH-Windows-Module60":
-		handleETHModule(bot, queryID, chatID, msgID, "70","Windows", messages.EthWindowsModule60)
+		handleETHModule(bot, queryID, chatID, msgID, "70","Windows", en_messages.EthWindowsModule60)
 
 	case "ETH-Windows-Module70":
-		handleEthLastModule(bot, queryID, chatID, msgID, "60","Windows", messages.LastModuleMsg)
+		handleEthLastModule(bot, queryID, chatID, msgID, "60","Windows", en_messages.LastModuleMsg)
 
 	case "ETH-Windows-DownloadDoc":
-		handleDownload(bot, update, "Windows")
+		handleDownload(bot, update, "Windows","Doc")
+
+	case "ETH-Windows-VideoSend":
+		handleDownload(bot, update, "Windows","Video")
+
 	}
 
 }
@@ -69,32 +73,32 @@ func handleETHLinuxModules(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 	switch module {
 
 	case "ETH-Linux-Module0":
-		handleETHModuleList(bot, queryID, chatID, "10","Linux", messages.EthWinListOfModulesMsg)
+		handleETHModuleList(bot, queryID, chatID, "10","Linux", en_messages.EthWinListOfModulesMsg)
 
 	case "ETH-Linux-Module10":
 		log.Println("here")
-		handleETHModule(bot, queryID, chatID, msgID,"20","Linux", messages.EthWindowsModule10)
+		handleETHModule(bot, queryID, chatID, msgID,"20","Linux", en_messages.EthWindowsModule10)
 
 	case "ETH-Linux-Module20":
-		handleETHModule(bot, queryID, chatID, msgID, "30","Linux", messages.EthWindowsModule20)
+		handleETHModule(bot, queryID, chatID, msgID, "30","Linux", en_messages.EthWindowsModule20)
 
 	case "ETH-Linux-Module30":
-		handleETHModule(bot, queryID, chatID, msgID, "40","Linux", messages.EthWindowsModule30)
+		handleETHModule(bot, queryID, chatID, msgID, "40","Linux", en_messages.EthWindowsModule30)
 
 	case "ETH-Linux-Module40":
-		handleETHModule(bot, queryID, chatID, msgID, "50","Linux", messages.EthWindowsModule40)
+		handleETHModule(bot, queryID, chatID, msgID, "50","Linux", en_messages.EthWindowsModule40)
 
 	case "ETH-Linux-Module50":
-		handleETHModule(bot, queryID, chatID, msgID, "60","Linux", messages.EthWindowsModule50)
+		handleETHModule(bot, queryID, chatID, msgID, "60","Linux", en_messages.EthWindowsModule50)
 
 	case "ETH-Linux-Module60":
-		handleETHModule(bot, queryID, chatID, msgID, "70","Linux", messages.EthWindowsModule60)
-
-	case "ETH-Linux-Module70":
-		handleEthLastModule(bot, queryID, chatID, msgID, "60","Linux", messages.LastModuleMsg)
+		handleEthLastModule(bot, queryID, chatID, msgID, "50","Linux", en_messages.EthWindowsModule60)
 
 	case "ETH-Linux-DownloadDoc":
-		handleDownload(bot, update, "Linux")
+		handleDownload(bot, update, "Linux","Doc")
+
+	case "ETH-Linux-VideoSend":
+		handleDownload(bot, update, "Linux","Video")
 	}
 }
 
@@ -107,32 +111,31 @@ func handleETHMacModules(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 	switch module {
 
 	case "ETH-Mac-Module0":
-		handleETHModuleList(bot, queryID, chatID, "10","Mac", messages.EthWinListOfModulesMsg)
+		handleETHModuleList(bot, queryID, chatID, "10","Mac", en_messages.EthWinListOfModulesMsg)
 
 	case "ETH-Mac-Module10":
-		handleETHModule(bot, queryID, chatID, msgID,"20","Mac", messages.EthWindowsModule10)
+		handleETHModule(bot, queryID, chatID, msgID,"20","Mac", en_messages.EthWindowsModule10)
 
 	case "ETH-Mac-Module20":
-		handleETHModule(bot, queryID, chatID, msgID, "30","Mac", messages.EthWindowsModule20)
+		handleETHModule(bot, queryID, chatID, msgID, "30","Mac", en_messages.EthWindowsModule20)
 
 	case "ETH-Mac-Module30":
-		handleETHModule(bot, queryID, chatID, msgID, "40","Mac", messages.EthWindowsModule30)
+		handleETHModule(bot, queryID, chatID, msgID, "40","Mac", en_messages.EthWindowsModule30)
 
 	case "ETH-Mac-Module40":
-		handleETHModule(bot, queryID, chatID, msgID, "50","Mac", messages.EthWindowsModule40)
+		handleETHModule(bot, queryID, chatID, msgID, "50","Mac", en_messages.EthWindowsModule40)
 
 	case "ETH-Mac-Module50":
-		handleETHModule(bot, queryID, chatID, msgID, "60","Mac", messages.EthWindowsModule50)
+		handleETHModule(bot, queryID, chatID, msgID, "60","Mac", en_messages.EthWindowsModule50)
 
 	case "ETH-Mac-Module60":
-		handleETHModule(bot, queryID, chatID, msgID, "70","Mac", messages.EthWindowsModule60)
-
-	case "ETH-Mac-Module70":
-		handleEthLastModule(bot, queryID, chatID, msgID,"60","Mac",messages.LastModuleMsg)
+		handleEthLastModule(bot, queryID, chatID, msgID,"50","Mac",en_messages.EthWindowsModule60)
 
 	case "ETH-Mac-DownloadDoc":
-		handleDownload(bot, update, "Mac")
+		handleDownload(bot, update, "Mac","Doc")
 
+	case "ETH-Mac-VideoSend":
+		handleDownload(bot, update, "Mac","Video")
 	}
 }
 func handleETHModuleList(Bot *tgbotapi.BotAPI, queryID string, chatID int64, next, platform, txt string){
@@ -140,13 +143,13 @@ func handleETHModuleList(Bot *tgbotapi.BotAPI, queryID string, chatID int64, nex
 	msg := tgbotapi.NewMessage(chatID, txt)
 
 	if platform == "Linux"{
-		msg.ReplyMarkup =  buttons.ModulesListButton("ETH-Linux-Module"+next,"ETH-Linux-DownloadDoc" ,constants.VideoUrl)
+		msg.ReplyMarkup =  buttons.GetButtons("LinuxEthModulesButtonList")
 	}
 	if platform == "Windows" {
-		msg.ReplyMarkup = buttons.ModulesListButton("ETH-Windows-Module"+next, "ETH-Windows-DownloadDoc" ,constants.VideoUrl)
+		msg.ReplyMarkup =  buttons.GetButtons("WindowsEthModulesButtonList")
 	}
 	if platform == "Mac" {
-		msg.ReplyMarkup = buttons.ModulesListButton("ETH-Mac-Module"+next,"ETH-Mac-DownloadDoc" ,constants.VideoUrl)
+		msg.ReplyMarkup =  buttons.GetButtons("MacEthModulesButtonList")
 	}
 	msg.ParseMode = tgbotapi.ModeMarkdown
 	Bot.Send(msg)
@@ -185,20 +188,33 @@ func answeredCallback(Bot *tgbotapi.BotAPI, queryId string){
 	Bot.AnswerCallbackQuery(config)
 }
 
-func handleDownload(Bot *tgbotapi.BotAPI, update *tgbotapi.Update, platform string) {
+func handleDownload(Bot *tgbotapi.BotAPI, update *tgbotapi.Update, platform, typ string) {
+	answeredCallback(Bot, update.CallbackQuery.ID)
 	chatID := update.CallbackQuery.Message.Chat.ID
-	res := tgbotapi.DocumentConfig{}
-	if platform == "Linux"{
-		res = tgbotapi.NewDocumentShare(chatID,constants.DownloadUrl)
+	if typ == "Doc" {
+		res := tgbotapi.DocumentConfig{}
+		switch platform {
+		case "Linux":
+			res = tgbotapi.NewDocumentShare(chatID,constants.LinuxPdfUrl)
+		case "Windows":
+			res = tgbotapi.NewDocumentShare(chatID,constants.WindowsPdfUrl)
+		case "Mac":
+			res = tgbotapi.NewDocumentShare(chatID,constants.MacPdfUrl)
+		}
+		Bot.Send(res)
 	}
-	if platform == "Windows"{
-		res = tgbotapi.NewDocumentShare(chatID,constants.DownloadUrl)
+	if typ == "Video" {
+		msg := tgbotapi.NewMessage(chatID,constants.VideoUrl)
+		switch platform {
+		case "Linux":
+			msg = tgbotapi.NewMessage(chatID, constants.LinuxVideoUrl)
+		case "Windows":
+			msg = tgbotapi.NewMessage(chatID, constants.WindowsVideoUrl)
+		case "Mac":
+			msg = tgbotapi.NewMessage(chatID, constants.MacVideoUrl)
+		}
+		Bot.Send(msg)
 	}
-	if platform == "Mac"{
-		res = tgbotapi.NewDocumentShare(chatID,constants.DownloadUrl)
-	}
-
-	Bot.Send(res)
 }
 func handleEthLastModule(Bot *tgbotapi.BotAPI, queryID string, chatID int64, msgID int, prev, platform, txt string) {
 	answeredCallback(Bot, queryID)
