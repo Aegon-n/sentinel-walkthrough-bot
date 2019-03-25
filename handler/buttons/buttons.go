@@ -56,8 +56,8 @@ func PersistentNavButtons(data1, data2, data3 string) tgbotapi.InlineKeyboardMar
 
 func LastModuleButtons(data1 string) tgbotapi.InlineKeyboardMarkup {
 	home := tgbotapi.NewInlineKeyboardButtonData("🏠Home", "Home")
-	prev := tgbotapi.NewInlineKeyboardButtonData("«Prev",data1)
-	exit := tgbotapi.NewInlineKeyboardButtonData("Exit","Exit")
+	prev := tgbotapi.NewInlineKeyboardButtonData("⯇Prev",data1)
+	exit := tgbotapi.NewInlineKeyboardButtonData("❌Exit","Exit")
 
 	btns := tgbotapi.InlineKeyboardMarkup{
 		InlineKeyboard: [][]tgbotapi.InlineKeyboardButton{{home,prev,exit}},
