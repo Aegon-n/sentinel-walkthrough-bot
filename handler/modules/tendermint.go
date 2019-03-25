@@ -30,8 +30,9 @@ func handleTMLinuxModules(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 
 	switch module {
 
-	case "TM-Linux-Module00":
+	case "TM-Linux-Module0":
 		handleTMModuleList(bot, queryID, chatID, msgID,"10", "Linux", messages.EthWinListOfModulesMsg)
+
 	case "TM-Linux-Module10":
 		handleTMModule(bot, queryID, chatID, msgID,"20", "Linux", messages.EthWindowsModule10)
 
@@ -49,6 +50,12 @@ func handleTMLinuxModules(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 
 	case "TM-Linux-Module60":
 		handleTMModule(bot, queryID, chatID, msgID, "70","Linux",  messages.EthWindowsModule60)
+
+	case "TM-Linux-Module70":
+		handleTMLastModule(bot, queryID, chatID, msgID, "60","Linux",messages.LastModuleMsg)
+
+	case "TM-Linux-DownloadDoc":
+		handleDownload(bot, update, "Linux")
 	}
 }
 
@@ -62,6 +69,7 @@ func handleTMWindowsModules(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 
 	case "TM-Windows-Module00":
 		handleTMModuleList(bot, queryID, chatID, msgID,"10", "Windows", messages.EthWinListOfModulesMsg)
+
 	case "TM-Windows-Module10":
 		handleTMModule(bot, queryID, chatID, msgID, "20","Windows", messages.EthWindowsModule10)
 
@@ -79,6 +87,12 @@ func handleTMWindowsModules(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 
 	case "TM-Windows-Module60":
 		handleTMModule(bot, queryID, chatID, msgID, "70","Windows", messages.EthWindowsModule60)
+
+	case "TM-Windows-Module70":
+		handleTMLastModule(bot, queryID, chatID, msgID, "60","Windows",messages.LastModuleMsg)
+
+	case "TM-Windows-DownloadDoc":
+		handleDownload(bot, update, "Windows")
 	}
 }
 
@@ -90,7 +104,7 @@ func handleTMMacModules(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 
 	switch module {
 
-	case "TM-Mac-Module00":
+	case "TM-Mac-Module0":
 		handleTMModuleList(bot, queryID, chatID, msgID,"10", "Mac", messages.EthWinListOfModulesMsg)
 	case "TM-Mac-Module10":
 		handleTMModule(bot, queryID, chatID, msgID,"20","Mac", messages.EthWindowsModule10)
@@ -109,27 +123,30 @@ func handleTMMacModules(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 
 	case "TM-Mac-Module60":
 		handleTMModule(bot, queryID, chatID, msgID, "70","Mac",  messages.EthWindowsModule60)
+
+	case "TM-Mac-Module70":
+		handleTMLastModule(bot, queryID, chatID, msgID, "60","Mac",messages.LastModuleMsg)
+
+	case "TM-Mac-DownloadDoc":
+		handleDownload(bot, update, "Mac")
 	}
 }
 
 func handleTMModuleList(Bot *tgbotapi.BotAPI, queryID string, chatID int64, msgID int, next, platform, txt string){
 	answeredCallback(Bot, queryID)
-	msg := tgbotapi.NewEditMessageText(chatID, msgID, txt)
-	btn := tgbotapi.EditMessageReplyMarkupConfig{}
+	msg := tgbotapi.NewMessage(chatID, txt)
+
 	if platform == "Linux"{
-		btn = tgbotapi.NewEditMessageReplyMarkup(chatID,
-			msgID, buttons.ModulesListButton("TM-Linux-Module"+next, constants.DownloadUrl ,constants.VideoUrl))
+		msg.ReplyMarkup = buttons.ModulesListButton("TM-Linux-Module"+next, "TM-Linux-DownloadDoc" ,constants.VideoUrl)
 	}
 	if platform == "Windows" {
-		btn = tgbotapi.NewEditMessageReplyMarkup(chatID,
-			msgID, buttons.ModulesListButton("TM-Windows-Module"+next, constants.DownloadUrl ,constants.VideoUrl))
+		msg.ReplyMarkup = buttons.ModulesListButton("TM-Windows-Module"+next, "TM-Windows-DownloadDoc" ,constants.VideoUrl)
 	}
 	if platform == "Mac" {
-		btn = tgbotapi.NewEditMessageReplyMarkup(chatID,
-			msgID, buttons.ModulesListButton("TM-Mac-Module"+next, constants.DownloadUrl ,constants.VideoUrl))
+		msg.ReplyMarkup = buttons.ModulesListButton("TM-Mac-Module"+next, "TM-Mac-DownloadDoc" ,constants.VideoUrl)
 	}
+	msg.ParseMode = tgbotapi.ModeMarkdown
 	Bot.Send(msg)
-	Bot.Send(btn)
 }
 
 func handleTMModule(Bot *tgbotapi.BotAPI, queryID string, chatID int64, msgID int, next, platform, txt string) {
@@ -154,7 +171,29 @@ func handleTMModule(Bot *tgbotapi.BotAPI, queryID string, chatID int64, msgID in
 		btns = tgbotapi.NewEditMessageReplyMarkup(chatID,
 			msgID, buttons.PersistentNavButtons("TM-Mac-Module"+prevstr, "TM-Mac-Module"+next, "TM-Mac-Module"+next))
 	}
+	msg.ParseMode = tgbotapi.ModeMarkdown
+	Bot.Send(msg)
+	Bot.Send(btns)
 
+}
+func handleTMLastModule(Bot *tgbotapi.BotAPI, queryID string, chatID int64, msgID int, prev, platform, txt string) {
+	answeredCallback(Bot, queryID)
+	msg := tgbotapi.NewEditMessageText(chatID, msgID, txt)
+	btns := tgbotapi.EditMessageReplyMarkupConfig{}
+
+	if platform == "Linux"{
+		btns = tgbotapi.NewEditMessageReplyMarkup(chatID,
+			msgID, buttons.LastModuleButtons("TM-Linux-Module"+prev))
+	}
+	if platform == "Windows" {
+		btns = tgbotapi.NewEditMessageReplyMarkup(chatID,
+			msgID, buttons.LastModuleButtons("TM-Windows-Module"+prev))
+	}
+	if platform == "Mac" {
+		btns = tgbotapi.NewEditMessageReplyMarkup(chatID,
+			msgID, buttons.LastModuleButtons("TM-Mac-Module"+prev))
+	}
+	msg.ParseMode = tgbotapi.ModeMarkdown
 	Bot.Send(msg)
 	Bot.Send(btns)
 

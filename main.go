@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	bot, err := tgbotapi.NewBotAPI("774002945:AAFC7i2k3uMamxLmoB-18fPW0oTWnP5fhOI")
+	bot, err := tgbotapi.NewBotAPI("774002945:AAEHc1Gc5WfMEVWz4oilLuENzbBL7mH006A")
 	if err != nil {
 		log.Fatalf("error in instantiating the bot: %v", err)
 	}
