@@ -1,4 +1,9 @@
 {
+  "LanguageButtons": [
+    {"English": "English"},
+    {"русский": "Russian"},
+    {"中文": "Chinese"}
+  ],
   "AppButtonsList": [
     {"💻Sentinel-Desktop": "Sentinel-Desktop"},
     {"📱Sentinel-Mobile": "Sentinel-Mobile"}
@@ -21,7 +26,8 @@
   ],
   "WindowsNetworkButtonList": [
     {"🏠Home": "Home"},
-    {"♢Ethereum": "ETH-Windows-Module0"}, {"Tendermint": "TM-Windows-Module0"}
+    {"♢Ethereum": "ETH-Windows-Module0"},
+    {"ØTendermint": "TM-Windows-Module0"}
   ],
   "MacNetworkButtonList": [
     {"🏠Home": "Home"},

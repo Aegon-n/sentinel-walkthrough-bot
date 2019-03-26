@@ -3,8 +3,10 @@ package handler
 import (
 	"fmt"
 	"github.com/Aegon-n/sentinel-bot/handler/buttons"
+	"github.com/Aegon-n/sentinel-bot/handler/dbo"
 	"github.com/Aegon-n/sentinel-bot/handler/messages/en_messages"
 	"gopkg.in/telegram-bot-api.v4"
+	"log"
 )
 
 func HandleGreet(Bot *tgbotapi.BotAPI, update *tgbotapi.Update )  {
@@ -56,7 +58,12 @@ func HandleCallbackQuery(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 
 	case "Exit":
 		handleExit(bot, update)
-
+	case "English":
+		handleLang(bot, update, "English")
+	case "Russian":
+		handleLang(bot, update, "Russian")
+	case "Chinese":
+		handleLang(bot, update, "Chinese")
 	default:
 		chatID := update.CallbackQuery.Message.Chat.ID
 		txt := "Not implemented"
@@ -159,5 +166,22 @@ func handleExit(Bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 	msg.ParseMode = tgbotapi.ModeMarkdown
 	Bot.Send(msg)
 }
+func HandleLocalization(Bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
+	chatID := update.Message.Chat.ID
+	lang := dbo.GetUserLang(update.Message.From.UserName)
+	msg := tgbotapi.NewMessage(chatID,en_messages.LangSelectMsg[lang])
+	msg.ReplyMarkup = buttons.GetButtons("LanguageButtons")
+	Bot.Send(msg)
+}
 
-
+func handleLang(Bot *tgbotapi.BotAPI, update *tgbotapi.Update, lang string) {
+	queryID := update.CallbackQuery.ID
+	answeredCallback(Bot, queryID)
+	err := dbo.AddUserLang(update.CallbackQuery.From.UserName, lang)
+	if err != nil {
+		log.Fatal("Error adding user language preferences..")
+	}
+	log.Println("Added user language preferences")
+	msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, fmt.Sprintf(en_messages.LangChosenMsg,lang))
+	Bot.Send(msg)
+}

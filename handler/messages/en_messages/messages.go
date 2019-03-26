@@ -1,6 +1,8 @@
 package en_messages
 
-const (
+var (
+	LangSelectMsg = map[string]string{"English":"Please choose your language from the list below: ","Russian":"Пожалуйста, выберите ваш язык из списка ниже"}
+	LangChosenMsg = "Successfully chosen %s Language"
 	SelectwalkthroughMsg = "Please select /walkthrough for sentinel App walkthrough "
 	WelcomeGreetMsg = "Hey %s , Welcome to sentinel App walkthrough session."
 	ExitMsg = "\n\n\n\tThank you for using sentinel app walkthrough session\t\n\n\n"

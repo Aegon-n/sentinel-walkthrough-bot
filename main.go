@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/Aegon-n/sentinel-bot/handler"
+	"github.com/Aegon-n/sentinel-bot/handler/dbo"
 	"github.com/Aegon-n/sentinel-bot/handler/modules"
 	"github.com/Aegon-n/sentinel-bot/tm-explorer"
 	"github.com/fatih/color"
@@ -17,7 +18,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("error in instantiating the bot: %v", err)
 	}
-
+	dbo.NewDB()
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
 
@@ -37,7 +38,8 @@ func main() {
 				handler.HandlerWalkThrough(bot, &update)
 			case "start":
 				handler.HandleGreet(bot, &update)
-
+			case "locale":
+				handler.HandleLocalization(bot, &update)
 			case "tm":
 				tmExplorer.HandleTMExplorer(bot, &update)
 
