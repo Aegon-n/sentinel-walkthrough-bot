@@ -92,7 +92,7 @@ func handleTMWindowsModules(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 		handleDownload(bot, update, "Windows","Doc")
 
 	case "TM-Windows-VideoSend":
-		handleDownload(bot, update, "Windows","Doc")
+		handleDownload(bot, update, "Windows","Video")
 
 	}
 
