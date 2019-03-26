@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/Aegon-n/sentinel-bot/handler"
 	"github.com/Aegon-n/sentinel-bot/handler/modules"
+	"github.com/Aegon-n/sentinel-bot/tm-explorer"
 	"github.com/fatih/color"
 	"strings"
 
@@ -30,13 +31,16 @@ func main() {
 	color.Green("%s", "started the bot successfully")
 
 	for update := range updates {
-
 		if update.Message != nil && update.Message.IsCommand() {
 			switch(update.Message.Command()) {
 			case "walkthrough":
 				handler.HandlerWalkThrough(bot, &update)
 			case "start":
 				handler.HandleGreet(bot, &update)
+
+			case "tm":
+				tmExplorer.HandleTMExplorer(bot, &update)
+
 			}
 		}
 

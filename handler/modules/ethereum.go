@@ -213,6 +213,7 @@ func handleDownload(Bot *tgbotapi.BotAPI, update *tgbotapi.Update, platform, typ
 		case "Mac":
 			msg = tgbotapi.NewMessage(chatID, constants.MacVideoUrl)
 		}
+		msg.ParseMode = tgbotapi.ModeHTML
 		Bot.Send(msg)
 	}
 }
