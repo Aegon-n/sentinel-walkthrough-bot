@@ -16,52 +16,52 @@
   ],
   "LinuxNetworkButtonList": [
     {"🏠Home": "Home"},
-    {"⧫Ethereum": "ETH-Linux-Module0"},
+    {"♢Ethereum": "ETH-Linux-Module0"},
     {"ØTendermint": "TM-Linux-Module0"}
   ],
   "WindowsNetworkButtonList": [
     {"🏠Home": "Home"},
-    {"⧫Ethereum": "ETH-Windows-Module0"}, {"Tendermint": "TM-Windows-Module0"}
+    {"♢Ethereum": "ETH-Windows-Module0"}, {"Tendermint": "TM-Windows-Module0"}
   ],
   "MacNetworkButtonList": [
     {"🏠Home": "Home"},
-    {"⧫Ethereum": "ETH-Mac-Module0"},
+    {"♢Ethereum": "ETH-Mac-Module0"},
     {"ØTendermint": "TM-Mac-Module0"}
   ],
   "LinuxEthModulesButtonList": [
     {"🏠Home": "Home"},
     {"📁View Chapters": "ETH-Linux-Module10"},
-    {"🗎Download Full Process PDF file": "ETH-Linux-DownloadDoc"},
+    {"📝Download PDF file": "ETH-Linux-DownloadDoc"},
     {"📹Watch Full Video": "ETH-Linux-VideoSend"}
   ],
   "LinuxTMModulesButtonList":[
     {"🏠Home": "Home"},
     {"📁View Chapters": "TM-Linux-Module10"},
-    {"🗎Download Full Process PDF file": "TM-Linux-DownloadDoc"},
+    {"📝Download PDF file": "TM-Linux-DownloadDoc"},
     {"📹Watch Full Video": "TM-Linux-VideoSend"}
   ],
   "WindowsEthModulesButtonList":[
     {"🏠Home": "Home"},
     {"📁View Chapters": "ETH-Windows-Module10"},
-    {"🗎Download Full Process PDF file": "ETH-Windows-DownloadDoc"},
+    {"📝Download PDF file": "ETH-Windows-DownloadDoc"},
     {"📹Watch Full Video": "ETH-Windows-VideoSend"}
   ],
   "WindowsTMModulesButtonList":[
     {"🏠Home": "Home"},
     {"📁View Chapters": "TM-Windows-Module10"},
-    {"🗎Download Full Process PDF file": "TM-Windows-DownloadDoc"},
+    {"📝Download PDF file": "TM-Windows-DownloadDoc"},
     {"📹Watch Full Video": "TM-Windows-VideoSend"}
   ],
   "MacEthModulesButtonList":[
     {"🏠Home": "Home"},
     {"📁View Chapters": "ETH-Mac-Module10"},
-    {"🗎Download Full Process PDF file": "ETH-Mac-DownloadDoc"},
+    {"📝Download PDF file": "ETH-Mac-DownloadDoc"},
     {"📹Watch Full Video": "ETH-Mac-VideoSend"}
   ],
   "MacTMModulesButtonList":[
     {"🏠Home": "Home"},
     {"📁View Chapters": "TM-Mac-Module10"},
-    {"🗎Download Full Process PDF file": "TM-Mac-DownloadDoc"},
+    {"📝Download PDF file": "TM-Mac-DownloadDoc"},
     {"📹Watch Full Video": "TM-Mac-VideoSend"}
   ],
   "AndroidModulesButtonList": [
@@ -73,7 +73,7 @@
   "IOSModulesButtonList": [
     {"🏠Home": "Home"},
     {"📁View Chapters": "IOS-Module10"},
-    {"🗎Download Full Process PDF file": "IOS-DownloadDoc"},
+    {"📝Download PDF file": "IOS-DownloadDoc"},
     {"📹Watch Full Video": "IOS-VideoSend"}
   ]
 }
