@@ -16,8 +16,8 @@
   ],
   "MobileOSButtonsList": [
     {"🏠Home": "Home"},
-    {"Android": "Android"},
-    {"🍎IOS": "IOS"}
+    {"Android": "Mobile-Android-Module0"},
+    {"🍎IOS": "Mobile-IOS-Module0"}
   ],
   "LinuxNetworkButtonList": [
     {"🏠Home": "Home"},
@@ -72,14 +72,14 @@
   ],
   "AndroidModulesButtonList": [
     {"🏠Home": "Home"},
-    {"📁View Chapters": "Android-Module10"},
-    {"🗎Download Full Process PDF file": "Android-DownloadDoc"},
-    {"📹Watch Full Video": "Android-VideoSend"}
+    {"📁View Chapters": "Mobile-Android-Module10"},
+    {"🗎Download Full Process PDF file": "Mobile-Android-DownloadDoc"},
+    {"📹Watch Full Video": "Mobile-Android-VideoSend"}
   ],
   "IOSModulesButtonList": [
     {"🏠Home": "Home"},
-    {"📁View Chapters": "IOS-Module10"},
-    {"📝Download PDF file": "IOS-DownloadDoc"},
-    {"📹Watch Full Video": "IOS-VideoSend"}
+    {"📁View Chapters": "Mobile-IOS-Module10"},
+    {"📝Download PDF file": "Mobile-IOS-DownloadDoc"},
+    {"📹Watch Full Video": "Mobile-IOS-VideoSend"}
   ]
 }

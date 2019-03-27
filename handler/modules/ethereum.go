@@ -30,7 +30,7 @@ func handleETHWindowsModules(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 	switch module {
 
 	case "ETH-Windows-Module0":
-		handleETHModuleList(bot, queryID, chatID, "10","Windows", en_messages.EthWinListOfModulesMsg)
+		handleETHModuleList(bot, queryID, chatID,"Windows", en_messages.EthWinListOfModulesMsg)
 
 	case "ETH-Windows-Module10":
 		//log.Println(en_messages.NewEthWindowsModule10)
@@ -73,7 +73,7 @@ func handleETHLinuxModules(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 	switch module {
 
 	case "ETH-Linux-Module0":
-		handleETHModuleList(bot, queryID, chatID, "10","Linux", en_messages.EthWinListOfModulesMsg)
+		handleETHModuleList(bot, queryID, chatID,"Linux", en_messages.EthWinListOfModulesMsg)
 
 	case "ETH-Linux-Module10":
 		log.Println("here")
@@ -111,7 +111,7 @@ func handleETHMacModules(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 	switch module {
 
 	case "ETH-Mac-Module0":
-		handleETHModuleList(bot, queryID, chatID, "10","Mac", en_messages.EthWinListOfModulesMsg)
+		handleETHModuleList(bot, queryID, chatID,"Mac", en_messages.EthWinListOfModulesMsg)
 
 	case "ETH-Mac-Module10":
 		handleETHModule(bot, queryID, chatID, msgID,"20","Mac", en_messages.EthWindowsModule10)
@@ -138,7 +138,7 @@ func handleETHMacModules(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 		handleDownload(bot, update, "Mac","Video")
 	}
 }
-func handleETHModuleList(Bot *tgbotapi.BotAPI, queryID string, chatID int64, next, platform, txt string){
+func handleETHModuleList(Bot *tgbotapi.BotAPI, queryID string, chatID int64, platform, txt string){
 	answeredCallback(Bot, queryID)
 	msg := tgbotapi.NewMessage(chatID, txt)
 
@@ -195,16 +195,18 @@ func handleDownload(Bot *tgbotapi.BotAPI, update *tgbotapi.Update, platform, typ
 		res := tgbotapi.DocumentConfig{}
 		switch platform {
 		case "Linux":
-			res = tgbotapi.NewDocumentShare(chatID,constants.LinuxPdfUrl)
+			res = tgbotapi.NewDocumentShare(chatID, constants.LinuxPdfUrl)
 		case "Windows":
-			res = tgbotapi.NewDocumentShare(chatID,constants.WindowsPdfUrl)
+			res = tgbotapi.NewDocumentShare(chatID, constants.WindowsPdfUrl)
 		case "Mac":
-			res = tgbotapi.NewDocumentShare(chatID,constants.MacPdfUrl)
+			res = tgbotapi.NewDocumentShare(chatID, constants.MacPdfUrl)
+		case "Android":
+			res = tgbotapi.NewDocumentShare(chatID, constants.AndroidPdfUrl)
 		}
 		Bot.Send(res)
 	}
 	if typ == "Video" {
-		msg := tgbotapi.NewMessage(chatID,constants.VideoUrl)
+		msg := tgbotapi.MessageConfig{}
 		switch platform {
 		case "Linux":
 			msg = tgbotapi.NewMessage(chatID, constants.LinuxVideoUrl)
@@ -212,6 +214,8 @@ func handleDownload(Bot *tgbotapi.BotAPI, update *tgbotapi.Update, platform, typ
 			msg = tgbotapi.NewMessage(chatID, constants.WindowsVideoUrl)
 		case "Mac":
 			msg = tgbotapi.NewMessage(chatID, constants.MacVideoUrl)
+		case "Android":
+			msg = tgbotapi.NewMessage(chatID, constants.AndroidVideoUrl)
 		}
 		msg.ParseMode = tgbotapi.ModeHTML
 		Bot.Send(msg)

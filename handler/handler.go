@@ -41,12 +41,6 @@ func HandleCallbackQuery(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 	case "Sentinel-Mobile":
 		handleAppVersion(bot, update, "Mobile")
 
-	case "Android":
-		handleOs(bot, update, "Android")
-
-	case "IOS":
-		handleOs(bot, update, "IOS")
-
 	case "Linux":
 		handleOs(bot, update, "Linux")
 
@@ -118,20 +112,6 @@ func handleOs(Bot *tgbotapi.BotAPI, update *tgbotapi.Update, os string){
 	msgID := update.CallbackQuery.Message.MessageID
 	msg := tgbotapi.EditMessageTextConfig{}
 	btns := tgbotapi.EditMessageReplyMarkupConfig{}
-	if os == "Android"{
-
-		msg = tgbotapi.NewEditMessageText(chatID, msgID, en_messages.MobileListOfMOdulesMsg)
-		btns = tgbotapi.NewEditMessageReplyMarkup(chatID, msgID,
-			buttons.GetButtons("AndroidModulesButtonList"))
-
-	}
-	if os == "IOS" {
-
-		msg = tgbotapi.NewEditMessageText(chatID, msgID, en_messages.MobileListOfMOdulesMsg)
-		btns = tgbotapi.NewEditMessageReplyMarkup(chatID, msgID,
-			buttons.GetButtons("IOSModulesButtonList"))
-
-	}
 	if os == "Linux" {
 
 		msg = tgbotapi.NewEditMessageText(chatID, msgID, en_messages.LinuxNetworkSelectMsg)

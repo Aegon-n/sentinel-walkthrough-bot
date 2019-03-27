@@ -55,6 +55,8 @@ func main() {
 				modules.HandleEthModules(bot, &update, strings.Split(update.CallbackQuery.Data,"-")[1])
 			case "TM":
 				modules.HandleTMModules(bot, &update, strings.Split(update.CallbackQuery.Data,"-")[1])
+			case "Mobile":
+				modules.HandleMobileModules(bot, &update, strings.Split(update.CallbackQuery.Data,"-")[1])
 			default:
 				handler.HandleCallbackQuery(bot, &update)
 			}
