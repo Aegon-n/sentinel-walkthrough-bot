@@ -5,6 +5,7 @@ import (
 	"github.com/Aegon-n/sentinel-bot/handler/buttons"
 	"github.com/Aegon-n/sentinel-bot/handler/dbo"
 	"github.com/Aegon-n/sentinel-bot/handler/messages/en_messages"
+	"github.com/Aegon-n/sentinel-bot/handler/updates"
 	"gopkg.in/telegram-bot-api.v4"
 	"log"
 )
@@ -28,6 +29,18 @@ func HandlerWalkThrough(Bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 	msg.ParseMode = tgbotapi.ModeMarkdown
 	Bot.Send(msg)
 }
+
+func HandleUpdates(Bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
+
+	username := update.Message.From.UserName
+	chatID := update.Message.Chat.ID
+	txt := fmt.Sprintf(en_messages.WelcomeGreetMsg, username)+"\n"+"select below blogs for getting latest updates"
+	msg := tgbotapi.NewMessage(chatID,txt)
+	msg.ReplyMarkup = buttons.GetButtons("UpdatesButtonList")
+	msg.ParseMode = tgbotapi.ModeMarkdown
+	Bot.Send(msg)
+}
+
 func HandleCallbackQuery(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 
 	switch update.CallbackQuery.Data {
@@ -52,12 +65,29 @@ func HandleCallbackQuery(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 
 	case "Exit":
 		handleExit(bot, update)
+
 	case "English":
 		handleLang(bot, update, "English")
+
 	case "Russian":
 		handleLang(bot, update, "Russian")
+
 	case "Chinese":
 		handleLang(bot, update, "Chinese")
+
+
+	case "Medium":
+		updates.MediumUpdates(bot, update)
+
+
+	case "Reddit":
+		updates.Reddit_updates(bot, update)
+
+
+	case "Twitter":
+		updates.Twitter_updates(bot, update)
+
+
 	default:
 		chatID := update.CallbackQuery.Message.Chat.ID
 		txt := "Not implemented"

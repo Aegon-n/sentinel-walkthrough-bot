@@ -30,6 +30,7 @@ type Buttons struct {
 	MacTMModulesButtonList		[]map[string]string		`json: "MacTMModulesButtonList"`
 	AndroidModulesButtonList	[]map[string]string		`json: "AndroidModulesButtonList"`
 	IOSModulesButtonList		[]map[string]string		`json: "IOSModulesButtonList"`
+	UpdatesButtonList           []map[string]string     `json:"UpdatesButtonList"`
 
 }
 
@@ -128,6 +129,9 @@ func GetButtons(buttontype string) tgbotapi.InlineKeyboardMarkup {
 	if buttontype == "LanguageButtons" {
 		return genModuleButtonList(ButtonList.LanguageButtons)
 
+	}
+	if buttontype == "UpdatesButtonList"{
+		return genBtnRow(ButtonList.UpdatesButtonList)
 	}
 	return tgbotapi.InlineKeyboardMarkup{InlineKeyboard:list}
 }

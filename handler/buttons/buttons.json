@@ -81,5 +81,11 @@
     {"📁View Chapters": "Mobile-IOS-Module10"},
     {"📝Download PDF file": "Mobile-IOS-DownloadDoc"},
     {"📹Watch Full Video": "Mobile-IOS-VideoSend"}
+  ],
+
+  "UpdatesButtonList": [
+    {"Medium": "Medium"},
+    {"Twitter": "Twitter"},
+    {"Reddit": "Reddit"}
   ]
 }

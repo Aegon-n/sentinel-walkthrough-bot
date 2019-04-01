@@ -25,7 +25,8 @@ func AddUserLang(username, lang string) error {
 func GetUserLang(username string) string {
 	lang,err := ldb.Get([]byte(username+"lang"),nil)
 	if err != nil {
-		log.Fatal("user not found")
+		log.Println("user not found")
+		return "English"
 	}
 	return string(lang)
 }

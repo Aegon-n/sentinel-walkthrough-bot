@@ -3,7 +3,7 @@ package en_messages
 var (
 	LangSelectMsg = map[string]string{"English":"Please choose your language from the list below: ","Russian":"Пожалуйста, выберите ваш язык из списка ниже"}
 	LangChosenMsg = "Successfully chosen %s Language"
-	SelectwalkthroughMsg = "Please select /walkthrough for sentinel App walkthrough "
+	SelectwalkthroughMsg = "Please select \n 1: /walkthrough => for sentinel App walkthrough \n 2: /updates => for updates on social media \n 3: /tm for tendermint explorer \n 4: /locale => to choose local language "
 	WelcomeGreetMsg = "Hey %s , Welcome to sentinel App walkthrough session."
 	ExitMsg = "\n\n\n\tThank you for using sentinel app walkthrough session\t\n\n\n"
 	AppSelectMsg = "Choose App from the list below: "
