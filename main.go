@@ -47,6 +47,9 @@ func main() {
 				handler.HandlerWalkThrough(bot, &update)
 			case "start":
 				handler.HandleGreet(bot, &update)
+			case "help":
+				log.Println("in help")
+				handler.HandleHelp(bot, &update)
 			/*case "locale":
 				handler.HandleLocalization(bot, &update)*/
 			case "tm":

@@ -3,7 +3,7 @@ package en_messages
 var (
 	LangSelectMsg = map[string]string{"English":"Please choose your language from the list below: ","Russian":"Пожалуйста, выберите ваш язык из списка ниже"}
 	LangChosenMsg = "Successfully chosen %s Language"
-	SelectwalkthroughMsg = "Please select \n 1: /walkthrough => for sentinel App walkthrough \n 2: /updates => for updates on social media \n 3: /tm for tendermint explorer \n 4: /locale => to choose local language "
+	SelectwalkthroughMsg = "Please select /help to know the available commands for this bot"
 	WelcomeGreetMsg = "Hey %s , Welcome to sentinel-bot."
 	ExitMsg = "\n\n\n\tThank you for using sentinel app walkthrough session\t\n\n\n"
 	AppSelectMsg = "Choose App from the list below: "
@@ -15,7 +15,7 @@ var (
 	MacNetworkSelectMsg = "*Sentinel->Desktop->Mac*\n\nChoose a network from the list below: "
 	AndroidNetworkSelectMsg = "*Sentinel->Desktop->Android*\n\nChoose a network from the list below: "
 	IOSNetworkSelectMsg = "*Sentinel->Desktop->IOS*\n\nChoose a network from the list below: "
-
+	SelectUpdateBlog = "select a button below for getting latest updates"
 	EthWinListOfModulesMsg = `*Here is the list of Modules for Ethereum TestNet*
 
 	1. Downloading & installation of sentinel-Desktop Application
@@ -256,5 +256,19 @@ Ethereum Wallet Attached: <b>%s</b>`
 	NoEthNodes        = "no nodes available right now. please check again later or try our Tendermint network"
 	NoTMNodes         = "no nodes available right now. please check again later or try our Ethereum network"
 	InvalidOption     = "invalid option"
+	HelpMsg           = `
+		<b>here is the available commands list and their usage</b>
+
+		1. /help - to get help about commands
+		2. /start - to start sentinel bot
+		3. /walkthrough - to get sentinel app walkthrough
+		4. /tm {latestblock| validators} - to explore the sentinel tendermint testnet
+		5. /sps - to get sentinel proxy service for telegram
+		6. /restart_sps -  to restart the process of sps
+		7. /sps_info - to get details about sps node
+		8. /sps_wallet - to know attached wallet address
+		9. /mynode - to get list of assigned sps proxy nodes
+		10. /updates - to get updates about sentinel Network
+	`
 
 )

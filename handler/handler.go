@@ -31,22 +31,16 @@ func HandlerWalkThrough(Bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 }
 
 func HandleUpdates(Bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
-
-	username := update.Message.From.UserName
 	chatID := update.Message.Chat.ID
-	txt := fmt.Sprintf(en_messages.WelcomeGreetMsg, username)+"\n"+"select below blogs for getting latest updates"
-	msg := tgbotapi.NewMessage(chatID,txt)
+	msg := tgbotapi.NewMessage(chatID, en_messages.SelectUpdateBlog)
 	msg.ReplyMarkup = buttons.GetButtons("UpdatesButtonList")
 	msg.ParseMode = tgbotapi.ModeMarkdown
 	Bot.Send(msg)
 }
-func HandleSocks5Proxy(Bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
-	username := update.Message.From.UserName
+func HandleHelp(Bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 	chatID := update.Message.Chat.ID
-	txt := fmt.Sprintf(en_messages.Socks5GreetingMsg, username)
-	msg := tgbotapi.NewMessage(chatID,txt)
-	msg.ReplyMarkup = buttons.GetButtons("SocksNetworkButtonList")
-	msg.ParseMode = tgbotapi.ModeMarkdown
+	msg := tgbotapi.NewMessage(chatID,en_messages.HelpMsg)
+	msg.ParseMode = tgbotapi.ModeHTML
 	Bot.Send(msg)
 }
 func HandleCallbackQuery(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
