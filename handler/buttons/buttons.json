@@ -87,5 +87,19 @@
     {"Medium": "Medium"},
     {"Twitter": "Twitter"},
     {"Reddit": "Reddit"}
+  ],
+  "SocksNetworkButtonList": [
+    {"Rinkeby@Etheeum":  "Socks5-Proxy-Eth"},
+    {"SENTTEST@Tendermint":  "Socks5-Proxy-TM"}
+  ],
+  "BandwidthSelect": [
+    {"10 Days": "Socks5-Proxy-10 Days"},
+    {"30 Days": "Socks5-Proxy-30 Days"},
+    {"90 Days": "Socks5-Proxy-90 Days"}
+  ],
+  "NodesList": [
+    {"1": "Socks5-Proxy-1"},
+    {"2": "Socks5-Proxy-2"},
+    {"3": "Socks5-Proxy-3"}
   ]
 }

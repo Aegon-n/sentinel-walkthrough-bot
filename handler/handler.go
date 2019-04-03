@@ -40,7 +40,15 @@ func HandleUpdates(Bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 	msg.ParseMode = tgbotapi.ModeMarkdown
 	Bot.Send(msg)
 }
-
+func HandleSocks5Proxy(Bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
+	username := update.Message.From.UserName
+	chatID := update.Message.Chat.ID
+	txt := fmt.Sprintf(en_messages.Socks5GreetingMsg, username)
+	msg := tgbotapi.NewMessage(chatID,txt)
+	msg.ReplyMarkup = buttons.GetButtons("SocksNetworkButtonList")
+	msg.ParseMode = tgbotapi.ModeMarkdown
+	Bot.Send(msg)
+}
 func HandleCallbackQuery(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 
 	switch update.CallbackQuery.Data {
@@ -86,7 +94,6 @@ func HandleCallbackQuery(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 
 	case "Twitter":
 		updates.Twitter_updates(bot, update)
-
 
 	default:
 		chatID := update.CallbackQuery.Message.Chat.ID

@@ -1,12 +1,15 @@
 package main
 
 import (
-	"github.com/fatih/color"
 	"github.com/Aegon-n/sentinel-bot/handler"
-	"github.com/Aegon-n/sentinel-bot/handler/dbo"
 	"github.com/Aegon-n/sentinel-bot/handler/modules"
 	updates2 "github.com/Aegon-n/sentinel-bot/handler/updates"
+	"github.com/Aegon-n/sentinel-bot/socks5-proxy/dbo"
+	"github.com/Aegon-n/sentinel-bot/socks5-proxy/handlers"
+	"github.com/Aegon-n/sentinel-bot/socks5-proxy/helpers"
 	"github.com/Aegon-n/sentinel-bot/tm-explorer"
+	"github.com/fatih/color"
+	"github.com/than-os/sentinel-bot/constants"
 	"strings"
 
 	"gopkg.in/telegram-bot-api.v4"
@@ -15,11 +18,11 @@ import (
 )
 
 func main() {
-	bot, err := tgbotapi.NewBotAPI("828946943:AAF7En0tUxYR6Mw2NfsPKmGzvzVnh1wlv3M")
+	bot, err := tgbotapi.NewBotAPI("774002945:AAEHc1Gc5WfMEVWz4oilLuENzbBL7mH006A")
 	if err != nil {
 		log.Fatalf("error in instantiating the bot: %v", err)
 	}
-	dbo.NewDB()
+
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
 
@@ -29,23 +32,41 @@ func main() {
 		color.Red("error while receiving messages: %s", err)
 		return
 	}
+	color.Green("started %s successfully", bot.Self.UserName)
 
-	color.Green("%s", "started the bot successfully")
+	db, nodes, err := dbo.NewDB()
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	for update := range updates {
+
 		if update.Message != nil && update.Message.IsCommand() {
 			switch(update.Message.Command()) {
 			case "walkthrough":
 				handler.HandlerWalkThrough(bot, &update)
 			case "start":
 				handler.HandleGreet(bot, &update)
-			case "locale":
-				handler.HandleLocalization(bot, &update)
+			/*case "locale":
+				handler.HandleLocalization(bot, &update)*/
 			case "tm":
 				tmExplorer.HandleTMExplorer(bot, &update)
 
 			case "updates":
 				handler.HandleUpdates(bot, &update)
+
+			case "sps":
+				handlers.HandleSocks5Proxy(bot, update, db)
+
+			case "mynode":
+				handlers.ShowMyNode(bot, update, db)
+
+			case "restart_sps":
+				handlers.Restart(bot, update, db)
+			case "sps_info":
+				handlers.ShowMyInfo(bot, update, db)
+			case "sps_wallet":
+				handlers.ShowEthWallet(bot, update, db)
 			}
 		}
 
@@ -71,13 +92,21 @@ func main() {
 					updates2.Reddit_updates(bot, &update)
 
 			case "Twitter":
-
 				updates2.Twitter_updates(bot, &update)
+
+			case "Socks5":
+				handlers.HandleSocks5InlineButtons(bot, update, db, *nodes)
 
 			default:
 				handler.HandleCallbackQuery(bot, &update)
 			}
 		}
+		if update.Message != nil && !update.Message.IsCommand() && len(update.Message.Text)>0  {
+			handlers.Socks5InputHandler(bot, update, db, *nodes)
+			TMState := helpers.GetState(bot, update, constants.TMState, db)
+			color.Green("******* APP STATE = %d *******", TMState)
+		}
+
 	}
 
 }

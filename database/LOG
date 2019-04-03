@@ -364,3 +364,12 @@
 10:42:13.975521 db@janitor removing journal-21
 10:42:13.975645 db@janitor removing manifest-22
 10:42:13.975890 db@open done T·215.451747ms
+=============== Apr 2, 2019 (IST) ===============
+12:01:27.904610 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+12:01:27.944984 version@stat F·[2 1] S·441B[289B 152B] Sc·[0.50 0.00]
+12:01:27.945054 db@open opening
+12:01:27.945305 journal@recovery F·1
+12:01:27.954208 journal@recovery recovering @83
+12:01:27.974875 version@stat F·[2 1] S·441B[289B 152B] Sc·[0.50 0.00]
+12:01:28.222819 db@janitor F·5 G·0
+12:01:28.223022 db@open done T·277.917991ms

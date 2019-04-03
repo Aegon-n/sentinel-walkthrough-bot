@@ -30,8 +30,10 @@ type Buttons struct {
 	MacTMModulesButtonList		[]map[string]string		`json: "MacTMModulesButtonList"`
 	AndroidModulesButtonList	[]map[string]string		`json: "AndroidModulesButtonList"`
 	IOSModulesButtonList		[]map[string]string		`json: "IOSModulesButtonList"`
-	UpdatesButtonList           []map[string]string     `json:"UpdatesButtonList"`
-
+	UpdatesButtonList           []map[string]string     `json: "UpdatesButtonList"`
+	SocksNetworkButtonList		[]map[string]string		`json: "SocksNetworkButtonList"`
+	BandwidthSelect				[]map[string]string		`json: "BandwidthSelect"`
+	NodesList					[]map[string]string		`json: "NodesList"`
 }
 
 func init() {
@@ -132,6 +134,15 @@ func GetButtons(buttontype string) tgbotapi.InlineKeyboardMarkup {
 	}
 	if buttontype == "UpdatesButtonList"{
 		return genBtnRow(ButtonList.UpdatesButtonList)
+	}
+	if buttontype == "SocksNetworkButtonList" {
+		return genBtnRow(ButtonList.SocksNetworkButtonList)
+	}
+	if buttontype == "BandwidthSelect" {
+		return  genBtnRow(ButtonList.BandwidthSelect)
+	}
+	if buttontype == "NodesList" {
+		return genBtnRow(ButtonList.NodesList)
 	}
 	return tgbotapi.InlineKeyboardMarkup{InlineKeyboard:list}
 }

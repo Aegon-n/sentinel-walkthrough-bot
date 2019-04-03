@@ -4,7 +4,7 @@ var (
 	LangSelectMsg = map[string]string{"English":"Please choose your language from the list below: ","Russian":"Пожалуйста, выберите ваш язык из списка ниже"}
 	LangChosenMsg = "Successfully chosen %s Language"
 	SelectwalkthroughMsg = "Please select \n 1: /walkthrough => for sentinel App walkthrough \n 2: /updates => for updates on social media \n 3: /tm for tendermint explorer \n 4: /locale => to choose local language "
-	WelcomeGreetMsg = "Hey %s , Welcome to sentinel App walkthrough session."
+	WelcomeGreetMsg = "Hey %s , Welcome to sentinel-bot."
 	ExitMsg = "\n\n\n\tThank you for using sentinel app walkthrough session\t\n\n\n"
 	AppSelectMsg = "Choose App from the list below: "
 	DesktopOSSelectMsg = "*Sentinel->Desktop*\n\nChoose OS from the list below: "
@@ -227,5 +227,34 @@ var (
 		*step3*: Check session details in the sessions section
 
 		`
-	LastModuleMsg = `                    *All Chapters Completed*                 `
+	LastModuleMsg = `                    *All Chapters Completed*`
+
+
+	Socks5GreetingMsg = `Hey %s, welcome to the Sentinel Socks5 Proxy Bot for Telegram.
+			Please select a blockchain network for payments to this bot.`
+
+	Socks5EthereumMsg = "Ethereum is currently not available Please choose Tendermint Network"
+
+	NodeAttachedAlready = "you already have a node assigned to your username. Please use /mynode to access it"
+
+	CheckWalletOptionsError = "error while fetching user wallet address. in case you have not attached your wallet address, please share your wallet address again."
+	Success                 = "Congratulations!! please click the button below to connect to the sentinel dVPN node and next time use /mynode to access this node"
+	AskToSelectANode        = `Please select a node ID from the list below and reply in the format of
+1 for Node 1, 2 for Node 2 and so on...`
+	UserInfo = `Bandwidth Duration Left: <b>%0.0f days</b>
+Ethereum Wallet Attached: <b>%s</b>`
+	AskForEthWallet   = "Please share your ethereum wallet address that you want to use for transactions to this bot"
+	AskForPayment     = "please send %s $SENTS to the following address and submit the transaction hash here: "
+	AskForTMWallet    = "Please share your tendermint wallet address that you want to use for transactions to this bot"
+	AskForBW          = "Please select how much bandwidth you need by clicking on one of the buttons below: "
+	BWError           = "error while storing bandwidth price"
+	NodeList          = "%s.) Location: %s\n User: %s \n Node wallet: %s"
+	BWPeriods         = "you have opted for %s of unlimited bandwidth"
+	Error             = "could not read user info"
+	BWAttachmentError = "error occurred while adding user details for bandwidth requirements"
+	ConnectMessage    = "please click on the button below to connect to Sentinel's SOCKS5 Proxy"
+	NoEthNodes        = "no nodes available right now. please check again later or try our Tendermint network"
+	NoTMNodes         = "no nodes available right now. please check again later or try our Ethereum network"
+	InvalidOption     = "invalid option"
+
 )
