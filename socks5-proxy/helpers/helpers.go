@@ -96,9 +96,9 @@ func GetTelegramUsername(username string) string {
 	return ""
 }
 
-func GetNodes() (models.Nodes, error) {
-	var body []models.TONNode
-	var N models.Nodes
+func GetNodes() ([]models.TONNode, error) {
+	var body models.Nodes
+	var N []models.TONNode
 	resp, err := http.Get(constants.SentinelTONURL)
 	if err != nil {
 		return N, err
@@ -107,17 +107,8 @@ func GetNodes() (models.Nodes, error) {
 		return N, err
 	}
 	defer resp.Body.Close()
-
-	for _, node := range body {
-		if node.Type == constants.NodeType {
-			N.TMNodes = append(N.TMNodes, node)
-		} else {
-			N.EthNodes = append(N.EthNodes, node)
-		}
-	}
-	return N, err
+	return body.NodesList, err
 }
-
 func SetState(b *tgbotapi.BotAPI, u tgbotapi.Update, network string, state int8, db ldb.BotDB) {
 	username := ""
 	if u.CallbackQuery != nil {

@@ -10,6 +10,7 @@ import (
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/dbo/ldb"
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/dbo/models"
 	"io/ioutil"
+	"log"
 	"math"
 	"math/rand"
 	"net/http"
@@ -59,12 +60,12 @@ func StrongPassword(n int) string {
 	return string(b)
 }
 
-func AddUser(ipAddr, userName, passwordForNetwork string,
-	db ldb.BotDB) error {
+func AddUser(ipAddr, userName, passwordForNetwork string, db ldb.BotDB) error {
 	var res models.UserResp
 
 	err := DeleteUser(userName, ipAddr)
 	if err != nil {
+		log.Println("hereinside")
 		return err
 	}
 
@@ -72,16 +73,19 @@ func AddUser(ipAddr, userName, passwordForNetwork string,
 	uri := fmt.Sprintf(constants.NodeBaseUrl, ipAddr)
 	err = db.Insert(passwordForNetwork, userName, password)
 	if err != nil {
+		log.Println("here inside 2")
 		return err
 	}
 
 	req := models.AddUser{Username: userName, Password: password}
 	b, e := json.Marshal(req)
 	if e != nil {
+		log.Println("hereinside3")
 		return e
 	}
 	resp, err := http.Post(uri, "application/json", bytes.NewBuffer(b))
 	if err != nil {
+		log.Println("hereinside4")
 		return err
 	}
 
@@ -159,24 +163,24 @@ func RemoveUserJob() {
 	s.Every(3).Hours().Do(RemoveExpiredUsers)
 	<-s.Start()
 }
-/*func UpdateNodesListJob(db *ldb.BotDB){
+func UpdateNodesListJob(nodes *[]models.TONNode){
 	s := gocron.NewScheduler()
-	s.Every(30).Second().Do(UpdateNodesList,db)
+	s.Every(30).Second().Do(UpdateNodesList,nodes)
 }
 
-func UpdateNodesList(db *ldb.BotDB){
-	var body Nodes
+func UpdateNodesList(nodes *[]models.TONNode){
+	var NodesResp models.Nodes
 	// var N Nodes
 	resp, err := http.Get("http://35.154.179.57:8000/nodes?type=socks5&status=up")
 	fmt.Println(resp)
 	if err != nil {
 		fmt.Print("error1")
 	}
-	if err := json.NewDecoder(resp.Body).Decode(&body); err != nil {
+	if err := json.NewDecoder(resp.Body).Decode(&NodesResp); err != nil {
 		fmt.Print(err)
 	}
 	defer resp.Body.Close()
 
-	for _,node
+	*nodes = NodesResp.NodesList
 }
-*/
+

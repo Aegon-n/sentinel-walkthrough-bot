@@ -36,10 +36,12 @@ func main() {
 	}
 	color.Green("started %s successfully", bot.Self.UserName)
 
-	db, nodes, err := dbo.NewDB()
+	db, err := dbo.NewDB()
 	if err != nil {
 		log.Fatal(err)
 	}
+	//nodes, err := helpers.GetNodes()
+	//go proxy.UpdateNodesListJob(&nodes)
 
 	for update := range updates {
 
@@ -100,14 +102,14 @@ func main() {
 				updates2.Twitter_updates(bot, &update)
 
 			case "Socks5":
-				handlers.HandleSocks5InlineButtons(bot, update, db, *nodes)
+				handlers.HandleSocks5InlineButtons(bot, update, db)
 
 			default:
 				handler.HandleCallbackQuery(bot, &update, db)
 			}
 		}
 		if update.Message != nil && !update.Message.IsCommand() && len(update.Message.Text)>0  {
-			handlers.Socks5InputHandler(bot, update, db, *nodes)
+			handlers.Socks5InputHandler(bot, update, db)
 			TMState := helpers.GetState(bot, update, constants.TMState, db)
 			color.Green("******* APP STATE = %d *******", TMState)
 		}

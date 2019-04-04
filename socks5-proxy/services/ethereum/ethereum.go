@@ -78,16 +78,10 @@ func HandleEthBW(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []mo
 
 		helpers.Send(b, u, templates.AskToSelectANode)
 		for idx, node := range nodes {
-			geo, err := proxy.GetGeoLocation(node.IPAddr)
-
-			if err != nil {
-				helpers.Send(b, u, err.Error())
-				return
-			}
-			msg := fmt.Sprintf(templates.NodeList, strconv.Itoa(idx+1), geo.Country, node.Username, node.WalletAddress)
+			msg := fmt.Sprintf(templates.NodeList, strconv.Itoa(idx+1), node.Location.City,node.Location.Country,
+				node.NetSpeed.Download,node.IP, node.NodeType, node.AccountAddress)
 			helpers.Send(b, u, msg)
 		}
-
 		return
 	}
 
@@ -106,7 +100,7 @@ func HandleEthBW(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []mo
 		}
 	}
 
-	uri := fmt.Sprintf(constants.ProxyURL, n.IPAddr, strconv.Itoa(n.Port), n.Username, n.Password)
+	uri := fmt.Sprintf(constants.ProxyURL, n.IP, strconv.Itoa(n.APIPort), "sentinel", "Password")
 	buttonOptions := []models.InlineButtonOptions{
 		{Label: "Sentinel Proxy Node", URL: uri},
 	}
@@ -159,8 +153,8 @@ func HandleTxHash(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []m
 
 	i := strToInt - 1
 	if FindTxByHash(u.Message.Text, UserWallet.Value, u, db) {
-		uri := fmt.Sprintf(constants.ProxyURL, nodes[i].IPAddr, strconv.Itoa(nodes[i].Port), nodes[i].Username, nodes[i].Password)
-		err := db.Insert(constants.IPAddr, u.Message.From.UserName, nodes[i].IPAddr)
+		uri := fmt.Sprintf(constants.ProxyURL, nodes[i].IP, strconv.Itoa(nodes[i].APIPort), "Sentinel", "Password")
+		err := db.Insert(constants.IPAddr, u.Message.From.UserName, nodes[i].IP)
 		if err != nil {
 			helpers.Send(b, u, templates.Error)
 			return
@@ -180,7 +174,7 @@ func HandleTxHash(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []m
 		helpers.Send(b, u, "creating new user for "+u.Message.From.UserName+"...")
 
 		node := nodes[i]
-		err = proxy.AddUser(node.IPAddr, u.Message.From.UserName, constants.Password, db)
+		err = proxy.AddUser(node.IP, u.Message.From.UserName, constants.Password, db)
 		if err != nil {
 			helpers.Send(b, u, "Error while creating SOCKS5 user for "+u.Message.From.UserName)
 			return
@@ -190,8 +184,8 @@ func HandleTxHash(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []m
 			helpers.Send(b, u, templates.Error)
 			return
 		}
-		uri = fmt.Sprintf(constants.ProxyURL, node.IPAddr, strconv.Itoa(node.Port), u.Message.From.UserName, pass.Value)
-		err = db.Insert(constants.IPAddr, u.Message.From.UserName, nodes[i].IPAddr)
+		uri = fmt.Sprintf(constants.ProxyURL, node.IP, strconv.Itoa(node.APIPort), u.Message.From.UserName, pass.Value)
+		err = db.Insert(constants.IPAddr, u.Message.From.UserName, nodes[i].IP)
 		if err != nil {
 			helpers.Send(b, u, templates.Error)
 			return
@@ -202,7 +196,7 @@ func HandleTxHash(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []m
 			return
 		}
 		btnOpts := []models.InlineButtonOptions{
-			{Label: nodes[i].Username, URL: uri},
+			{Label: "Sentinel Proxy Node", URL: uri},
 		}
 		opts := models.ButtonHelper{Type: constants.InlineButton, InlineKeyboardOpts: btnOpts}
 		helpers.Send(b, u, templates.Success, opts)
@@ -288,7 +282,7 @@ func HandleNodeID(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []m
 	}
 	values := []models.KV{
 		{Key: constants.Node, Value: NodeId},
-		{Key: constants.NodeWallet, Value: nodes[idx-1].WalletAddress},
+		{Key: constants.NodeWallet, Value: nodes[idx-1].AccountAddress},
 	}
 	err := db.MultiWriter(values, u.Message.From.UserName)
 	if err != nil {
@@ -304,5 +298,5 @@ func HandleNodeID(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []m
 
 	msg := fmt.Sprintf(templates.AskForPayment, kv.Value)
 	helpers.Send(b, u, msg)
-	helpers.Send(b, u, nodes[idx-1].WalletAddress)
+	helpers.Send(b, u, nodes[idx-1].AccountAddress)
 }

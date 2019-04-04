@@ -6,6 +6,7 @@ import (
 	"gopkg.in/telegram-bot-api.v4"
 	"io/ioutil"
 	"log"
+	"strconv"
 )
 
 type B struct {
@@ -171,6 +172,17 @@ func genBtnRow(data []map[string]string) tgbotapi.InlineKeyboardMarkup {
 		for k,v := range b {
 			list[0] = append(list[0], tgbotapi.NewInlineKeyboardButtonData(k, v))
 		}
+	}
+	return tgbotapi.InlineKeyboardMarkup{InlineKeyboard: list}
+}
+func GetNodeListButtons(nodeslen int) tgbotapi.InlineKeyboardMarkup {
+	list := [][]tgbotapi.InlineKeyboardButton{{},{},{}}
+	log.Println(nodeslen)
+	for i := 1; i <= nodeslen; i++ {
+			idx := int16(i/3)
+			k := strconv.Itoa(i)
+			log.Println(idx)
+			list[idx] = append(list[idx], tgbotapi.NewInlineKeyboardButtonData(k, "Socks5-Proxy-"+k))
 	}
 	return tgbotapi.InlineKeyboardMarkup{InlineKeyboard: list}
 }

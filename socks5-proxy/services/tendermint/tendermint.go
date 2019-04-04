@@ -100,10 +100,10 @@ func HandleTMTxnHash(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes 
 
 	i := strToInt - 1
 	if IsValidTMTxn(b, u, db) {
-		url := fmt.Sprintf(constants.ProxyURL, nodes[i].IPAddr, strconv.Itoa(nodes[i].Port), nodes[i].Username, nodes[i].Password)
+		url := fmt.Sprintf(constants.ProxyURL, nodes[i].IP, strconv.Itoa(nodes[i].APIPort), "Sentinel", "Password")
 
 		values := []models.KV{
-			{Key: constants.IPAddrTM, Value: nodes[i].IPAddr},
+			{Key: constants.IPAddrTM, Value: nodes[i].IP},
 			{Key: constants.AssignedNodeURITM, Value: url},
 			{Key: constants.IsAuthTM, Value: "true"},
 		}
@@ -137,22 +137,24 @@ func HandleTMTxnHash(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes 
 
 		helpers.Send(b, u, "creating new user for "+u.Message.From.UserName+"...")
 		node := nodes[i]
-		err = proxy.AddUser(node.IPAddr, u.Message.From.UserName, constants.PasswordTM, db)
+		err = proxy.AddUser(node.IP, u.Message.From.UserName, constants.PasswordTM, db)
 		if err != nil {
+			log.Println("here1")
 			helpers.Send(b, u, templates.Error)
 			return
 		}
 		pass, err := db.Read(constants.PasswordTM, u.Message.From.UserName)
 		if err != nil {
+			log.Println("here2")
 			helpers.Send(b, u, templates.Error)
 			return
 		}
-		url = fmt.Sprintf(constants.ProxyURL, nodes[i].IPAddr, strconv.Itoa(nodes[i].Port), u.Message.From.UserName, pass.Value)
+		url = fmt.Sprintf(constants.ProxyURL, nodes[i].IP, strconv.Itoa(nodes[i].APIPort), u.Message.From.UserName, pass.Value)
 
 		kv := []models.KV{
 			{
 				Key:   constants.IPAddrTM,
-				Value: nodes[i].IPAddr,
+				Value: nodes[i].IP,
 			},
 			{
 				Key:   constants.AssignedNodeURITM,
@@ -162,6 +164,7 @@ func HandleTMTxnHash(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes 
 
 		err = db.MultiWriter(kv, u.Message.From.UserName)
 		if err != nil {
+			log.Println("here3")
 			helpers.Send(b, u, templates.Error)
 			return
 		}
@@ -285,16 +288,11 @@ func HandleBWTM(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []mod
 		helpers.Send(b, u, templates.AskToSelectANode)
 		msg := tgbotapi.MessageConfig{}
 		for idx, node := range nodes {
-			geo, err := proxy.GetGeoLocation(node.IPAddr)
-
-			if err != nil {
-				helpers.Send(b, u, err.Error())
-				return
-			}
-			txt := fmt.Sprintf(templates.NodeList, strconv.Itoa(idx+1), geo.Country, node.Username, node.WalletAddress)
+			txt := fmt.Sprintf(templates.NodeList, strconv.Itoa(idx+1), node.Location.City, node.Location.Country,
+				node.NetSpeed.Download, node.IP, node.NodeType, node.AccountAddress)
 			msg = tgbotapi.NewMessage(u.CallbackQuery.Message.Chat.ID, txt)
 		}
-		 msg.ReplyMarkup = buttons.GetButtons("NodesList")
+		 msg.ReplyMarkup = buttons.GetNodeListButtons(len(nodes))
 		b.Send(msg)
 		return
 	}
@@ -312,7 +310,7 @@ func HandleTMNodeID(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes [
 
 	values := []models.KV{
 		{Key: constants.NodeTM, Value: NodeId},
-		{Key: constants.NodeWalletTM, Value: nodes[idx-1].WalletAddress},
+		{Key: constants.NodeWalletTM, Value: nodes[idx-1].AccountAddress},
 	}
 	err := db.MultiWriter(values, u.CallbackQuery.From.UserName)
 	if err != nil {
@@ -329,7 +327,7 @@ func HandleTMNodeID(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes [
 	msg := fmt.Sprintf(templates.AskForPayment, kv.Value)
 
 	helpers.Send(b, u, msg)
-	helpers.Send(b, u, nodes[idx-1].WalletAddress)
+	helpers.Send(b, u, nodes[idx-1].AccountAddress)
 }
 
 func parseTxnAmount(amount string) string {

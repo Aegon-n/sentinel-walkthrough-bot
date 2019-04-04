@@ -53,7 +53,7 @@ const (
 	NodeBaseUrl         = "http://%s:30002/user"
 	GetTXNFromMN        = "http://35.154.179.57:8000/txes?fromAccountAddress=%s"
 	PasswordLength      = 12
-	SentinelTONURL      = "https://ton.sentinelgroup.io/all"
+	SentinelTONURL      = "http://35.154.179.57:8000/nodes?type=OpenVPN&status=up"
 	TMBalanceURL        = "http://localhost:1317/accounts/%s"
 	NodeType            = "tendermint"
 	EthState            = "ETHSTATE"

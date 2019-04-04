@@ -18,15 +18,10 @@ type Level struct {
 	//nodes []models.TONNode
 }
 
-func NewDB() (ldb.BotDB, *models.Nodes, error) {
-
-	nodes, err := helpers.GetNodes()
-	if err != nil {
-		return nil, nil, err
-	}
+func NewDB() (ldb.BotDB, error) {
 
 	db, err := leveldb.OpenFile("./store", nil)
-	return Level{db: db}, &nodes, err
+	return Level{db: db}, err
 }
 
 // state type is int16 because our app is never going to exceed the limits of int8

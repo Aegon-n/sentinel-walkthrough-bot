@@ -31,14 +31,20 @@ func HandleSocks5Proxy(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 	msg.ReplyMarkup = buttons.GetButtons("SocksNetworkButtonList")
 	b.Send(msg)
 }
-func HandleSocks5InlineButtons(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes models.Nodes) {
+func HandleSocks5InlineButtons(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
+	nodes, err := helpers.GetNodes()
+	log.Println(nodes)
+	if err != nil {
+		helpers.Send(b, u, templates.NoTMNodes)
+		return
+	}
 	module := strings.Split(u.CallbackQuery.Data,"-")[2]
 	switch module {
 	case "Eth":
-		go ethereum.AskForEthWallet(b, u, db, nodes.EthNodes)
+		go ethereum.AskForEthWallet(b, u, db, nodes)
 		answeredQuery(b, u)
 	case "TM":
-		go tendermint.AskForTendermintWallet(b, u, db, nodes.TMNodes)
+		go tendermint.AskForTendermintWallet(b, u, db, nodes)
 		answeredQuery(b, u)
 	case "10 Days","20 Days","30 Days":
 		go HandleBW(b, u, db, nodes)
@@ -80,8 +86,12 @@ func isTxn(u tgbotapi.Update) string {
 	return u.Message.Text
 }
 
-func Socks5InputHandler(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes models.Nodes) {
-
+func Socks5InputHandler(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
+	nodes, err := helpers.GetNodes()
+	if err != nil {
+		helpers.Send(b, u, templates.NoTMNodes)
+		return
+	}
 	switch u.Message.Text {
 
 	/*case isEthAddr(u):
@@ -89,9 +99,9 @@ func Socks5InputHandler(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nod
 	case tendermint.IsValidTMAccount(u):
 		go tendermint.HandleWallet(b, u, db)
 	case isTxn(u):
-		go ethereum.HandleTxHash(b, u, db, nodes.EthNodes)
+		go ethereum.HandleTxHash(b, u, db, nodes)
 	case tendermint.IsTMTxnHash(u):
-		go tendermint.HandleTMTxnHash(b, u, db, nodes.TMNodes)
+		go tendermint.HandleTMTxnHash(b, u, db, nodes)
 	default:
 		if !u.Message.IsCommand() {
 			helpers.Send(b, u, templates.InvalidOption)
@@ -178,7 +188,7 @@ func ShowMyInfo(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 	helpers.Send(b, u, msg)
 }
 
-func HandleNodeId(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes models.Nodes) {
+func HandleNodeId(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []models.TONNode) {
 	log.Println("came here")
 	network, err := db.Read(constants.BlockchainNetwork, u.CallbackQuery.From.UserName)
 	if err != nil {
@@ -193,7 +203,7 @@ func HandleNodeId(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes mod
 			return
 		}
 		log.Println("Came here 2")
-		tendermint.HandleTMNodeID(b, u, db, nodes.TMNodes)
+		tendermint.HandleTMNodeID(b, u, db, nodes)
 		helpers.SetState(b, u, constants.TMState, constants.TMState4, db)
 	}
 
@@ -204,14 +214,14 @@ func HandleNodeId(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes mod
 			helpers.Send(b, u, templates.FollowSequence)
 			return
 		}
-		ethereum.HandleNodeID(b, u, db, nodes.EthNodes)
+		ethereum.HandleNodeID(b, u, db, nodes)
 		helpers.SetState(b, u, constants.EthState, constants.EthState3, db)
 
 	}
 
 }
 
-func HandleBW(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes models.Nodes) {
+func HandleBW(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []models.TONNode) {
 	network, err := db.Read(constants.BlockchainNetwork, u.CallbackQuery.From.UserName)
 	if err != nil {
 		helpers.Send(b, u, templates.BWAttachmentError)
@@ -225,7 +235,7 @@ func HandleBW(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes models.
 			helpers.Send(b, u, templates.FollowSequence)
 			return
 		}
-		tendermint.HandleBWTM(b, u, db, nodes.TMNodes)
+		tendermint.HandleBWTM(b, u, db, nodes)
 		helpers.SetState(b, u, constants.TMState, constants.TMState3, db)
 	}
 
@@ -236,7 +246,7 @@ func HandleBW(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes models.
 			helpers.Send(b, u, templates.FollowSequence)
 			return
 		}
-		ethereum.HandleEthBW(b, u, db, nodes.EthNodes)
+		ethereum.HandleEthBW(b, u, db, nodes)
 		helpers.SetState(b, u, constants.EthState, constants.TMState2, db)
 	}
 

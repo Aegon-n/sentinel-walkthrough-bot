@@ -2,6 +2,35 @@ package models
 
 import "time"
 
+type Nodes struct {
+	NodesList   []TONNode `json:"nodes"`
+}
+type Location struct {
+	City      string  `json:"city"`
+	Latitude  float64 `json:"latitude"`
+	Longitude float64 `json:"longitude"`
+	Country   string  `json:"country"`
+}
+type NetSpeed struct {
+	Download float64 `json:"download"`
+	Upload   float64 `json:"upload"`
+}
+type TONNode struct {
+	Location       Location `json:"location"`
+	NetSpeed       NetSpeed `json:"netSpeed"`
+	APIPort        int      `json:"APIPort"`
+	PricePerGB     int      `json:"pricePerGB"`
+	Description    string   `json:"description"`
+	RatingPoints   int      `json:"ratingPoints"`
+	RatingCount    int      `json:"ratingCount"`
+	AccountAddress string   `json:"accountAddress"`
+	IP             string   `json:"IP"`
+	EncMethod      string   `json:"encMethod"`
+	NodeType       string   `json:"nodeType"`
+	Version        string   `json:"version"`
+	TxHash         string   `json:"txHash"`
+}
+
 type KV struct {
 	Key   string
 	Value string
@@ -48,22 +77,6 @@ type TXDetails struct {
 		R                string `json:"r"`
 		S                string `json:"s"`
 	} `json:"result"`
-}
-
-type Nodes struct {
-	EthNodes []TONNode
-	TMNodes  []TONNode
-}
-
-type TONNode struct {
-	Type          string  `json:"type"`
-	WalletAddress string  `json:"walletAddr"`
-	Price         float64 `json:"price"`
-	Country       string  `json:"country"`
-	IPAddr        string  `json:"ipAddr"`
-	Port          int     `json:"port"`
-	Username      string  `json:"userName"`
-	Password      string  `json:"password"`
 }
 
 type TMTxn struct {
