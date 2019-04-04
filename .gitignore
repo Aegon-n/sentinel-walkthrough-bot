@@ -1,2 +1,2 @@
-./store/
-./.idea/
+store/*
+.idea/*
