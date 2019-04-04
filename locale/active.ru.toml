@@ -1,0 +1,3 @@
+[LangChosenMsg]
+description = "язык выбран MSG для пользователя"
+other = "Успешно выбран {{.Langchosen}} Language"

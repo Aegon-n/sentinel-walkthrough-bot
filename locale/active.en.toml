@@ -1,0 +1,3 @@
+[LangChosenMsg]
+description = "language chosen msg to the user"
+other = "Successfully chosen {{.Langchosen}} Language"

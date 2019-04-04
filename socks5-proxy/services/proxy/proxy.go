@@ -159,3 +159,24 @@ func RemoveUserJob() {
 	s.Every(3).Hours().Do(RemoveExpiredUsers)
 	<-s.Start()
 }
+/*func UpdateNodesListJob(db *ldb.BotDB){
+	s := gocron.NewScheduler()
+	s.Every(30).Second().Do(UpdateNodesList,db)
+}
+
+func UpdateNodesList(db *ldb.BotDB){
+	var body Nodes
+	// var N Nodes
+	resp, err := http.Get("http://35.154.179.57:8000/nodes?type=socks5&status=up")
+	fmt.Println(resp)
+	if err != nil {
+		fmt.Print("error1")
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&body); err != nil {
+		fmt.Print(err)
+	}
+	defer resp.Body.Close()
+
+	for _,node
+}
+*/

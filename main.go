@@ -4,6 +4,7 @@ import (
 	"github.com/Aegon-n/sentinel-bot/handler"
 	"github.com/Aegon-n/sentinel-bot/handler/modules"
 	updates2 "github.com/Aegon-n/sentinel-bot/handler/updates"
+	"github.com/Aegon-n/sentinel-bot/locale"
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/dbo"
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/handlers"
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/helpers"
@@ -18,6 +19,7 @@ import (
 )
 
 func main() {
+	locale.StartLocalizer()
 	bot, err := tgbotapi.NewBotAPI("774002945:AAEHc1Gc5WfMEVWz4oilLuENzbBL7mH006A")
 	if err != nil {
 		log.Fatalf("error in instantiating the bot: %v", err)
@@ -101,7 +103,7 @@ func main() {
 				handlers.HandleSocks5InlineButtons(bot, update, db, *nodes)
 
 			default:
-				handler.HandleCallbackQuery(bot, &update)
+				handler.HandleCallbackQuery(bot, &update, db)
 			}
 		}
 		if update.Message != nil && !update.Message.IsCommand() && len(update.Message.Text)>0  {

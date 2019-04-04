@@ -2,7 +2,7 @@ package en_messages
 
 var (
 	LangSelectMsg = map[string]string{"English":"Please choose your language from the list below: ","Russian":"Пожалуйста, выберите ваш язык из списка ниже"}
-	LangChosenMsg = "Successfully chosen %s Language"
+	LangChosenMsg = "LangChosenMsg"
 	SelectwalkthroughMsg = "Please select /help to know the available commands for this bot"
 	WelcomeGreetMsg = "Hey %s , Welcome to sentinel-bot."
 	ExitMsg = "\n\n\n\tThank you for using sentinel app walkthrough session\t\n\n\n"

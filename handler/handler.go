@@ -6,6 +6,8 @@ import (
 	"github.com/Aegon-n/sentinel-bot/handler/dbo"
 	"github.com/Aegon-n/sentinel-bot/handler/messages/en_messages"
 	"github.com/Aegon-n/sentinel-bot/handler/updates"
+	"github.com/Aegon-n/sentinel-bot/locale"
+	"github.com/Aegon-n/sentinel-bot/socks5-proxy/dbo/ldb"
 	"gopkg.in/telegram-bot-api.v4"
 	"log"
 )
@@ -15,6 +17,7 @@ func HandleGreet(Bot *tgbotapi.BotAPI, update *tgbotapi.Update )  {
 	chatID := update.Message.Chat.ID
 	txt := fmt.Sprintf(en_messages.WelcomeGreetMsg, username)+"\n"+en_messages.SelectwalkthroughMsg
 	msg := tgbotapi.NewMessage(chatID,txt)
+	msg.ReplyMarkup = buttons.GetButtons("LanguageButtons")
 	msg.ParseMode = tgbotapi.ModeMarkdown
 	Bot.Send(msg)
 
@@ -43,7 +46,7 @@ func HandleHelp(Bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 	msg.ParseMode = tgbotapi.ModeHTML
 	Bot.Send(msg)
 }
-func HandleCallbackQuery(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
+func HandleCallbackQuery(bot *tgbotapi.BotAPI, update *tgbotapi.Update, db ldb.BotDB) {
 
 	switch update.CallbackQuery.Data {
 
@@ -69,13 +72,13 @@ func HandleCallbackQuery(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 		handleExit(bot, update)
 
 	case "English":
-		handleLang(bot, update, "English")
+		handleLang(bot, update, "English", db)
 
 	case "Russian":
-		handleLang(bot, update, "Russian")
+		handleLang(bot, update, "Russian", db)
 
 	case "Chinese":
-		handleLang(bot, update, "Chinese")
+		handleLang(bot, update, "Chinese", db)
 
 
 	case "Medium":
@@ -185,14 +188,14 @@ func HandleLocalization(Bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 	Bot.Send(msg)
 }
 
-func handleLang(Bot *tgbotapi.BotAPI, update *tgbotapi.Update, lang string) {
+func handleLang(Bot *tgbotapi.BotAPI, update *tgbotapi.Update, lang string, db ldb.BotDB) {
 	queryID := update.CallbackQuery.ID
 	answeredCallback(Bot, queryID)
-	err := dbo.AddUserLang(update.CallbackQuery.From.UserName, lang)
+	err := db.Insert("lang",update.CallbackQuery.From.UserName, lang)
 	if err != nil {
 		log.Fatal("Error adding user language preferences..")
 	}
 	log.Println("Added user language preferences")
-	msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, fmt.Sprintf(en_messages.LangChosenMsg,lang))
+	msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, locale.LocalizeTemplate(en_messages.LangChosenMsg,struct{Langchosen string}{lang},lang))
 	Bot.Send(msg)
 }
