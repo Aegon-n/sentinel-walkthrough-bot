@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os",
 	"github.com/Aegon-n/sentinel-bot/handler"
 	"github.com/Aegon-n/sentinel-bot/handler/modules"
 	updates2 "github.com/Aegon-n/sentinel-bot/handler/updates"
@@ -20,7 +21,7 @@ import (
 
 func main() {
 	locale.StartLocalizer()
-	bot, err := tgbotapi.NewBotAPI("774002945:AAEHc1Gc5WfMEVWz4oilLuENzbBL7mH006A")
+	bot, err := tgbotapi.NewBotAPI(os.Getenv("BOT_API_KEY") || "")
 	if err != nil {
 		log.Fatalf("error in instantiating the bot: %v", err)
 	}
