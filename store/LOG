@@ -130,3 +130,40 @@
 15:36:46.827673 version@stat F·[2 1] S·1KiB[1016B 666B] Sc·[0.50 0.00]
 15:36:47.542473 db@janitor F·5 G·0
 15:36:47.542506 db@open done T·841.682659ms
+=============== Jul 20, 2019 (CEST) ===============
+13:25:09.374279 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+13:25:09.374381 CURRENT: missing target file: MANIFEST-000035
+13:25:09.374404 CURRENT.bak: missing target file: MANIFEST-000032
+13:25:09.375728 db@open opening
+13:25:09.377611 version@stat F·[] S·0B[] Sc·[]
+13:25:09.379243 db@janitor F·2 G·0
+13:25:09.379266 db@open done T·3.524449ms
+=============== Jul 20, 2019 (CEST) ===============
+15:01:32.074118 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+15:01:32.074326 version@stat F·[] S·0B[] Sc·[]
+15:01:32.074359 db@open opening
+15:01:32.074432 journal@recovery F·1
+15:01:32.076670 journal@recovery recovering @1
+15:01:32.077716 memdb@flush created L0@2 N·23 S·384B "ETH..t51,v22":"lan..ara,v13"
+15:01:32.080242 version@stat F·[1] S·384B[384B] Sc·[0.25]
+15:01:32.083145 db@janitor F·3 G·0
+15:01:32.083161 db@open done T·8.793353ms
+=============== Jul 20, 2019 (CEST) ===============
+15:01:40.914414 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+15:01:40.914702 version@stat F·[1] S·384B[384B] Sc·[0.25]
+15:01:40.914765 db@open opening
+15:01:40.914873 journal@recovery F·1
+15:01:40.917463 journal@recovery recovering @3
+15:01:40.920654 version@stat F·[1] S·384B[384B] Sc·[0.25]
+15:01:40.922857 db@janitor F·3 G·0
+15:01:40.922872 db@open done T·8.09672ms
+=============== Jul 24, 2019 (CEST) ===============
+08:53:46.466688 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+08:53:46.467016 version@stat F·[1] S·384B[384B] Sc·[0.25]
+08:53:46.467067 db@open opening
+08:53:46.467176 journal@recovery F·1
+08:53:46.471929 journal@recovery recovering @5
+08:53:46.474555 memdb@flush created L0@7 N·11 S·281B "ETH..ut5,v32":"lan..t51,v34"
+08:53:46.476462 version@stat F·[2] S·665B[665B] Sc·[0.50]
+08:53:46.478401 db@janitor F·4 G·0
+08:53:46.478428 db@open done T·11.349401ms

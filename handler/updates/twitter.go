@@ -18,7 +18,11 @@ func Twitter_updates(bot *tgbotapi.BotAPI,update *tgbotapi.Update)  {
 	chatID := update.CallbackQuery.Message.Chat.ID
 
 	config := oauth1.NewConfig("cosumer Api key", "cosumer api secret key")
-	token := oauth1.NewToken("Access Token", "access token secret")
+	token, err := oauth1.NewToken("Access Token", "access token secret")
+	if (err){
+		fmt.Println('token invalid');
+	}
+
 	// http.Client will automatically authorize Requests
 	httpClient := config.Client(oauth1.NoContext, token)
 

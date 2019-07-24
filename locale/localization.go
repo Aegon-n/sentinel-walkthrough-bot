@@ -48,7 +48,7 @@ var LocalizeMsgID = func(messageID string, lang string) string {
 }
 
 func StartLocalizer() {
-	bundle := &i18n.Bundle{DefaultLanguage: language.English}
+	bundle := i18n.NewBundle(language.English)
 	bundle.RegisterUnmarshalFunc("toml", toml.Unmarshal)
 	dir, err := os.Getwd()
 	if err != nil {
