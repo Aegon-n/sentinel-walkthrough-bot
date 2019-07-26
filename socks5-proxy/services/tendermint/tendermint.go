@@ -3,6 +3,12 @@ package tendermint
 import (
 	"encoding/json"
 	"fmt"
+	"log"
+	"math"
+	"net/http"
+	"strconv"
+	"strings"
+
 	"github.com/Aegon-n/sentinel-bot/handler/buttons"
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/constants"
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/dbo/ldb"
@@ -12,19 +18,14 @@ import (
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/services/tendermint/validations"
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/templates"
 	"github.com/ethereum/go-ethereum/common"
-	"gopkg.in/telegram-bot-api.v4"
-	"log"
-	"math"
-	"net/http"
-	"strconv"
-	"strings"
+	tgbotapi "gopkg.in/telegram-bot-api.v4"
 )
 
-func AskForTendermintWallet(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []models.TONNode) {
+func AskForTendermintWallet(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []models.List) {
 	if len(nodes) == 0 {
 		msg := tgbotapi.NewEditMessageText(u.CallbackQuery.Message.Chat.ID, u.CallbackQuery.Message.MessageID, templates.NoTMNodes)
 		btns := tgbotapi.NewEditMessageReplyMarkup(u.CallbackQuery.Message.Chat.ID,
-			u.CallbackQuery.Message.MessageID,buttons.GetButtons("SocksNetworkButtonList"))
+			u.CallbackQuery.Message.MessageID, buttons.GetButtons("SocksNetworkButtonList"))
 		b.Send(msg)
 		b.Send(btns)
 		return
@@ -72,12 +73,10 @@ func getTMTxn(hash string) (models.TMTxn, bool) {
 		return txnResp, false
 	}
 
-
-
 	return txnResp, true
 }
 
-func HandleTMTxnHash(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []models.TONNode) {
+func HandleTMTxnHash(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []models.List) {
 	state := helpers.GetState(b, u, constants.TMState, db)
 	//color.Green("******* STATE BW = %d *******", state)
 
@@ -100,7 +99,7 @@ func HandleTMTxnHash(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes 
 
 	i := strToInt - 1
 	if IsValidTMTxn(b, u, db) {
-		url := fmt.Sprintf(constants.ProxyURL, nodes[i].IP, strconv.Itoa(nodes[i].APIPort), "Sentinel", "Password")
+		url := fmt.Sprintf(constants.ProxyURL, nodes[i].IP, strconv.Itoa(3000), "Sentinel", "Password")
 
 		values := []models.KV{
 			{Key: constants.IPAddrTM, Value: nodes[i].IP},
@@ -149,7 +148,7 @@ func HandleTMTxnHash(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes 
 			helpers.Send(b, u, templates.Error)
 			return
 		}
-		url = fmt.Sprintf(constants.ProxyURL, nodes[i].IP, strconv.Itoa(nodes[i].APIPort), u.Message.From.UserName, pass.Value)
+		url = fmt.Sprintf(constants.ProxyURL, nodes[i].IP, strconv.Itoa(3000), u.Message.From.UserName, pass.Value)
 
 		kv := []models.KV{
 			{
@@ -262,44 +261,43 @@ func HandleWallet(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 	return
 }
 
-func HandleBWTM(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []models.TONNode) {
-		bw := strings.Split(u.CallbackQuery.Data, "-")[2][:2]
-		log.Println(bw)
-		err := db.Insert(constants.BandwidthTM, u.CallbackQuery.From.UserName, bw)
-		if err != nil {
-			helpers.Send(b, u, templates.Error)
-			return
-		}
-		switch bw+" Days" {
-		case constants.TenD:
-			helpers.SubscriptionPeriod(b, u, db,
-				constants.TenDays, constants.TenderMintNetwork, constants.NodeBasePrice, constants.TenD,
-			)
-		case constants.OneM:
-			helpers.SubscriptionPeriod(b, u, db,
-				constants.Month, constants.TenderMintNetwork, constants.NodeMonthPrice, constants.OneM,
-			)
-		case constants.ThreeM:
-			helpers.SubscriptionPeriod(b, u, db,
-				constants.ThreeMonths, constants.TenderMintNetwork, constants.NodeThreeMonthPrice, constants.ThreeM,
-			)
-		}
-
-		helpers.Send(b, u, templates.AskToSelectANode)
-		msg := tgbotapi.MessageConfig{}
-		for idx, node := range nodes {
-			txt := fmt.Sprintf(templates.NodeList, strconv.Itoa(idx+1), node.Location.City, node.Location.Country,
-				node.NetSpeed.Download, node.IP, node.NodeType, node.AccountAddress)
-			msg = tgbotapi.NewMessage(u.CallbackQuery.Message.Chat.ID, txt)
-		}
-		 msg.ReplyMarkup = buttons.GetNodeListButtons(len(nodes))
-		b.Send(msg)
+func HandleBWTM(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []models.List) {
+	bw := strings.Split(u.CallbackQuery.Data, "-")[2][:2]
+	log.Println(bw)
+	err := db.Insert(constants.BandwidthTM, u.CallbackQuery.From.UserName, bw)
+	if err != nil {
+		helpers.Send(b, u, templates.Error)
 		return
 	}
+	switch bw + " Days" {
+	case constants.TenD:
+		helpers.SubscriptionPeriod(b, u, db,
+			constants.TenDays, constants.TenderMintNetwork, constants.NodeBasePrice, constants.TenD,
+		)
+	case constants.OneM:
+		helpers.SubscriptionPeriod(b, u, db,
+			constants.Month, constants.TenderMintNetwork, constants.NodeMonthPrice, constants.OneM,
+		)
+	case constants.ThreeM:
+		helpers.SubscriptionPeriod(b, u, db,
+			constants.ThreeMonths, constants.TenderMintNetwork, constants.NodeThreeMonthPrice, constants.ThreeM,
+		)
+	}
 
+	helpers.Send(b, u, templates.AskToSelectANode)
+	msg := tgbotapi.MessageConfig{}
+	for idx, node := range nodes {
+		txt := fmt.Sprintf(templates.NodeList, strconv.Itoa(idx+1), node.Location.City, node.Location.Country,
+			node.NetSpeed.Download, node.IP, node.VpnType, node.AccountAddr)
+		msg = tgbotapi.NewMessage(u.CallbackQuery.Message.Chat.ID, txt)
+	}
+	msg.ReplyMarkup = buttons.GetNodeListButtons(len(nodes))
+	b.Send(msg)
+	return
+}
 
-func HandleTMNodeID(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []models.TONNode) {
-	NodeId := strings.Split(u.CallbackQuery.Data,"-")[2]
+func HandleTMNodeID(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []models.List) {
+	NodeId := strings.Split(u.CallbackQuery.Data, "-")[2]
 	idx, _ := strconv.Atoi(NodeId)
 	log.Println("came here 3")
 	if idx > len(nodes) {
@@ -310,7 +308,7 @@ func HandleTMNodeID(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes [
 
 	values := []models.KV{
 		{Key: constants.NodeTM, Value: NodeId},
-		{Key: constants.NodeWalletTM, Value: nodes[idx-1].AccountAddress},
+		{Key: constants.NodeWalletTM, Value: nodes[idx-1].AccountAddr},
 	}
 	err := db.MultiWriter(values, u.CallbackQuery.From.UserName)
 	if err != nil {
@@ -327,7 +325,7 @@ func HandleTMNodeID(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes [
 	msg := fmt.Sprintf(templates.AskForPayment, kv.Value)
 
 	helpers.Send(b, u, msg)
-	helpers.Send(b, u, nodes[idx-1].AccountAddress)
+	helpers.Send(b, u, nodes[idx-1].AccountAddr)
 }
 
 func parseTxnAmount(amount string) string {

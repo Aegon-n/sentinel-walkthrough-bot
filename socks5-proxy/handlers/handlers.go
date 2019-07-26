@@ -29,29 +29,41 @@ func HandleSocks5Proxy(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 	greet := fmt.Sprintf(templates.GreetingMsg, u.Message.From.UserName)
 	msg := tgbotapi.NewMessage(u.Message.Chat.ID,greet)
 	msg.ReplyMarkup = buttons.GetButtons("SocksNetworkButtonList")
+	/* uri := fmt.Sprintf(constants.ProxyURL, nodes[i].IP, strconv.Itoa(1080), "sent", "sentinel")
+	btnOpts := []models.InlineButtonOptions{
+		{Label: "Sentinel Proxy Node", URL: uri},
+	}
+	opts := models.ButtonHelper{Type: constants.InlineButton, InlineKeyboardOpts: btnOpts}
+	helpers.Send(b, u, templates.Success, opts)
+	return */
 	b.Send(msg)
 }
 func HandleSocks5InlineButtons(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
-	nodes, err := helpers.GetNodes()
-	log.Println(nodes)
-	if err != nil {
-		helpers.Send(b, u, templates.NoTMNodes)
-		return
-	}
+	
 	module := strings.Split(u.CallbackQuery.Data,"-")[2]
 	switch module {
 	case "Eth":
+		nodes, err := helpers.GetNodes()
+		log.Println(nodes)
+		if err != nil {
+			helpers.Send(b, u, templates.NoEthNodes)
+			return
+		}
+		answeredQuery(b, u)
 		go ethereum.AskForEthWallet(b, u, db, nodes)
-		answeredQuery(b, u)
+		
 	case "TM":
-		go tendermint.AskForTendermintWallet(b, u, db, nodes)
+		helpers.Send(b, u, templates.NoTMNodes)
 		answeredQuery(b, u)
-	case "10 Days","20 Days","30 Days":
-		go HandleBW(b, u, db, nodes)
-		answeredQuery(b, u)
-	case "1","2","3":
-		go HandleNodeId(b, u, db, nodes)
-		answeredQuery(b, u)
+		return
+		// go tendermint.AskForTendermintWallet(b, u, db, nodes)
+		
+	// case "10 Days","20 Days","30 Days":
+		// go HandleBW(b, u, db, nodes)
+		// answeredQuery(b, u)
+	// case "1","2","3":
+		// go HandleNodeId(b, u, db, nodes)
+		// answeredQuery(b, u)
 	}
 }
 func AboutSentinel(b *tgbotapi.BotAPI, u tgbotapi.Update) {
@@ -94,8 +106,8 @@ func Socks5InputHandler(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 	}
 	switch u.Message.Text {
 
-	/*case isEthAddr(u):
-		go ethereum.HandleWallet(b, u, db)*/
+	case isEthAddr(u):
+		go ethereum.HandleWallet(b, u, db)
 	case tendermint.IsValidTMAccount(u):
 		go tendermint.HandleWallet(b, u, db)
 	case isTxn(u):
@@ -188,7 +200,7 @@ func ShowMyInfo(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 	helpers.Send(b, u, msg)
 }
 
-func HandleNodeId(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []models.TONNode) {
+func HandleNodeId(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []models.List) {
 	log.Println("came here")
 	network, err := db.Read(constants.BlockchainNetwork, u.CallbackQuery.From.UserName)
 	if err != nil {
@@ -221,7 +233,7 @@ func HandleNodeId(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []m
 
 }
 
-func HandleBW(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []models.TONNode) {
+func HandleBW(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []models.List) {
 	network, err := db.Read(constants.BlockchainNetwork, u.CallbackQuery.From.UserName)
 	if err != nil {
 		helpers.Send(b, u, templates.BWAttachmentError)

@@ -167,3 +167,70 @@ type MNTXs struct {
 	Hash      string `json:"txHash"`
 	Timestamp string `json:"addedOn"`
 }
+
+type SocksNode struct {
+	Success bool   `json:"success"`
+	List    []List `json:"list"`
+}
+
+type Load struct {
+	CPU    float64 `json:"cpu"`
+	Memory int     `json:"memory"`
+}
+type List struct {
+	AccountAddr       string   `json:"account_addr"`
+	IP                string   `json:"ip"`
+	Latency           float64  `json:"latency"`
+	VpnType           string   `json:"vpn_type"`
+	Location          Location `json:"location"`
+	NetSpeed          NetSpeed `json:"net_speed"`
+	EncMethod         string   `json:"enc_method"`
+	Version           string   `json:"version"`
+	ActiveConnections int      `json:"active_connections"`
+	Load              Load     `json:"load"`
+	Rating            float64  `json:"rating,omitempty"`
+	PricePerGB        float64  `json:"price_per_GB"`
+	Moniker           string   `json:"moniker,omitempty"`
+	Description       string   `json:"description,omitempty"`
+}
+
+type MasterResponce struct {
+	Success bool   `json:"success"`
+	IP      string `json:"ip"`
+	Port    int    `json:"port"`
+	Token   string `json:"token"`
+	VpnAddr string `json:"vpn_addr"`
+	Message string `json:"message"`
+}
+
+type SocksResponse struct {
+	Success bool   `json:"success"`
+	List    []List `json:"list"`
+}
+
+type VpnResponse struct {
+	Node        Node   `json:"node"`
+	SessionName string `json:"session_name"`
+	Success     bool   `json:"success"`
+}
+type Vpn struct {
+	Username			string	`json: "username"`
+	Password 			string	`json: "password"`
+	TelegramLink	string 	`json:"telegram_link"`
+}
+type BestServer struct {
+	Latency float64 `json:"latency"`
+	Host    string  `json:"host"`
+}
+
+type Node struct {
+	Vpn      Vpn      `json:"vpn"`
+	NetSpeed NodeNetSpeed `json:"net_speed"`
+	Location Location `json:"location"`
+}
+
+type NodeNetSpeed struct {
+	Download   float64    `json:"download"`
+	BestServer BestServer `json:"best_server"`
+	Upload     float64    `json:"upload"`
+}

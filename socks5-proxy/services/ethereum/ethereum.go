@@ -33,7 +33,21 @@ func HandleWallet(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 			return
 		}
 		helpers.Send(b, u, "Attached the ETH wallet to user successfully")
-		opts := models.ButtonHelper{
+		helpers.Send(b, u, "Searching for nodes ... ")
+		nodes, err := helpers.GetNodes()
+		node := nodes[0]
+		fmt.Println(node)
+		uri := "https://t.me/socks?server=192.168.2.156&port=1080&user=client1564138446879037&pass=DZtXIT1eQ3"
+		// uri, message, err := helpers.SocksProxy(b, u, node.AccountAddr, u.Message.Text) 
+		// helpers.Send(b, u, message)
+		btnOpts := []models.InlineButtonOptions{
+			{Label: "Sentinel Proxy Node", URL: uri},
+		}
+		opts := models.ButtonHelper{Type: constants.InlineButton, InlineKeyboardOpts: btnOpts}
+		helpers.Send(b, u, templates.Success, opts)
+		return
+		
+		/* opts := models.ButtonHelper{
 			Type:   constants.ReplyButton,
 			Labels: []string{constants.TenD, constants.OneM, constants.ThreeM},
 		}
@@ -43,7 +57,7 @@ func HandleWallet(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 		if err != nil {
 			helpers.Send(b, u, "could not store your wallet")
 			return
-		}
+		} */
 
 		return
 	}
@@ -52,7 +66,7 @@ func HandleWallet(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 	return
 }
 
-func HandleEthBW(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []models.TONNode) {
+func HandleEthBW(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []models.List) {
 
 	resp, err := db.Read(constants.Bandwidth, u.Message.From.UserName)
 
@@ -79,7 +93,7 @@ func HandleEthBW(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []mo
 		helpers.Send(b, u, templates.AskToSelectANode)
 		for idx, node := range nodes {
 			msg := fmt.Sprintf(templates.NodeList, strconv.Itoa(idx+1), node.Location.City,node.Location.Country,
-				node.NetSpeed.Download,node.IP, node.NodeType, node.AccountAddress)
+				node.NetSpeed.Download,node.IP, node.VpnType, node.AccountAddr)
 			helpers.Send(b, u, msg)
 		}
 		return
@@ -92,7 +106,7 @@ func HandleEthBW(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []mo
 		return
 	}
 
-	var n models.TONNode
+	var n models.List
 	for i := 0; i < len(nodes); i++ {
 		if i == int(nodeIdx) {
 			n = nodes[i]
@@ -100,7 +114,7 @@ func HandleEthBW(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []mo
 		}
 	}
 
-	uri := fmt.Sprintf(constants.ProxyURL, n.IP, strconv.Itoa(n.APIPort), "sentinel", "Password")
+	uri := fmt.Sprintf(constants.ProxyURL, n.IP, strconv.Itoa(3000), "sentinel", "Password")
 	buttonOptions := []models.InlineButtonOptions{
 		{Label: "Sentinel Proxy Node", URL: uri},
 	}
@@ -112,7 +126,7 @@ func HandleEthBW(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []mo
 	helpers.Send(b, u, msg, opts)
 }
 
-func AskForEthWallet(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []models.TONNode) {
+func AskForEthWallet(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []models.List) {
 	helpers.SetState(b, u, constants.EthState, constants.EthState0, db)
 	if len(nodes) == 0 {
 		msg := tgbotapi.NewEditMessageText(u.CallbackQuery.Message.Chat.ID, u.CallbackQuery.Message.MessageID, templates.NoEthNodes)
@@ -130,9 +144,10 @@ func AskForEthWallet(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes 
 	}
 
 	helpers.Send(b, u, templates.AskForEthWallet)
+	return
 }
 
-func HandleTxHash(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []models.TONNode) {
+func HandleTxHash(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []models.List) {
 	helpers.SetState(b, u, constants.EthState, constants.EthState4, db)
 	resp, err := db.Read(constants.Node, u.Message.From.UserName)
 	if err != nil {
@@ -153,7 +168,7 @@ func HandleTxHash(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []m
 
 	i := strToInt - 1
 	if FindTxByHash(u.Message.Text, UserWallet.Value, u, db) {
-		uri := fmt.Sprintf(constants.ProxyURL, nodes[i].IP, strconv.Itoa(nodes[i].APIPort), "Sentinel", "Password")
+		uri := fmt.Sprintf(constants.ProxyURL, nodes[i].IP, strconv.Itoa(3000), "Sentinel", "Password")
 		err := db.Insert(constants.IPAddr, u.Message.From.UserName, nodes[i].IP)
 		if err != nil {
 			helpers.Send(b, u, templates.Error)
@@ -184,7 +199,7 @@ func HandleTxHash(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []m
 			helpers.Send(b, u, templates.Error)
 			return
 		}
-		uri = fmt.Sprintf(constants.ProxyURL, node.IP, strconv.Itoa(node.APIPort), u.Message.From.UserName, pass.Value)
+		uri = fmt.Sprintf(constants.ProxyURL, node.IP, strconv.Itoa(3000), u.Message.From.UserName, pass.Value)
 		err = db.Insert(constants.IPAddr, u.Message.From.UserName, nodes[i].IP)
 		if err != nil {
 			helpers.Send(b, u, templates.Error)
@@ -273,7 +288,7 @@ func hex2int(hexStr string) uint64 {
 	return uint64(result)
 }
 
-func HandleNodeID(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []models.TONNode) {
+func HandleNodeID(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []models.List) {
 	NodeId := u.Message.Text
 	idx, _ := strconv.Atoi(NodeId)
 	if idx > len(nodes) {
@@ -282,7 +297,7 @@ func HandleNodeID(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []m
 	}
 	values := []models.KV{
 		{Key: constants.Node, Value: NodeId},
-		{Key: constants.NodeWallet, Value: nodes[idx-1].AccountAddress},
+		{Key: constants.NodeWallet, Value: nodes[idx-1].AccountAddr},
 	}
 	err := db.MultiWriter(values, u.Message.From.UserName)
 	if err != nil {
@@ -298,5 +313,5 @@ func HandleNodeID(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []m
 
 	msg := fmt.Sprintf(templates.AskForPayment, kv.Value)
 	helpers.Send(b, u, msg)
-	helpers.Send(b, u, nodes[idx-1].AccountAddress)
+	helpers.Send(b, u, nodes[idx-1].AccountAddr)
 }
