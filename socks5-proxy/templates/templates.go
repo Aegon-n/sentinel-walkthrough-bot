@@ -7,13 +7,13 @@ Please select a blockchain network for payments to this bot.`
 	NodeAttachedAlready = "you already have a node assigned to your username. Please use /mynode to access it"
 
 	CheckWalletOptionsError = "error while fetching user wallet address. in case you have not attached your wallet address, please share your wallet address again."
-	Success                 = "Congratulations!! please click the button below to connect to the sentinel dVPN node and next time use /mynode to access this node"
+	Success                 = "Congratulations!! please click the button below to connect to the sentinel dVPN node"
 	AskToSelectANode        = `Here is the list of available nodes
 Please select a node from below: `
 	UserInfo = `Bandwidth Duration Left: <b>%0.0f days</b>
 Ethereum Wallet Attached: <b>%s</b>`
-	AskForEthWallet   = "Please share your ethereum wallet address that you want to use for transactions to this bot"
-	AskForPayment     = `please send %s $SENTS to the following address in next 30 minutes
+	AskForEthWallet = "Please share your ethereum wallet address that you want to use for transactions to this bot"
+	AskForPayment   = `please send %s $SENTS to the following address in next 30 minutes
 and submit the transaction hash here.
 Please note that if you submit the transaction hash after 30 minutes, it will be considered as invalid transaction.
 However, you can use /refund to claim  your amount`

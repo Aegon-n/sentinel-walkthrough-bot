@@ -29,6 +29,15 @@ func HandleSocks5Proxy(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 	greet := fmt.Sprintf(templates.GreetingMsg, u.Message.From.UserName)
 	msg := tgbotapi.NewMessage(u.Message.Chat.ID,greet)
 	msg.ReplyMarkup = buttons.GetButtons("SocksNetworkButtonList")
+	uri := "https://t.me/socks?server=145.239.224.177&port=1080&user=sent&pass=sentinel"
+		// uri, message, err := helpers.SocksProxy(b, u, node.AccountAddr, u.Message.Text) 
+		// helpers.Send(b, u, message)
+	btnOpts := []models.InlineButtonOptions{
+		{Label: "Sentinel Proxy Node", URL: uri},
+	}
+	opts := models.ButtonHelper{Type: constants.InlineButton, InlineKeyboardOpts: btnOpts}
+	helpers.Send(b, u, templates.Success, opts)
+	return
 	/* uri := fmt.Sprintf(constants.ProxyURL, nodes[i].IP, strconv.Itoa(1080), "sent", "sentinel")
 	btnOpts := []models.InlineButtonOptions{
 		{Label: "Sentinel Proxy Node", URL: uri},
@@ -36,7 +45,7 @@ func HandleSocks5Proxy(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 	opts := models.ButtonHelper{Type: constants.InlineButton, InlineKeyboardOpts: btnOpts}
 	helpers.Send(b, u, templates.Success, opts)
 	return */
-	b.Send(msg)
+	// b.Send(msg)
 }
 func HandleSocks5InlineButtons(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 	
