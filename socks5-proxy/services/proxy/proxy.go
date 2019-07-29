@@ -163,15 +163,15 @@ func RemoveUserJob() {
 	s.Every(3).Hours().Do(RemoveExpiredUsers)
 	<-s.Start()
 }
-func UpdateNodesListJob(nodes *[]models.TONNode){
+func UpdateNodesListJob(nodes *[]models.List){
 	s := gocron.NewScheduler()
 	s.Every(30).Second().Do(UpdateNodesList,nodes)
 }
 
-func UpdateNodesList(nodes *[]models.TONNode){
+func UpdateNodesList(nodes *[]models.List){
 	var NodesResp models.Nodes
 	// var N Nodes
-	resp, err := http.Get("http://35.154.179.57:8000/nodes?type=socks5&status=up")
+	resp, err := http.Get("http://sentinelgroup.io/client/vpn/list")
 	fmt.Println(resp)
 	if err != nil {
 		fmt.Print("error1")

@@ -1,20 +1,21 @@
 package helpers
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"log"
+	"net/http"
+	"strconv"
+	"strings"
+	"time"
+
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/buttons"
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/constants"
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/dbo/ldb"
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/dbo/models"
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/templates"
-	"gopkg.in/telegram-bot-api.v4"
-	"log"
-	"net/http"
-	"strings"
-	"time"
-	"bytes"
-	"strconv"
+	tgbotapi "gopkg.in/telegram-bot-api.v4"
 )
 
 func Send(b *tgbotapi.BotAPI, u tgbotapi.Update, msg string, opts ...models.ButtonHelper) {
@@ -109,7 +110,7 @@ func GetNodes() ([]models.List, error) {
 		return N, err
 	}
 	defer resp.Body.Close()
-	return body.List, err
+	return body.List[0:5], err
 }
 func SetState(b *tgbotapi.BotAPI, u tgbotapi.Update, network string, state int8, db ldb.BotDB) {
 	username := ""
@@ -161,12 +162,12 @@ func GetState(b *tgbotapi.BotAPI, u tgbotapi.Update, network string, db ldb.BotD
 	return state
 }
 
-func GetToken(vpn_addr,account_addr string ) ( models.MasterResponce, error) {
+func GetToken(vpn_addr, account_addr string) (models.MasterResponce, error) {
 	var body models.MasterResponce
 
 	requestBody, err := json.Marshal(map[string]string{
-		"account_addr":account_addr,
-		"vpn_addr": vpn_addr,
+		"account_addr": account_addr,
+		"vpn_addr":     vpn_addr,
 	})
 	if err != nil {
 		log.Fatalln(err)
@@ -182,13 +183,13 @@ func GetToken(vpn_addr,account_addr string ) ( models.MasterResponce, error) {
 	return body, err
 }
 
-func ConnectNode(account_addr, vpn_addr string ) ( models.VpnResponse, error) {
+func ConnectNode(account_addr, vpn_addr string) (models.VpnResponse, error) {
 	var body models.VpnResponse
 
 	requestBody, err := json.Marshal(map[string]string{
 		"account_addr": account_addr,
-		"vpn_addr": vpn_addr,
-		"token": "abcdfghijkl1234",
+		"vpn_addr":     vpn_addr,
+		"token":        "abcdfghijkl1234",
 	})
 	if err != nil {
 		log.Fatalln(err)
@@ -206,24 +207,24 @@ func ConnectNode(account_addr, vpn_addr string ) ( models.VpnResponse, error) {
 	return body, err
 }
 
-func SocksProxy(b *tgbotapi.BotAPI, u tgbotapi.Update, vpn_addr, account_addr string) (string, string ,error) {
+func SocksProxy(b *tgbotapi.BotAPI, u tgbotapi.Update, vpn_addr, account_addr string) (string, string, error) {
 	Send(b, u, "Connecting ..")
 	/* resp, err := GetToken(vpn_addr, account_addr)
-		if err != nil {
-			return "", "", err
-		}
-		fmt.Println(resp)
-		if resp.Success == false {
-			return "", resp.Message, nil
-		} */
-		result, err := ConnectNode(account_addr, vpn_addr)
-		if err != nil {
-			return "", "", err
-		}
-		if result.Success == false {
-			return "", "Node not connected", nil
-		}
-		fmt.Println(result)
-		fmt.Println(result.Node)
-		return result.Node.Vpn.TelegramLink, "", nil
+	if err != nil {
+		return "", "", err
+	}
+	fmt.Println(resp)
+	if resp.Success == false {
+		return "", resp.Message, nil
+	} */
+	result, err := ConnectNode(account_addr, vpn_addr)
+	if err != nil {
+		return "", "", err
+	}
+	if result.Success == false {
+		return "", "Node not connected", nil
+	}
+	fmt.Println(result)
+	fmt.Println(result.Node)
+	return result.Node.Vpn.TelegramLink, "", nil
 }

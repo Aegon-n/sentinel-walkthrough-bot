@@ -1,15 +1,14 @@
 package templates
 
 const (
-	GreetingMsg = `Hey %s, welcome to the Sentinel Socks5 Proxy Bot for Telegram.
+	GreetingMsg = `Hey %s, welcome to the Sentinel Socks5 Proxy Bot for Telegram.`
 
-Please select a blockchain network for payments to this bot.`
+// Please select a blockchain network for payments to this bot.`
 	NodeAttachedAlready = "you already have a node assigned to your username. Please use /mynode to access it"
 
 	CheckWalletOptionsError = "error while fetching user wallet address. in case you have not attached your wallet address, please share your wallet address again."
 	Success                 = "Congratulations!! please click the button below to connect to the sentinel dVPN node"
-	AskToSelectANode        = `Here is the list of available nodes
-Please select a node from below: `
+	AskToSelectANode        = ` Please select a node from above list: `
 	UserInfo = `Bandwidth Duration Left: <b>%0.0f days</b>
 Ethereum Wallet Attached: <b>%s</b>`
 	AskForEthWallet = "Please share your ethereum wallet address that you want to use for transactions to this bot"
@@ -20,7 +19,7 @@ However, you can use /refund to claim  your amount`
 	AskForTMWallet    = "Please share your tendermint wallet address that you want to use for transactions to this bot"
 	AskForBW          = "Please select how much bandwidth you need by clicking on one of the buttons below: "
 	BWError           = "error while storing bandwidth price"
-	NodeList          = "%s.) Location: %s,%s\n Speed: %f \n NodeIP: %s \nNodeType: %s\nNode wallet: %s"
+	NodeList          = "%s.) Location: %s, %s\n     Speed: %f Mbps\n "
 	BWPeriods         = "you have opted for %s of unlimited bandwidth"
 	Error             = "could not read user info"
 	BWAttachmentError = "error occurred while adding user details for bandwidth requirements"

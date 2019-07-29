@@ -37,7 +37,7 @@ func HandleWallet(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 		nodes, err := helpers.GetNodes()
 		node := nodes[0]
 		fmt.Println(node)
-		uri := "https://t.me/socks?server=192.168.2.156&port=1080&user=client1564138446879037&pass=DZtXIT1eQ3"
+		/* uri := "https://t.me/socks?server=192.168.2.156&port=1080&user=client1564138446879037&pass=DZtXIT1eQ3"
 		// uri, message, err := helpers.SocksProxy(b, u, node.AccountAddr, u.Message.Text) 
 		// helpers.Send(b, u, message)
 		btnOpts := []models.InlineButtonOptions{
@@ -46,8 +46,9 @@ func HandleWallet(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 		opts := models.ButtonHelper{Type: constants.InlineButton, InlineKeyboardOpts: btnOpts}
 		helpers.Send(b, u, templates.Success, opts)
 		return
+		*/
 		
-		/* opts := models.ButtonHelper{
+		opts := models.ButtonHelper{
 			Type:   constants.ReplyButton,
 			Labels: []string{constants.TenD, constants.OneM, constants.ThreeM},
 		}
@@ -57,7 +58,7 @@ func HandleWallet(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 		if err != nil {
 			helpers.Send(b, u, "could not store your wallet")
 			return
-		} */
+		}
 
 		return
 	}

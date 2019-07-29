@@ -72,3 +72,298 @@
 16:49:33.886481 version@stat F·[2 1] S·920B[622B 298B] Sc·[0.50 0.00]
 16:49:33.985961 db@janitor F·5 G·0
 16:49:33.986098 db@open done T·256.044835ms
+=============== Jul 27, 2019 (IST) ===============
+17:57:17.246567 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+17:57:17.316522 version@stat F·[2 1] S·920B[622B 298B] Sc·[0.50 0.00]
+17:57:17.316625 db@open opening
+17:57:17.316919 journal@recovery F·1
+17:57:17.325521 journal@recovery recovering @19
+17:57:17.403623 memdb@flush created L0@21 N·14 S·365B "BLO..t51,v74":"TMT..t51,v65"
+17:57:17.412639 version@stat F·[3 1] S·1KiB[987B 298B] Sc·[0.75 0.00]
+17:57:17.516159 db@janitor F·6 G·0
+17:57:17.516296 db@open done T·199.623399ms
+=============== Jul 27, 2019 (IST) ===============
+18:05:55.585264 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+18:05:55.586820 version@stat F·[3 1] S·1KiB[987B 298B] Sc·[0.75 0.00]
+18:05:55.586906 db@open opening
+18:05:55.587263 journal@recovery F·1
+18:05:55.599313 journal@recovery recovering @22
+18:05:55.736172 memdb@flush created L0@24 N·3 S·193B "ETH..t51,v78":"TMT..t51,v80"
+18:05:55.749803 version@stat F·[4 1] S·1KiB[1KiB 298B] Sc·[1.00 0.00]
+18:05:55.848213 db@janitor F·7 G·0
+18:05:55.848381 db@open done T·261.415206ms
+18:05:55.848690 table@compaction L0·4 -> L1·1 S·1KiB Q·81
+18:05:55.947142 table@build created L1@27 N·5 S·297B "BLO..t51,v74":"TMT..t51,v80"
+18:05:55.947426 version@stat F·[0 1] S·297B[0B 297B] Sc·[0.00 0.00]
+18:05:56.013810 table@compaction committed F-4 S-1KiB Ke·0 D·36 T·164.968877ms
+18:05:56.014227 table@remove removed @24
+18:05:56.014434 table@remove removed @21
+18:05:56.014619 table@remove removed @18
+18:05:56.014783 table@remove removed @15
+18:05:56.014996 table@remove removed @14
+=============== Jul 27, 2019 (IST) ===============
+18:19:38.342549 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+18:19:38.343665 version@stat F·[0 1] S·297B[0B 297B] Sc·[0.00 0.00]
+18:19:38.343744 db@open opening
+18:19:38.343957 journal@recovery F·1
+18:19:38.345552 journal@recovery recovering @25
+18:19:38.473904 memdb@flush created L0@28 N·3 S·193B "ETH..t51,v82":"TMT..t51,v84"
+18:19:38.476086 version@stat F·[1 1] S·490B[193B 297B] Sc·[0.25 0.00]
+18:19:38.574291 db@janitor F·4 G·0
+18:19:38.574394 db@open done T·230.610008ms
+=============== Jul 27, 2019 (IST) ===============
+18:19:57.827117 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+18:19:57.827827 version@stat F·[1 1] S·490B[193B 297B] Sc·[0.25 0.00]
+18:19:57.827894 db@open opening
+18:19:57.828173 journal@recovery F·1
+18:19:57.829510 journal@recovery recovering @29
+18:19:57.831798 version@stat F·[1 1] S·490B[193B 297B] Sc·[0.25 0.00]
+18:19:57.931782 db@janitor F·4 G·0
+18:19:57.932100 db@open done T·103.977946ms
+=============== Jul 27, 2019 (IST) ===============
+18:22:43.308548 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+18:22:43.309319 version@stat F·[1 1] S·490B[193B 297B] Sc·[0.25 0.00]
+18:22:43.309394 db@open opening
+18:22:43.309625 journal@recovery F·1
+18:22:43.311131 journal@recovery recovering @31
+18:22:43.597531 memdb@flush created L0@33 N·3 S·193B "ETH..t51,v86":"TMT..t51,v88"
+18:22:43.598741 version@stat F·[2 1] S·683B[386B 297B] Sc·[0.50 0.00]
+18:22:44.324049 db@janitor F·5 G·0
+18:22:44.324093 db@open done T·1.014664627s
+=============== Jul 27, 2019 (IST) ===============
+18:27:47.539357 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+18:27:47.539590 version@stat F·[2 1] S·683B[386B 297B] Sc·[0.50 0.00]
+18:27:47.539610 db@open opening
+18:27:47.539685 journal@recovery F·1
+18:27:47.540185 journal@recovery recovering @34
+18:27:47.670731 memdb@flush created L0@36 N·3 S·193B "ETH..t51,v90":"TMT..t51,v92"
+18:27:47.672822 version@stat F·[3 1] S·876B[579B 297B] Sc·[0.75 0.00]
+18:27:47.772747 db@janitor F·6 G·0
+18:27:47.773256 db@open done T·233.574412ms
+=============== Jul 27, 2019 (IST) ===============
+18:43:39.553471 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+18:43:39.553710 version@stat F·[3 1] S·876B[579B 297B] Sc·[0.75 0.00]
+18:43:39.553733 db@open opening
+18:43:39.553839 journal@recovery F·1
+18:43:39.555271 journal@recovery recovering @37
+18:43:39.676475 memdb@flush created L0@39 N·3 S·193B "ETH..t51,v94":"TMT..t51,v96"
+18:43:39.680435 version@stat F·[4 1] S·1KiB[772B 297B] Sc·[1.00 0.00]
+18:43:39.785095 db@janitor F·7 G·0
+18:43:39.785239 db@open done T·231.470607ms
+18:43:39.785466 table@compaction L0·4 -> L1·1 S·1KiB Q·97
+18:43:39.821363 table@build created L1@42 N·5 S·297B "BLO..t51,v74":"TMT..t51,v96"
+18:43:39.821637 version@stat F·[0 1] S·297B[0B 297B] Sc·[0.00 0.00]
+18:43:39.854927 table@compaction committed F-4 S-772B Ke·0 D·12 T·69.338699ms
+18:43:39.855246 table@remove removed @39
+18:43:39.855464 table@remove removed @36
+18:43:39.855645 table@remove removed @33
+18:43:39.855837 table@remove removed @28
+18:43:39.856018 table@remove removed @27
+=============== Jul 27, 2019 (IST) ===============
+18:45:04.593546 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+18:45:04.593892 version@stat F·[0 1] S·297B[0B 297B] Sc·[0.00 0.00]
+18:45:04.593924 db@open opening
+18:45:04.594043 journal@recovery F·1
+18:45:04.595101 journal@recovery recovering @40
+18:45:04.630434 memdb@flush created L0@43 N·3 S·193B "ETH..t51,v98":"TMT..t51,v100"
+18:45:04.632373 version@stat F·[1 1] S·490B[193B 297B] Sc·[0.25 0.00]
+18:45:04.732118 db@janitor F·4 G·0
+18:45:04.732230 db@open done T·138.27133ms
+=============== Jul 27, 2019 (IST) ===============
+18:48:30.185325 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+18:48:30.185794 version@stat F·[1 1] S·490B[193B 297B] Sc·[0.25 0.00]
+18:48:30.185834 db@open opening
+18:48:30.186006 journal@recovery F·1
+18:48:30.187281 journal@recovery recovering @44
+18:48:30.317516 memdb@flush created L0@46 N·3 S·193B "ETH..t51,v102":"TMT..t51,v104"
+18:48:30.319313 version@stat F·[2 1] S·683B[386B 297B] Sc·[0.50 0.00]
+18:48:30.418345 db@janitor F·5 G·0
+18:48:30.418502 db@open done T·232.629173ms
+=============== Jul 27, 2019 (IST) ===============
+18:50:15.357198 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+18:50:15.357874 version@stat F·[2 1] S·683B[386B 297B] Sc·[0.50 0.00]
+18:50:15.357944 db@open opening
+18:50:15.358228 journal@recovery F·1
+18:50:15.367435 journal@recovery recovering @47
+18:50:15.427019 memdb@flush created L0@49 N·3 S·193B "ETH..t51,v106":"TMT..t51,v108"
+18:50:15.436234 version@stat F·[3 1] S·876B[579B 297B] Sc·[0.75 0.00]
+18:50:15.539117 db@janitor F·6 G·0
+18:50:15.539242 db@open done T·181.250784ms
+=============== Jul 27, 2019 (IST) ===============
+18:51:54.668285 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+18:51:54.670284 version@stat F·[3 1] S·876B[579B 297B] Sc·[0.75 0.00]
+18:51:54.670342 db@open opening
+18:51:54.670549 journal@recovery F·1
+18:51:54.678771 journal@recovery recovering @50
+18:51:55.189859 memdb@flush created L0@52 N·3 S·193B "ETH..t51,v110":"TMT..t51,v112"
+18:51:55.193045 version@stat F·[4 1] S·1KiB[772B 297B] Sc·[1.00 0.00]
+18:51:55.422876 db@janitor F·7 G·0
+18:51:55.422984 db@open done T·752.607807ms
+18:51:55.423149 table@compaction L0·4 -> L1·1 S·1KiB Q·113
+18:51:55.455947 table@build created L1@55 N·5 S·297B "BLO..t51,v74":"TMT..t51,v112"
+18:51:55.456206 version@stat F·[0 1] S·297B[0B 297B] Sc·[0.00 0.00]
+18:51:55.489271 table@compaction committed F-4 S-772B Ke·0 D·12 T·66.017399ms
+18:51:55.489611 table@remove removed @52
+18:51:55.489818 table@remove removed @49
+18:51:55.489997 table@remove removed @46
+18:51:55.490168 table@remove removed @43
+18:51:55.490347 table@remove removed @42
+=============== Jul 27, 2019 (IST) ===============
+18:53:43.130422 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+18:53:43.133276 version@stat F·[0 1] S·297B[0B 297B] Sc·[0.00 0.00]
+18:53:43.133369 db@open opening
+18:53:43.133665 journal@recovery F·1
+18:53:43.139829 journal@recovery recovering @53
+18:53:43.174639 memdb@flush created L0@56 N·3 S·193B "ETH..t51,v114":"TMT..t51,v116"
+18:53:43.174958 version@stat F·[1 1] S·490B[193B 297B] Sc·[0.25 0.00]
+18:53:43.275068 db@janitor F·4 G·0
+18:53:43.275095 db@open done T·141.692087ms
+=============== Jul 27, 2019 (IST) ===============
+18:55:14.400035 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+18:55:14.400735 version@stat F·[1 1] S·490B[193B 297B] Sc·[0.25 0.00]
+18:55:14.400803 db@open opening
+18:55:14.401174 journal@recovery F·1
+18:55:14.402821 journal@recovery recovering @57
+18:55:14.523741 memdb@flush created L0@59 N·3 S·193B "ETH..t51,v118":"TMT..t51,v120"
+18:55:14.530529 version@stat F·[2 1] S·683B[386B 297B] Sc·[0.50 0.00]
+18:55:14.636964 db@janitor F·5 G·0
+18:55:14.637076 db@open done T·236.230064ms
+=============== Jul 27, 2019 (IST) ===============
+18:56:39.323112 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+18:56:39.323840 version@stat F·[2 1] S·683B[386B 297B] Sc·[0.50 0.00]
+18:56:39.323908 db@open opening
+18:56:39.324145 journal@recovery F·1
+18:56:39.332731 journal@recovery recovering @60
+18:56:39.466133 memdb@flush created L0@62 N·3 S·193B "ETH..t51,v122":"TMT..t51,v124"
+18:56:39.476976 version@stat F·[3 1] S·876B[579B 297B] Sc·[0.75 0.00]
+18:56:39.578061 db@janitor F·6 G·0
+18:56:39.578114 db@open done T·254.171186ms
+=============== Jul 27, 2019 (IST) ===============
+19:20:56.385105 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+19:20:56.388304 version@stat F·[3 1] S·876B[579B 297B] Sc·[0.75 0.00]
+19:20:56.388388 db@open opening
+19:20:56.388737 journal@recovery F·1
+19:20:56.393082 journal@recovery recovering @63
+19:20:56.542617 memdb@flush created L0@65 N·3 S·193B "ETH..t51,v126":"TMT..t51,v128"
+19:20:56.544851 version@stat F·[4 1] S·1KiB[772B 297B] Sc·[1.00 0.00]
+19:20:56.642928 db@janitor F·7 G·0
+19:20:56.642963 db@open done T·254.537073ms
+19:20:56.643031 table@compaction L0·4 -> L1·1 S·1KiB Q·129
+19:20:56.676407 table@build created L1@68 N·5 S·297B "BLO..t51,v74":"TMT..t51,v128"
+19:20:56.676645 version@stat F·[0 1] S·297B[0B 297B] Sc·[0.00 0.00]
+19:20:56.743074 table@compaction committed F-4 S-772B Ke·0 D·12 T·99.962642ms
+19:20:56.743232 table@remove removed @65
+19:20:56.743301 table@remove removed @62
+19:20:56.743357 table@remove removed @59
+19:20:56.743411 table@remove removed @56
+19:20:56.743467 table@remove removed @55
+=============== Jul 29, 2019 (IST) ===============
+20:55:51.215244 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+20:55:51.269986 version@stat F·[0 1] S·297B[0B 297B] Sc·[0.00 0.00]
+20:55:51.270042 db@open opening
+20:55:51.270140 journal@recovery F·1
+20:55:51.271886 journal@recovery recovering @66
+20:55:51.296251 version@stat F·[0 1] S·297B[0B 297B] Sc·[0.00 0.00]
+20:55:51.450432 db@janitor F·3 G·0
+20:55:51.450578 db@open done T·180.501198ms
+=============== Jul 29, 2019 (IST) ===============
+20:57:17.237688 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+20:57:17.238588 version@stat F·[0 1] S·297B[0B 297B] Sc·[0.00 0.00]
+20:57:17.238667 db@open opening
+20:57:17.238949 journal@recovery F·1
+20:57:17.240966 journal@recovery recovering @69
+20:57:17.255454 version@stat F·[0 1] S·297B[0B 297B] Sc·[0.00 0.00]
+20:57:17.357534 db@janitor F·3 G·0
+20:57:17.357614 db@open done T·118.909362ms
+=============== Jul 29, 2019 (IST) ===============
+20:58:26.568314 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+20:58:26.569041 version@stat F·[0 1] S·297B[0B 297B] Sc·[0.00 0.00]
+20:58:26.569108 db@open opening
+20:58:26.569355 journal@recovery F·1
+20:58:26.580379 journal@recovery recovering @71
+20:58:26.597728 version@stat F·[0 1] S·297B[0B 297B] Sc·[0.00 0.00]
+20:58:26.697946 db@janitor F·3 G·0
+20:58:26.697991 db@open done T·128.849135ms
+=============== Jul 29, 2019 (IST) ===============
+21:00:24.325762 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+21:00:24.326371 version@stat F·[0 1] S·297B[0B 297B] Sc·[0.00 0.00]
+21:00:24.326426 db@open opening
+21:00:24.326589 journal@recovery F·1
+21:00:24.335465 journal@recovery recovering @73
+21:00:24.358343 version@stat F·[0 1] S·297B[0B 297B] Sc·[0.00 0.00]
+21:00:24.492296 db@janitor F·3 G·0
+21:00:24.492385 db@open done T·165.928759ms
+=============== Jul 29, 2019 (IST) ===============
+21:00:43.135424 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+21:00:43.135948 version@stat F·[0 1] S·297B[0B 297B] Sc·[0.00 0.00]
+21:00:43.135996 db@open opening
+21:00:43.136177 journal@recovery F·1
+21:00:43.137398 journal@recovery recovering @75
+21:00:43.141647 version@stat F·[0 1] S·297B[0B 297B] Sc·[0.00 0.00]
+21:00:43.310531 db@janitor F·3 G·0
+21:00:43.310651 db@open done T·174.614075ms
+=============== Jul 29, 2019 (IST) ===============
+21:01:03.443366 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+21:01:03.443960 version@stat F·[0 1] S·297B[0B 297B] Sc·[0.00 0.00]
+21:01:03.444018 db@open opening
+21:01:03.444246 journal@recovery F·1
+21:01:03.455018 journal@recovery recovering @77
+21:01:03.468874 version@stat F·[0 1] S·297B[0B 297B] Sc·[0.00 0.00]
+21:01:03.612387 db@janitor F·3 G·0
+21:01:03.612458 db@open done T·168.404232ms
+=============== Jul 29, 2019 (IST) ===============
+21:02:55.058260 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+21:02:55.058947 version@stat F·[0 1] S·297B[0B 297B] Sc·[0.00 0.00]
+21:02:55.059008 db@open opening
+21:02:55.059273 journal@recovery F·1
+21:02:55.084789 journal@recovery recovering @79
+21:02:55.105873 version@stat F·[0 1] S·297B[0B 297B] Sc·[0.00 0.00]
+21:02:55.219342 db@janitor F·3 G·0
+21:02:55.219471 db@open done T·160.41704ms
+=============== Jul 29, 2019 (IST) ===============
+21:04:48.372317 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+21:04:48.372983 version@stat F·[0 1] S·297B[0B 297B] Sc·[0.00 0.00]
+21:04:48.373043 db@open opening
+21:04:48.373242 journal@recovery F·1
+21:04:48.374524 journal@recovery recovering @81
+21:04:48.409307 memdb@flush created L0@83 N·1 S·135B "lan..t51,v130":"lan..t51,v130"
+21:04:48.413548 version@stat F·[1 1] S·432B[135B 297B] Sc·[0.25 0.00]
+21:04:48.503697 db@janitor F·4 G·0
+21:04:48.503830 db@open done T·130.745269ms
+=============== Jul 29, 2019 (IST) ===============
+21:08:19.793059 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+21:08:19.793819 version@stat F·[1 1] S·432B[135B 297B] Sc·[0.25 0.00]
+21:08:19.793986 db@open opening
+21:08:19.794289 journal@recovery F·1
+21:08:19.799080 journal@recovery recovering @84
+21:08:19.802054 version@stat F·[1 1] S·432B[135B 297B] Sc·[0.25 0.00]
+21:08:19.940474 db@janitor F·4 G·0
+21:08:19.940560 db@open done T·146.52814ms
+=============== Jul 29, 2019 (IST) ===============
+21:39:37.838524 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+21:39:37.954925 version@stat F·[1 1] S·432B[135B 297B] Sc·[0.25 0.00]
+21:39:37.955059 db@open opening
+21:39:37.955329 journal@recovery F·1
+21:39:37.956038 journal@recovery recovering @86
+21:39:38.076722 memdb@flush created L0@88 N·1 S·135B "lan..t51,v132":"lan..t51,v132"
+21:39:38.092316 version@stat F·[2 1] S·567B[270B 297B] Sc·[0.50 0.00]
+21:39:38.223015 db@janitor F·5 G·0
+21:39:38.223343 db@open done T·268.232146ms
+=============== Jul 29, 2019 (IST) ===============
+21:42:38.573709 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+21:42:38.577551 version@stat F·[2 1] S·567B[270B 297B] Sc·[0.50 0.00]
+21:42:38.577622 db@open opening
+21:42:38.577962 journal@recovery F·1
+21:42:38.580056 journal@recovery recovering @89
+21:42:38.597085 version@stat F·[2 1] S·567B[270B 297B] Sc·[0.50 0.00]
+21:42:38.758841 db@janitor F·5 G·0
+21:42:38.758893 db@open done T·181.241565ms
+=============== Jul 29, 2019 (IST) ===============
+21:43:24.890940 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+21:43:24.891708 version@stat F·[2 1] S·567B[270B 297B] Sc·[0.50 0.00]
+21:43:24.891771 db@open opening
+21:43:24.892111 journal@recovery F·1
+21:43:24.903028 journal@recovery recovering @91
+21:43:24.925655 version@stat F·[2 1] S·567B[270B 297B] Sc·[0.50 0.00]
+21:43:25.514619 db@janitor F·5 G·0
+21:43:25.514758 db@open done T·622.936301ms

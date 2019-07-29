@@ -3,7 +3,7 @@ package models
 import "time"
 
 type Nodes struct {
-	NodesList   []TONNode `json:"nodes"`
+	NodesList   []List `json:"list"`
 }
 type Location struct {
 	City      string  `json:"city"`

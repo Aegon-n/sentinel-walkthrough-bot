@@ -9,8 +9,10 @@ import (
 	updates2 "github.com/Aegon-n/sentinel-bot/handler/updates"
 	"github.com/Aegon-n/sentinel-bot/locale"
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/dbo"
+	dbo2 "github.com/Aegon-n/sentinel-bot/eth-socks-proxy/dbo"
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/handlers"
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/helpers"
+	eth_handlers "github.com/Aegon-n/sentinel-bot/eth-socks-proxy/handler"
 	tmExplorer "github.com/Aegon-n/sentinel-bot/tm-explorer"
 	"github.com/fatih/color"
 	"github.com/than-os/sentinel-bot/constants"
@@ -39,6 +41,12 @@ func main() {
 
 	db, err := dbo.NewDB()
 	if err != nil {
+		log.Println(err)
+		log.Fatal(err)
+	}
+	db2, err := dbo2.NewDB()
+	if err != nil {
+		log.Println("h",err)
 		log.Fatal(err)
 	}
 	//nodes, err := helpers.GetNodes()
@@ -64,15 +72,15 @@ func main() {
 				handler.HandleUpdates(bot, &update)
 
 			case "sps":
-				handlers.HandleSocks5Proxy(bot, update, db)
+				eth_handlers.HandleSocks5Proxy(bot, update, db2)
 
 			case "mynode":
-				handlers.ShowMyNode(bot, update, db)
+				eth_handlers.ShowMyNode(bot, update, db2)
 
 			case "restart_sps":
-				handlers.Restart(bot, update, db)
+				eth_handlers.Restart(bot, update, db2)
 			case "sps_info":
-				handlers.ShowMyInfo(bot, update, db)
+				eth_handlers.ShowMyInfo(bot, update, db2)
 			case "sps_wallet":
 				handlers.ShowEthWallet(bot, update, db)
 			}
@@ -110,7 +118,7 @@ func main() {
 			}
 		}
 		if update.Message != nil && !update.Message.IsCommand() && len(update.Message.Text) > 0 {
-			handlers.Socks5InputHandler(bot, update, db)
+			eth_handlers.Socks5InputHandler(bot, update, db2)
 			TMState := helpers.GetState(bot, update, constants.TMState, db)
 			color.Green("******* APP STATE = %d *******", TMState)
 		}

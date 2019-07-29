@@ -26,10 +26,28 @@ func HandleSocks5Proxy(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 	helpers.SetState(b, u, constants.EthState, constants.EthState0, db)
 	helpers.SetState(b, u, constants.TMState, constants.TMState0, db)
 	_ = db.Insert(constants.TMTimeLimit, u.Message.From.UserName, time.Now().Format(time.RFC3339))
-	greet := fmt.Sprintf(templates.GreetingMsg, u.Message.From.UserName)
-	msg := tgbotapi.NewMessage(u.Message.Chat.ID,greet)
-	msg.ReplyMarkup = buttons.GetButtons("SocksNetworkButtonList")
-	uri := "https://t.me/socks?server=145.239.224.177&port=1080&user=sent&pass=sentinel"
+	// greet := fmt.Sprintf(templates.GreetingMsg, u.Message.From.UserName)
+	// msg := tgbotapi.NewMessage(u.Message.Chat.ID,greet)
+
+	nodes, err := helpers.GetNodes()
+	if err != nil {
+		helpers.Send(b, u, templates.NoEthNodes)
+		return
+	}
+	helpers.Send(b, u, templates.AskToSelectANode)
+	
+	txt := ""
+	for idx, node := range nodes {
+		txt = txt + fmt.Sprintf(templates.NodeList, strconv.Itoa(idx+1), node.Location.City, node.Location.Country,
+			node.NetSpeed.Download, node.IP, node.VpnType, node.AccountAddr)
+		txt += "\n\n"
+	}
+	fmt.Println(txt)
+	// msg.ReplyMarkup = buttons.GetNodeListButtons(len(nodes))
+	helpers.Send(b, u, txt)
+	return
+	// msg.ReplyMarkup = buttons.GetButtons("SocksNetworkButtonList")
+	/* uri := "https://t.me/socks?server=145.239.224.177&port=1080&user=sent&pass=sentinel"
 		// uri, message, err := helpers.SocksProxy(b, u, node.AccountAddr, u.Message.Text) 
 		// helpers.Send(b, u, message)
 	btnOpts := []models.InlineButtonOptions{
@@ -37,7 +55,7 @@ func HandleSocks5Proxy(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 	}
 	opts := models.ButtonHelper{Type: constants.InlineButton, InlineKeyboardOpts: btnOpts}
 	helpers.Send(b, u, templates.Success, opts)
-	return
+	return */
 	/* uri := fmt.Sprintf(constants.ProxyURL, nodes[i].IP, strconv.Itoa(1080), "sent", "sentinel")
 	btnOpts := []models.InlineButtonOptions{
 		{Label: "Sentinel Proxy Node", URL: uri},
@@ -45,19 +63,20 @@ func HandleSocks5Proxy(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 	opts := models.ButtonHelper{Type: constants.InlineButton, InlineKeyboardOpts: btnOpts}
 	helpers.Send(b, u, templates.Success, opts)
 	return */
-	// b.Send(msg)
+	
 }
 func HandleSocks5InlineButtons(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 	
-	module := strings.Split(u.CallbackQuery.Data,"-")[2]
-	switch module {
-	case "Eth":
-		nodes, err := helpers.GetNodes()
+	nodes, err := helpers.GetNodes()
 		log.Println(nodes)
 		if err != nil {
 			helpers.Send(b, u, templates.NoEthNodes)
 			return
 		}
+		
+	module := strings.Split(u.CallbackQuery.Data,"-")[2]
+	switch module {
+	case "Eth":
 		answeredQuery(b, u)
 		go ethereum.AskForEthWallet(b, u, db, nodes)
 		
@@ -67,12 +86,12 @@ func HandleSocks5InlineButtons(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.Bot
 		return
 		// go tendermint.AskForTendermintWallet(b, u, db, nodes)
 		
-	// case "10 Days","20 Days","30 Days":
-		// go HandleBW(b, u, db, nodes)
-		// answeredQuery(b, u)
-	// case "1","2","3":
-		// go HandleNodeId(b, u, db, nodes)
-		// answeredQuery(b, u)
+	/* case "10 Days","20 Days","30 Days":
+		go HandleBW(b, u, db, nodes)
+		answeredQuery(b, u) */
+	case "1","2","3":
+		go HandleNodeId(b, u, db, nodes)
+		answeredQuery(b, u)
 	}
 }
 func AboutSentinel(b *tgbotapi.BotAPI, u tgbotapi.Update) {
@@ -110,7 +129,7 @@ func isTxn(u tgbotapi.Update) string {
 func Socks5InputHandler(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 	nodes, err := helpers.GetNodes()
 	if err != nil {
-		helpers.Send(b, u, templates.NoTMNodes)
+		helpers.Send(b, u, templates.NoEthNodes)
 		return
 	}
 	switch u.Message.Text {
@@ -130,7 +149,7 @@ func Socks5InputHandler(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 	}
 }
 
-func ShowEthWallet(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
+func ShowEthWallet (b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 	kv, err := db.Read(constants.WalletTM, u.Message.From.UserName)
 	if err != nil {
 		helpers.Send(b, u, templates.Error)
@@ -280,4 +299,8 @@ func answeredQuery(bot *tgbotapi.BotAPI, u tgbotapi.Update) {
 	queryId := u.CallbackQuery.ID
 	config := tgbotapi.CallbackConfig{queryId,"",false,"",0}
 	bot.AnswerCallbackQuery(config)
+}
+func isNumeric(s string) bool {
+	_, err := strconv.ParseFloat(s, 64)
+	return err == nil
 }
