@@ -33,6 +33,10 @@ func HandleSocks5Proxy(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 		txt = txt + fmt.Sprintf(templates.NodeList, strconv.Itoa(idx+1), node.Location.City, node.Location.Country,
 			node.NetSpeed.Download/float64(8000000))
 		txt += "\n\n"
+		if idx == 60 {
+			helpers.Send(b, u, txt)
+			txt = ""
+		}
 	}
 	fmt.Println(nodes[0].NetSpeed.Download)
 	fmt.Println(nodes[0].NetSpeed.Download/float64(8000000))
@@ -41,7 +45,7 @@ func HandleSocks5Proxy(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 	db.SetStatus(u.Message.From.UserName, "gotnodelist")
 	helpers.Send(b, u, txt)
 	msg := tgbotapi.NewMessage(u.Message.Chat.ID, templates.AskToSelectANode)
-	numericKeyboard := helpers.GetNumaricKeyBoard()
+	numericKeyboard := helpers.GetNumaricKeyBoard(len(nodes))
 	msg.ReplyMarkup = numericKeyboard
 	b.Send(msg)
 	return

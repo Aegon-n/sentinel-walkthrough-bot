@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"math"
 
 	"github.com/Aegon-n/sentinel-bot/eth-socks-proxy/buttons"
 	"github.com/Aegon-n/sentinel-bot/eth-socks-proxy/dbo/ldb"
@@ -16,8 +17,49 @@ import (
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/templates"
 	tgbotapi "gopkg.in/telegram-bot-api.v4"
 )
-
-func GetNumaricKeyBoard() tgbotapi.ReplyKeyboardMarkup {
+/*func GetBtnRow(n int) [][]tgbotapi.KeyboardButton {
+	rowlist := make([][]tgbotapi.KeyboardButton, n)
+	for i := 0; i < n; i++ {
+    rowlist[i] = append(rowlist[i], tgbotapi.KeyboardButton(strconv.Itoa(i+1)))
+	}
+	return rowlist
+}*/
+func GetNumaricKeyBoard(n int) tgbotapi.ReplyKeyboardMarkup {
+	btnlist := [][]tgbotapi.KeyboardButton{{},{}}
+	rows := math.Ceil(float64(n)/float64(4))
+	fmt.Println(rows)
+	number := 0
+	for j:= 0; j < int(rows); j++ {
+		list := []tgbotapi.KeyboardButton{}
+	for i := 0; i < 4; i++ {
+		number++;
+		if number > n {
+			break
+		}
+		list = append(list, tgbotapi.NewKeyboardButton(strconv.Itoa(number)))
+	}
+	btnlist = append(btnlist, list)
+}
+	
+	fmt.Println(btnlist)
+	return tgbotapi.ReplyKeyboardMarkup{
+		Keyboard: btnlist,
+		OneTimeKeyboard: true,
+		ResizeKeyboard: true,
+	}
+	/*
+	log.Println(data)
+	for i, b := range data {
+		i+=1
+		if i > 2{
+			for k,v := range b {
+				list[1] = append(list[1], tgbotapi.NewInlineKeyboardButtonData(k, v))
+			}
+		}else {
+			for k,v := range b {
+				list[0] = append(list[0], tgbotapi.NewInlineKeyboardButtonData(k, v))
+			}
+		}
 	numericKeyboard := tgbotapi.NewReplyKeyboard(
 		tgbotapi.NewKeyboardButtonRow(
 			tgbotapi.NewKeyboardButton("1"),
@@ -35,7 +77,7 @@ func GetNumaricKeyBoard() tgbotapi.ReplyKeyboardMarkup {
 			tgbotapi.NewKeyboardButton("9"),
 		),
 	)
-	return numericKeyboard
+	return numericKeyboard */
 }
 
 func Send(b *tgbotapi.BotAPI, u tgbotapi.Update, msg string, opts ...models.ButtonHelper) {
@@ -53,7 +95,7 @@ func Send(b *tgbotapi.BotAPI, u tgbotapi.Update, msg string, opts ...models.Butt
 			c.ReplyMarkup = tgbotapi.ReplyKeyboardMarkup{
 				Keyboard:        buttons.ReplyButtons(o.Labels),
 				OneTimeKeyboard: true,
-				ResizeKeyboard:  true,
+				ResizeKeyboard:  false,
 			}
 		}
 		if o.Type == constants.InlineButton {
@@ -87,7 +129,7 @@ func GetTelegramUsername(username string) string {
 func GetNodes() ([]models.List, error) {
 	var body models.SocksResponse
 	var N []models.List
-	resp, err := http.Get("https://api.sentinelgroup.io/client/vpn/socks-list")
+	resp, err := http.Get("https://api.sentinelgroup.io/client/vpn/list")
 	if err != nil {
 		return N, err
 	}
@@ -95,9 +137,9 @@ func GetNodes() ([]models.List, error) {
 		return N, err
 	}
 	defer resp.Body.Close()
-	if len(body.List) > 20 {
-		return body.List[:20], err
-	}
+	/*if len(body.List) > 60 {
+		return body.List[:60], err
+	}*/
 	return body.List, err
 }
 
