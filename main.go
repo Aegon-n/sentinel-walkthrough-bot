@@ -11,11 +11,9 @@ import (
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/dbo"
 	dbo2 "github.com/Aegon-n/sentinel-bot/eth-socks-proxy/dbo"
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/handlers"
-	"github.com/Aegon-n/sentinel-bot/socks5-proxy/helpers"
 	eth_handlers "github.com/Aegon-n/sentinel-bot/eth-socks-proxy/handler"
 	tmExplorer "github.com/Aegon-n/sentinel-bot/tm-explorer"
 	"github.com/fatih/color"
-	"github.com/than-os/sentinel-bot/constants"
 
 	tgbotapi "gopkg.in/telegram-bot-api.v4"
 
@@ -119,8 +117,8 @@ func main() {
 		}
 		if update.Message != nil && !update.Message.IsCommand() && len(update.Message.Text) > 0 {
 			eth_handlers.Socks5InputHandler(bot, update, db2)
-			TMState := helpers.GetState(bot, update, constants.TMState, db)
-			color.Green("******* APP STATE = %d *******", TMState)
+			/* TMState := helpers.GetState(bot, update, constants.TMState, db)
+			color.Green("******* APP STATE = %d *******", TMState) */
 		}
 
 	}

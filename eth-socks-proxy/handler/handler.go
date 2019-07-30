@@ -171,7 +171,7 @@ func ShowMyInfo(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 		helpers.Send(b, u, templates.Error)
 		return
 	}
-	txt := fmt.Sprintf("Usage:\ndownload: %f Mb\nupload: %f Mb\n", float64(usage.Down)/float64(800000), float64(usage.Up)/float64(800000))
+	txt := fmt.Sprintf("Usage:\ndownload: %f MB\nupload: %f MB\n", float64(usage.Down)/float64(800000), float64(usage.Up)/float64(800000))
 	helpers.Send(b, u, txt)
 	return 
 }

@@ -129,7 +129,7 @@ func GetTelegramUsername(username string) string {
 func GetNodes() ([]models.List, error) {
 	var body models.SocksResponse
 	var N []models.List
-	resp, err := http.Get("https://api.sentinelgroup.io/client/vpn/list")
+	resp, err := http.Get("https://api.sentinelgroup.io/client/vpn/socks-list")
 	if err != nil {
 		return N, err
 	}
