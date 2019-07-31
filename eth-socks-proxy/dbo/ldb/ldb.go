@@ -20,4 +20,5 @@ type BotDB interface {
 	// into database to avoid multiple calls to Insert() inside a method
 	MultiWriter([]models.KV, string) error
 	RemoveUser(string) error
+	Iterate() ([]models.User, error)
 }

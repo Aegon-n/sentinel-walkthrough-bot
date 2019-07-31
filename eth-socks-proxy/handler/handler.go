@@ -26,12 +26,15 @@ func HandleSocks5Proxy(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 		helpers.Send(b, u, templates.NoEthNodes)
 		return
 	}
-	
-	
+	err = db.Insert("ChatID", u.Message.From.UserName, strconv.FormatInt(u.Message.Chat.ID, 10))
+	if err != nil {
+		helpers.Send(b, u , templates.Error)
+	}
 	txt := ""
 	for idx, node := range nodes {
 		txt = txt + fmt.Sprintf(templates.NodeList, strconv.Itoa(idx+1), node.Location.City, node.Location.Country,
-			node.NetSpeed.Download/float64(8000000))
+			node.NetSpeed.Download/float64(1000000), node.Load.CPU, "%")
+		fmt.Println(node.Load.CPU)
 		txt += "\n\n"
 		if idx == 60 {
 			helpers.Send(b, u, txt)
@@ -39,7 +42,7 @@ func HandleSocks5Proxy(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 		}
 	}
 	fmt.Println(nodes[0].NetSpeed.Download)
-	fmt.Println(nodes[0].NetSpeed.Download/float64(8000000))
+	fmt.Println(nodes[0].NetSpeed.Download/float64(1000000))
 	fmt.Println(txt)
 	// msg.ReplyMarkup = buttons.GetNodeListButtons(len(nodes))
 	db.SetStatus(u.Message.From.UserName, "gotnodelist")
@@ -128,7 +131,7 @@ func HandleNodeId(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []m
 	log.Println("hereeeee")
 	
 	txt := fmt.Sprintf(templates.NodeList,strconv.Itoa(idx), nodes[idx-1].Location.City, nodes[idx-1].Location.Country,
-														nodes[idx-1].NetSpeed.Download/float64(8000000))
+														nodes[idx-1].NetSpeed.Download/float64(1000000), nodes[idx-1].Load.CPU, "%")
 	err = db.Insert("NodeInfo", u.Message.From.UserName, txt)
 	if err != nil {
 		log.Println("Error inserting NodeInfo")
@@ -171,7 +174,7 @@ func ShowMyInfo(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 		helpers.Send(b, u, templates.Error)
 		return
 	}
-	txt := fmt.Sprintf("Usage:\ndownload: %f MB\nupload: %f MB\n", float64(usage.Down)/float64(800000), float64(usage.Up)/float64(800000))
+	txt := fmt.Sprintf("Usage:\ndownload: %f MB\nupload: %f MB\n", usage.Down/float64(1048576), usage.Up/float64(1048576))
 	helpers.Send(b, u, txt)
 	return 
 }

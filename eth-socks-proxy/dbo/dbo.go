@@ -2,11 +2,12 @@ package dbo
 
 import (
 	"fmt"
-	"github.com/syndtr/goleveldb/leveldb"
-	"github.com/Aegon-n/sentinel-bot/eth-socks-proxy/dbo/models"
-	"github.com/Aegon-n/sentinel-bot/eth-socks-proxy/dbo/ldb"
-	"github.com/Aegon-n/sentinel-bot/socks5-proxy/constants"
 
+	"github.com/Aegon-n/sentinel-bot/eth-socks-proxy/dbo/ldb"
+	"github.com/Aegon-n/sentinel-bot/eth-socks-proxy/dbo/models"
+	"github.com/Aegon-n/sentinel-bot/eth-socks-proxy/helpers"
+	"github.com/Aegon-n/sentinel-bot/socks5-proxy/constants"
+	"github.com/syndtr/goleveldb/leveldb"
 )
 
 type Level struct {
@@ -53,7 +54,7 @@ func (l Level) GetStatus(username string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	
+
 	return pair.Value, nil
 }
 
@@ -98,5 +99,47 @@ func (l Level) RemoveUser(username string) error {
 	if e := l.db.Delete([]byte("TOKEN"+username), nil); e != nil {
 		return e
 	}
+	if e := l.db.Delete([]byte("ChatID"+username), nil); e != nil {
+		return e
+	}
 	return nil
+}
+
+func (l Level) Iterate() ([]models.User, error) {
+	itr := l.db.NewIterator(nil, nil)
+
+	var p []models.User
+	var w []models.KV
+	for itr.Next() {
+		key := fmt.Sprintf("%s", itr.Key())
+		value := fmt.Sprintf("%s", itr.Value())
+		w = append(w, models.KV{Key: key, Value: value})
+	}
+	defer itr.Release()
+	err := itr.Error()
+
+	if err != nil {
+		return []models.User{}, err
+	}
+	for _, user := range w {
+		username := helpers.GetTelegramUsername(user.Key)
+		var participant models.User
+		if username != "" {
+			for _, u := range w {
+				if u.Key == "NodeIP"+username {
+					participant.Node = u.Value
+					participant.TelegramUsername = username
+				} else if u.Key == "ChatID"+username {
+					participant.ChatID = u.Value
+				} else if u.Key == "TOKEN"+username {
+					participant.Token = u.Value
+				} 
+
+			}
+		}
+		if participant.Node != "" && participant.TelegramUsername != "" && participant.ChatID != "" && participant.Token != "" {
+			p = append(p, participant)
+		}
+	}
+	return p, err
 }

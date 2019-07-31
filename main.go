@@ -12,6 +12,7 @@ import (
 	dbo2 "github.com/Aegon-n/sentinel-bot/eth-socks-proxy/dbo"
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/handlers"
 	eth_handlers "github.com/Aegon-n/sentinel-bot/eth-socks-proxy/handler"
+	eth_helpers "github.com/Aegon-n/sentinel-bot/eth-socks-proxy/helpers"
 	tmExplorer "github.com/Aegon-n/sentinel-bot/tm-explorer"
 	"github.com/fatih/color"
 
@@ -48,7 +49,8 @@ func main() {
 		log.Fatal(err)
 	}
 	//nodes, err := helpers.GetNodes()
-	//go proxy.UpdateNodesListJob(&nodes)
+	go eth_helpers.ExpiredUsersJob(bot, db2)
+
 
 	for update := range updates {
 

@@ -1,7 +1,5 @@
 package models
 
-import "time"
-
 type Nodes struct {
 	NodesList   []List `json:"list"`
 }
@@ -37,14 +35,10 @@ type KV struct {
 }
 
 type User struct {
-	Timestamp        time.Time
-	Auth             bool
 	Node             string
-	Password         string
-	BW               string
-	URI              string
-	EthAddr          string
 	TelegramUsername string
+	ChatID					 string
+	Token						 string					
 }
 
 type TxReceipt struct {
@@ -126,14 +120,7 @@ type GeoLocation struct {
 	//Zip string `json:"zip"`
 }
 
-type AddUser struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
-}
 
-type RemoveUser struct {
-	Username string `json:"username"`
-}
 
 type ExpiredUsers struct {
 	Key   string
@@ -222,6 +209,10 @@ type VpnUsage struct {
 	Usage   Usage `json:"usage"`
 }
 type Usage struct {
-	Down int `json:"down"`
-	Up   int `json:"up"`
+	Down float64 `json:"down"`
+	Up   float64 `json:"up"`
+}
+
+type LimitResponse struct {
+	ClientList []string `json:"client_list"`
 }

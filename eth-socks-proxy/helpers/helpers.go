@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"strings"
 	"math"
-
+	"github.com/jasonlvhit/gocron"
 	"github.com/Aegon-n/sentinel-bot/eth-socks-proxy/buttons"
 	"github.com/Aegon-n/sentinel-bot/eth-socks-proxy/dbo/ldb"
 	"github.com/Aegon-n/sentinel-bot/eth-socks-proxy/dbo/models"
@@ -119,8 +119,8 @@ func GetTelegramUsername(username string) string {
 		return ""
 	}
 
-	if strings.Contains(username, "telegram") {
-		return strings.TrimPrefix(username, "telegram")
+	if strings.Contains(username, constants.AssignedNodeURI) {
+		return strings.TrimPrefix(username, constants.AssignedNodeURI)
 	}
 
 	return ""
@@ -233,9 +233,9 @@ func SocksProxy(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, vpn_addr st
 	return
 }
 
-func DisconnectNode(b *tgbotapi.BotAPI, u tgbotapi.Update, ip string, token string) {
+func DisconnectNode(b *tgbotapi.BotAPI, username string, ip string, token string) {
 
-	values := map[string]string{"account_addr": u.Message.From.UserName, "token": token}
+	values := map[string]string{"account_addr": username, "token": token}
 	fmt.Println(values)
 	jsonValue, _ := json.Marshal(values)
 	url := fmt.Sprintf("http://%s:3000/disconnect", ip)
@@ -270,4 +270,55 @@ func GetDataUsage(u tgbotapi.Update, ip, token string) (models.Usage, error) {
 	}
 	defer resp.Body.Close()
 	return body.Usage, err
+}
+
+func CheckLimitExceededUsers(bot *tgbotapi.BotAPI, db ldb.BotDB){
+	AllUsers, err := db.Iterate() 
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	fmt.Println("All Users:\n", AllUsers)
+	for _, user := range AllUsers {
+		var body models.LimitResponse
+		url := fmt.Sprintf("http://%s:3000/limit_reached_ids", user.Node)
+		resp, err := http.Get(url)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+
+		if err := json.NewDecoder(resp.Body).Decode(&body); err != nil {
+			log.Println(err)
+			return
+		}
+		fmt.Println(body.ClientList)
+		if contains(body.ClientList, strings.ToLower(user.TelegramUsername)) {
+			chatId, err := strconv.Atoi(user.ChatID)
+			if err != nil {
+				log.Println(err)
+				return
+			}
+			msg := tgbotapi.NewMessage(int64(chatId), "You have used 1GB data. Proxy will disconnect now. Please disable proxy in telegram settings")
+			bot.Send(msg)
+			DisconnectNode(bot, user.TelegramUsername, user.Node, user.Token)
+			db.RemoveUser(user.TelegramUsername)
+		}
+	}
+
+}
+
+func contains(s []string, e string) bool {
+	for _, a := range s {
+			if a == e {
+					return true
+			}
+	}
+	return false
+}
+
+func ExpiredUsersJob(bot *tgbotapi.BotAPI, db ldb.BotDB) {
+	s := gocron.NewScheduler()
+	s.Every(10).Seconds().Do(CheckLimitExceededUsers, bot, db)
+	<-s.Start()
 }

@@ -19,7 +19,7 @@ However, you can use /refund to claim  your amount`
 	AskForTMWallet    = "Please share your tendermint wallet address that you want to use for transactions to this bot"
 	AskForBW          = "Please select how much bandwidth you need by clicking on one of the buttons below: "
 	BWError           = "error while storing bandwidth price"
-	NodeList          = "%s.) %s, %s\n     Speed: %.2f Mbps\n "
+	NodeList          = "%s.) %s, %s\n     Speed: %.2f Mbps\n     CPU-Load: %.2f%s\n"
 	BWPeriods         = "you have opted for %s of unlimited bandwidth"
 	Error             = "could not read user info"
 	BWAttachmentError = "error occurred while adding user details for bandwidth requirements"
