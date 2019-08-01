@@ -83,6 +83,8 @@ func main() {
 				eth_handlers.ShowMyInfo(bot, update, db2)
 			case "sps_wallet":
 				handlers.ShowEthWallet(bot, update, db)
+			case "about":
+				handlers.AboutSentinel(bot, update)
 			}
 		}
 

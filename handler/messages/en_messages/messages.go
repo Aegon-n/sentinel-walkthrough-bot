@@ -3,129 +3,126 @@ package en_messages
 var (
 	LangSelectMsg = map[string]string{"English":"Please choose your language from the list below: ","Russian":"Пожалуйста, выберите ваш язык из списка ниже"}
 	LangChosenMsg = "LangChosenMsg"
-	SelectwalkthroughMsg = "Please select /help to know the available commands for this bot"
-	WelcomeGreetMsg = "Hey %s , Welcome to sentinel-bot."
-	ExitMsg = "\n\n\n\tThank you for using sentinel app walkthrough session\t\n\n\n"
-	AppSelectMsg = "Choose App from the list below: "
-	DesktopOSSelectMsg = "*Sentinel->Desktop*\n\nChoose OS from the list below: "
-	MobileOSSelectMsg = "*Sentinel->Mobile*\n\nChoose OS from the list below: "
+	SelectwalkthroughMsg = "Please select /help to know commands available for the Sentinel Network bot"
+	WelcomeGreetMsg = "Hey %s , welcome to the Sentinel Network"
+	ExitMsg = "\n\n\n\tThank you for using the Sentinel app walkthrough guide on the Sentinel Network bot\t\n\n\n"
+	AppSelectMsg = "Choose App from the list below:"
+	DesktopOSSelectMsg = "*Sentinel -> Desktop*\n\nChoose OS from the list below: "
+	MobileOSSelectMsg = "*Sentinel -> Mobile*\n\nChoose OS from the list below: "
 
-	LinuxNetworkSelectMsg = "*Sentinel->Desktop->Linux*\n\nChoose a network from the list below: "
-	WindowsNetworkSelectMsg = "*Sentinel->Desktop->Windows*\n\nChoose a network from the list below: "
-	MacNetworkSelectMsg = "*Sentinel->Desktop->Mac*\n\nChoose a network from the list below: "
-	AndroidNetworkSelectMsg = "*Sentinel->Desktop->Android*\n\nChoose a network from the list below: "
-	IOSNetworkSelectMsg = "*Sentinel->Desktop->IOS*\n\nChoose a network from the list below: "
-	SelectUpdateBlog = "select a button below for getting latest updates"
-	EthWinListOfModulesMsg = `*Here is the list of Modules for Ethereum TestNet*
+	LinuxNetworkSelectMsg = "*Sentinel -> Desktop-> Linux*\n\nChoose a network from the list below: "
+	WindowsNetworkSelectMsg = "*Sentinel -> Desktop-> Windows*\n\nChoose a network from the list below: "
+	MacNetworkSelectMsg = "*Sentinel -> Desktop -> Mac*\n\nChoose a network from the list below: "
+	AndroidNetworkSelectMsg = "*Sentinel -> Desktop->Android*\n\nChoose a network from the list below: "
+	IOSNetworkSelectMsg = "*Sentinel -> Desktop->IOS*\n\nChoose a network from the list below: "
+	SelectUpdateBlog = "Select a button below for getting the latest updates"
+	EthWinListOfModulesMsg = `*Here are the list of modules the for Ethereum TestNet*
 
-	1. Downloading & installation of sentinel-Desktop Application
+	1. Downloading & installation of Sentinel Desktop Client
 
-	2. Wallet Creation on Ethereum
+	2. Wallet Creation on Ethereum (ETH)
 
-	3. Sentinel-MainNet
+	3. Sentinel Mainnet
 
 	4. TestNet Activation
 
 	5. Receiving free test tokens
 
-	6. Connecting to dVpn
+	6. Connecting to dVPN
 
-	7. Disconnecting dVpn`
+	7. Disconnecting dVPN`
 
-	EthWindowsModule10 = ` *1.Download & Installation steps of sentinel-Desktop Application*
+	EthWindowsModule10 = ` *1. Download & Installation steps of Sentinel Desktop Client*
 	
-	*step1*: Go to https://sentinel.co
+	*Step 1*: Go to https://sentinel.co
 
-	*step2*: Scroll down you will see a .exe file.
-				Please download and install it.
-
-	`
+	*Step 2*: Scroll down and you will see the option to select your operating system and download an executable for that. Please download and install the '.exe' file`
 
 	EthWindowsModule20 = `
-	*2.Wallet Creation on Ethereum*
+	*2. Wallet Creation on Ethereum*
 						
-	*step1*: Open sentinel App click create/restore wallet
+	*Step 1*: Open sentinel App click create/restore wallet
 
-	*step2*: Enter a Anonymous ID password to Create Account
+	*Step 2*: Enter a Anonymous ID password to Create Account
 
-	*step3*: Click create to create a new wallet
+	*Step 3*: Click create to create a new wallet
 										(or)
 					
-	*select a keystore file if you want restore your previous account*
+	*Select a keystore file if you want restore your previous account*
 						  
-	*step4*: Copy your wallet address & public_key and store
+	*Step 4*: Copy your wallet address & public_key and store
 									the public_key securely.
 
-	*step5*: Click on checklist and Go to Sentinel-MainNet Dashboard
+	*Step 5*: Click on checklist and Go to Sentinel-MainNet Dashboard
 					
 	`
 	EthWindowsModule30 = ` 
-	*3.MainNet Sending & Receiving 'SENT' Tokens*
+	*3. MainNet Sending & Receiving 'SENT' Tokens*
 
-	*step1*: Type Recipient wallet Address
+	*Step 1*: Type Recipient wallet Address
 
-	*step2*: Type Amount 
+	*Step 2*: Type Amount 
 
-	*step3*: select the gas price (maximum gas price will 
+	*Step 3*: Select the gas price (maximum gas price will 
 				result in faster transactions)
 
-	*step4*: type your wallet password and click send
+	*Step 4*: Type your wallet password and click send
 						
 						`
 
 	EthWindowsModule40 = `
-	*4.TestNet Activation* 
+	*4. TestNet Activation* 
 						
-	*step1*: Toggle to activate Ethereum TestNet
+	*Step 1*: Toggle to activate Ethereum TestNet
 
-	*step2*: Get free test tokens by clicking get free test tokens
+	*Step 2*: Get free test tokens by clicking get free test tokens
 
-	*step3*: verify your balance at top left corner
+	*Step 3*: verify your balance at top left corner
 
 	`
 
 	EthWindowsModule50 = `
-	*5.Connecting to dVpn*
+	*5. Connecting to dVPN*
 						
-	*step1*: click the globe Icon in the menu to get available vpn nodes
+	*Step 1*: click the globe Icon in the menu to get available vpn nodes
 
-	*step2*: select a protocol for your connection
+	*Step 2*: select a protocol for your connection
 
-	*step4*: check your IP before connecting to a node
+	*Step 4*: check your IP before connecting to a node
 
-	*step3*: connect to one of those nodes by clicking on node
+	*Step 3*: connect to one of those nodes by clicking on node
 
-	*step4*: Do payment for connection
+	*Step 4*: Do payment for connection
 
-	*step5*: Try connecting Node again & you will get connected to node
+	*Step 5*: Try connecting Node again & you will get connected to node
 
-	*step6*: Verify connection of node by checking your public IP.
+	*Step 6*: Verify connection of node by checking your public IP.
 						
 	`
 	EthWindowsModule60 = `
-	*6.Disconnecting dVpn*
+	*6. Disconnecting dVPN*
 						
-	*step1*: Click disconnect button to disconnect node
+	*Step 1*: Click disconnect button to disconnect node
 
-	*step2*: Add your Rating to Node
+	*Step 2*: Add your Rating to Node
 
-	*step3*: Check session details in the sessions section
+	*Step 3*: Check session details in the sessions section
 
 	`
 
 	TMWindowsModule40 = `
-	*4.TestNet Activation* 
+	*4. TestNet Activation* 
 	
-	*step1*: Toggle to activate TestNet
+	*Step 1*: Toggle to activate TestNet
 
-	*step2*: select Tendermint TestNet from dropdown list
+	*Step 2*: Select Tendermint TestNet from dropdown list
 
-	*step3*: Create a new Tendermint wallet account by providing
+	*Step 3*: Create a new Tendermint wallet account by providing
 					ananymous name and password
 
-	*step4*: Get free tokens by clicking get free tokens
+	*Step 4*: Get free tokens by clicking get free tokens
 
-	*step5*: verify your balance at top left corner
+	*Step 5*: Verify your balance at top left corner
 
 	`
 	MobilewalletInstallMsg = "download the latest sentinel apk file from https://github.com/sentinel-official/sentinel/releases and install"
@@ -137,94 +134,94 @@ var (
 
 	2. Wallet Creation on Ethereum
 
-	3. Sentinel-MainNet
+	3. Sentinel mainnet
 
 	4. TestNet Activation
 
 	5. Receiving free test tokens
 
-	6. Connecting to dVpn
+	6. Connecting to dVPN
 
-	7. Disconnecting dVpn`
+	7. Disconnecting dVPN`
 	IOSMobileListOfModulesMsg = "IOS version Currently Not Available"
 
 	AndroidModule10 =` 
 		*1.Download & Installation steps of sentinel Mobile wallet Application*
 
-		*step1*: Go to https://github.com/sentinel-official/sentinel/releases
+		*Step 1*: Go to https://github.com/sentinel-official/sentinel/releases
 
-		*step2*: Find latest .apk file ,Download and install it.
+		*Step 2*: Find latest .apk file ,Download and install it.
 	`
 
 	AndroidModule20 = `
 	*2.Wallet Creation on Ethereum*
 						
-	*step1*: Open sentinel App click create/restore wallet
+	*Step 1*: Open sentinel App click create/restore wallet
 
-	*step2*: Enter a Anonymous ID password to Create Account
+	*Step 2*: Enter a Anonymous ID password to Create Account
 
-	*step3*: Click create to create a new wallet
+	*Step 3*: Click create to create a new wallet
 										(or)
 					
 	*select a keystore file if you want restore your previous account*
 						  
-	*step4*: Copy your wallet address & public_key and store
+	*Step 4*: Copy your wallet address & public_key and store
 									the public_key securely.
 
-	*step5*: Click on checklist and Go to Sentinel-MainNet Dashboard
+	*Step 5*: Click on checklist and Go to Sentinel-MainNet Dashboard
 					
 	`
 	AndroidModule30 =
 		`
 		*3.MainNet Sending & Receiving 'SENT' Tokens*
 
-		*step1*: Type Recipient wallet Address
+		*Step 1*: Type Recipient wallet Address
 
-		*step2*: Type Amount 
+		*Step 2*: Type Amount 
 
-		*step3*: select the gas price (maximum gas price will 
+		*Step 3*: Select the gas price (maximum gas price will 
 				result in faster transactions)
 
-		*step4*: type your wallet password and click send
+		*Step 4*: Type your wallet password and click send
 		`
 	AndroidModule40 =
 		`*4.TestNet Activation* 
 		
-		*step1*: Toggle to activate Ethereum TestNet
+		*Step 1*: Toggle to activate Ethereum TestNet
 
-		*step2*: Get free test tokens by clicking get free test tokens
+		*Step 2*: Get free test tokens by clicking get free test tokens
 
-		*step3*: verify your balance at top left corner
+		*Step 3*: Verify your balance at top left corner
 
 		`
 	AndroidModule50 =
 		`
-		*5.Connecting to dVpn*
+		*5.Connecting to dVPN*
 						
-		*step1*: click the globe Icon in the menu to get available vpn nodes
+		*Step 1*: Click the globe Icon in the menu to get available vpn nodes
 
-		*step2*: select a protocol for your connection
+		*Step 2*: Select a protocol for your connection
 
-		*step4*: check your IP before connecting to a node
+		*Step 4*: Check your IP before connecting to a node
 
-		*step3*: connect to one of those nodes by clicking on node
+		*Step 3*: Connect to one of those nodes by clicking on node
 
-		*step4*: Do payment for connection
+		*Step 4*: Do payment for connection
 
-		*step5*: Try connecting Node again & you will get connected to node
+		*Step 5*: Try connecting Node again & you will get connected to node
 
-		*step6*: Verify connection of node by checking your public IP.
+		*Step 6*: Verify connection of node by checking your public IP.
 						
 		`
 	AndroidModule60 =
 		`
-		*6.Disconnecting dVpn*
+		*6.Disconnecting Sentinel dVPN*
 						
-		*step1*: Click disconnect button to disconnect node
+		*Step 1*: Click disconnect button to disconnect node
 
-		*step2*: Add your Rating to Node
+		*Step 2*: Add your Rating to Node
 
-		*step3*: Check session details in the sessions section
+		*Step 3*: Check session details in the sessions section
 
 		`
 	LastModuleMsg = `                    *All Chapters Completed*`
@@ -244,18 +241,18 @@ var (
 	UserInfo = `Bandwidth Duration Left: <b>%0.0f days</b>
 Ethereum Wallet Attached: <b>%s</b>`
 	AskForEthWallet   = "Please share your ethereum wallet address that you want to use for transactions to this bot"
-	AskForPayment     = "please send %s $SENTS to the following address and submit the transaction hash here: "
+	AskForPayment     = "Please send %s $SENTS to the following address and submit the transaction hash here: "
 	AskForTMWallet    = "Please share your tendermint wallet address that you want to use for transactions to this bot"
 	AskForBW          = "Please select how much bandwidth you need by clicking on one of the buttons below: "
 	BWError           = "error while storing bandwidth price"
 	NodeList          = "%s.) Location: %s\n User: %s \n Node wallet: %s"
-	BWPeriods         = "you have opted for %s of unlimited bandwidth"
+	BWPeriods         = "You have opted for %s of unlimited bandwidth"
 	Error             = "could not read user info"
 	BWAttachmentError = "error occurred while adding user details for bandwidth requirements"
-	ConnectMessage    = "please click on the button below to connect to Sentinel's SOCKS5 Proxy"
-	NoEthNodes        = "no nodes available right now. please check again later or try our Tendermint network"
-	NoTMNodes         = "no nodes available right now. please check again later or try our Ethereum network"
-	InvalidOption     = "invalid option"
+	ConnectMessage    = "Please click on the button below to connect to Sentinel's SOCKS5 Proxy"
+	NoEthNodes        = "No nodes available right now. please check again later or try our Tendermint network"
+	NoTMNodes         = "No nodes available right now. please check again later or try our Ethereum network"
+	InvalidOption     = "This is an invalid option, please use /help to check out all commands"
 	HelpMsg           = `
 		<b>here is the available commands list and their usage</b>
 
@@ -269,6 +266,7 @@ Ethereum Wallet Attached: <b>%s</b>`
 		8. /sps_wallet - to know attached wallet address
 		9. /mynode - to get list of assigned sps proxy nodes
 		10. /updates - to get updates about sentinel Network
+		11. /about - about sentinel network
 	`
 
 )

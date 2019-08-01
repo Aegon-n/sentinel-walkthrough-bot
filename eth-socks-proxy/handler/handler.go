@@ -34,7 +34,7 @@ func HandleSocks5Proxy(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 	for idx, node := range nodes {
 		txt = txt + fmt.Sprintf(templates.NodeList, strconv.Itoa(idx+1), node.Location.City, node.Location.Country,
 			node.NetSpeed.Download/float64(1000000), node.Load.CPU, "%")
-		fmt.Println(node.Load.CPU)
+		
 		txt += "\n\n"
 		if idx == 60 {
 			helpers.Send(b, u, txt)
