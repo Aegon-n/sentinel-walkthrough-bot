@@ -96,8 +96,9 @@ func ShowMyNode(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 			helpers.Send(b, u, "There are no nodes assigned for you ..Get a node from here /sps")
 			return
 		}
+		ShowMyInfo(b, u, db)
 		btnOpts := []models.InlineButtonOptions{
-			{Label: "Proxy Node", URL: kv.Value},
+			{Label: "Connect", URL: kv.Value},
 		}
 		opts := models.ButtonHelper{
 			Type: constants.InlineButton, InlineKeyboardOpts: btnOpts,
@@ -128,7 +129,6 @@ func HandleNodeId(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []m
 		helpers.Send(b, u, "Invalid Option!! Please choose correct NodeID")
 		return
 	}
-	log.Println("hereeeee")
 	
 	txt := fmt.Sprintf(templates.NodeList,strconv.Itoa(idx), nodes[idx-1].Location.City, nodes[idx-1].Location.Country,
 														nodes[idx-1].NetSpeed.Download/float64(1000000), nodes[idx-1].Load.CPU, "%")
@@ -174,7 +174,7 @@ func ShowMyInfo(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 		helpers.Send(b, u, templates.Error)
 		return
 	}
-	txt := fmt.Sprintf("Usage:\ndownload: %f MB\nupload: %f MB\n", usage.Down/float64(1048576), usage.Up/float64(1048576))
+	txt := fmt.Sprintf(templates.DATACONSUMPTION, usage.Down/float64(1048576))
 	helpers.Send(b, u, txt)
 	return 
 }

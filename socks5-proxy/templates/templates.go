@@ -21,9 +21,19 @@ However, you can use /refund to claim  your amount`
 	BWError           = "error while storing bandwidth price"
 	NodeList          = "%s.) %s, %s\n     Speed: %.2f Mbps\n     CPU-Load: %.2f%s\n"
 	BWPeriods         = "you have opted for %s of unlimited bandwidth"
+	DATACONSUMPTION   = "Data consumed: %.2f MB of 1GB"
+
+	LIMITEXCEEDED	    = ` Hey %s,
+You have consumed 1GB data. Proxy will disconnect now. Please disable proxy in telegram settings.
+
+go to Settings -> Data & Storage -> Proxy Settings -> Long tap on the
+connected proxy to Delete/Remove Proxy 
+					(or) 
+Toggle use proxy to disable proxy.`
+
 	Error             = "could not read user info"
 	BWAttachmentError = "error occurred while adding user details for bandwidth requirements"
-	ConnectMessage    = "please click on the button below to connect to Sentinel's SOCKS5 Proxy"
+	ConnectMessage    = "If you are not connected to proxy, Please click on the button below to connect to Sentinel's SOCKS5 Proxy."
 	NoEthNodes        = "no nodes available right now. please check again later or try our Tendermint network"
 	NoTMNodes         = "no nodes available right now. please check again later or try our Ethereum network"
 	InvalidOption     = "invalid option"

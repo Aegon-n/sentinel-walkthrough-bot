@@ -17,13 +17,7 @@ import (
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/templates"
 	tgbotapi "gopkg.in/telegram-bot-api.v4"
 )
-/*func GetBtnRow(n int) [][]tgbotapi.KeyboardButton {
-	rowlist := make([][]tgbotapi.KeyboardButton, n)
-	for i := 0; i < n; i++ {
-    rowlist[i] = append(rowlist[i], tgbotapi.KeyboardButton(strconv.Itoa(i+1)))
-	}
-	return rowlist
-}*/
+
 func GetNumaricKeyBoard(n int) tgbotapi.ReplyKeyboardMarkup {
 	btnlist := [][]tgbotapi.KeyboardButton{{},{}}
 	rows := math.Ceil(float64(n)/float64(4))
@@ -47,37 +41,6 @@ func GetNumaricKeyBoard(n int) tgbotapi.ReplyKeyboardMarkup {
 		OneTimeKeyboard: true,
 		ResizeKeyboard: true,
 	}
-	/*
-	log.Println(data)
-	for i, b := range data {
-		i+=1
-		if i > 2{
-			for k,v := range b {
-				list[1] = append(list[1], tgbotapi.NewInlineKeyboardButtonData(k, v))
-			}
-		}else {
-			for k,v := range b {
-				list[0] = append(list[0], tgbotapi.NewInlineKeyboardButtonData(k, v))
-			}
-		}
-	numericKeyboard := tgbotapi.NewReplyKeyboard(
-		tgbotapi.NewKeyboardButtonRow(
-			tgbotapi.NewKeyboardButton("1"),
-			tgbotapi.NewKeyboardButton("2"),
-			tgbotapi.NewKeyboardButton("3"),
-		),
-		tgbotapi.NewKeyboardButtonRow(
-			tgbotapi.NewKeyboardButton("4"),
-			tgbotapi.NewKeyboardButton("5"),
-			tgbotapi.NewKeyboardButton("6"),
-		),
-		tgbotapi.NewKeyboardButtonRow(
-			tgbotapi.NewKeyboardButton("7"),
-			tgbotapi.NewKeyboardButton("8"),
-			tgbotapi.NewKeyboardButton("9"),
-		),
-	)
-	return numericKeyboard */
 }
 
 func Send(b *tgbotapi.BotAPI, u tgbotapi.Update, msg string, opts ...models.ButtonHelper) {
@@ -272,15 +235,8 @@ func GetDataUsage(u tgbotapi.Update, ip, token string) (models.Usage, error) {
 	return body.Usage, err
 }
 
-func CheckLimitExceededUsers(bot *tgbotapi.BotAPI, db ldb.BotDB){
-	AllUsers, err := db.Iterate() 
-	if err != nil {
-		log.Println(err)
-		return
-	}
-	fmt.Println("All Users:\n", AllUsers)
-	for _, user := range AllUsers {
-		var body models.LimitResponse
+func CheckAndDisconnectExpiredUsers(bot *tgbotapi.BotAPI, user models.User, db ldb.BotDB) {
+	var body models.LimitResponse
 		url := fmt.Sprintf("http://%s:3000/limit_reached_ids", user.Node)
 		resp, err := http.Get(url)
 		if err != nil {
@@ -299,11 +255,22 @@ func CheckLimitExceededUsers(bot *tgbotapi.BotAPI, db ldb.BotDB){
 				log.Println(err)
 				return
 			}
-			msg := tgbotapi.NewMessage(int64(chatId), "You have used 1GB data. Proxy will disconnect now. Please disable proxy in telegram settings")
+			msg := tgbotapi.NewMessage(int64(chatId), fmt.Sprintf(templates.LIMITEXCEEDED, user.TelegramUsername))
 			bot.Send(msg)
 			DisconnectNode(bot, user.TelegramUsername, user.Node, user.Token)
 			db.RemoveUser(user.TelegramUsername)
 		}
+}
+
+func CheckLimitExceededUsers(bot *tgbotapi.BotAPI, db ldb.BotDB){
+	AllUsers, err := db.Iterate() 
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	fmt.Println("All Users:\n", AllUsers)
+	for _, user := range AllUsers {
+		go CheckAndDisconnectExpiredUsers(bot, user, db)
 	}
 
 }
@@ -319,6 +286,6 @@ func contains(s []string, e string) bool {
 
 func ExpiredUsersJob(bot *tgbotapi.BotAPI, db ldb.BotDB) {
 	s := gocron.NewScheduler()
-	s.Every(10).Seconds().Do(CheckLimitExceededUsers, bot, db)
+	s.Every(30).Seconds().Do(CheckLimitExceededUsers, bot, db)
 	<-s.Start()
 }
