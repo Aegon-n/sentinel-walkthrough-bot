@@ -4,7 +4,12 @@ var (
 	LangSelectMsg = map[string]string{"English":"Please choose your language from the list below: ","Russian":"Пожалуйста, выберите ваш язык из списка ниже"}
 	LangChosenMsg = "LangChosenMsg"
 	SelectwalkthroughMsg = "Please select /help to know commands available for the Sentinel Network bot"
-	WelcomeGreetMsg = "Hey %s , welcome to the Sentinel Network"
+	WelcomeGreetMsg = `Hey @%s,
+
+*Welcome to the Sentinel Network*`
+	WalkthroughGreetMsg = `Hey @%s,
+
+*Welcome to the Sentinel Network walkthrough*`
 	ExitMsg = "\n\n\n\tThank you for using the Sentinel app walkthrough guide on the Sentinel Network bot\t\n\n\n"
 	AppSelectMsg = "Choose App from the list below:"
 	DesktopOSSelectMsg = "*Sentinel -> Desktop*\n\nChoose OS from the list below: "
@@ -34,14 +39,14 @@ var (
 
 	EthWindowsModule10 = ` *1. Download & Installation steps of Sentinel Desktop Client*
 	
-	*Step 1*: Go to https://sentinel.co
+	*Step 1*: Go to https://Sentinel.co
 
 	*Step 2*: Scroll down and you will see the option to select your operating system and download an executable for that. Please download and install the '.exe' file`
 
 	EthWindowsModule20 = `
 	*2. Wallet Creation on Ethereum*
 						
-	*Step 1*: Open sentinel App click create/restore wallet
+	*Step 1*: Open Sentinel App click create/restore wallet
 
 	*Step 2*: Enter a Anonymous ID password to Create Account
 
@@ -125,12 +130,12 @@ var (
 	*Step 5*: Verify your balance at top left corner
 
 	`
-	MobilewalletInstallMsg = "download the latest sentinel apk file from https://github.com/sentinel-official/sentinel/releases and install"
+	MobilewalletInstallMsg = "download the latest Sentinel apk file from https://github.com/Sentinel-official/Sentinel/releases and install"
 	MobileListOfMOdulesMsg = "module1\nmodule2\n module3"
 
 	AndroidMobileListOfModulesMsg = `*Here is the list of Modules for Android Mobile wallet*
 
-	1. Downloading & installation of sentinel-Mobile-wallet Application
+	1. Downloading & installation of Sentinel-Mobile-wallet Application
 
 	2. Wallet Creation on Ethereum
 
@@ -146,9 +151,9 @@ var (
 	IOSMobileListOfModulesMsg = "IOS version Currently Not Available"
 
 	AndroidModule10 =` 
-		*1.Download & Installation steps of sentinel Mobile wallet Application*
+		*1.Download & Installation steps of Sentinel Mobile wallet Application*
 
-		*Step 1*: Go to https://github.com/sentinel-official/sentinel/releases
+		*Step 1*: Go to https://github.com/Sentinel-official/Sentinel/releases
 
 		*Step 2*: Find latest .apk file ,Download and install it.
 	`
@@ -156,7 +161,7 @@ var (
 	AndroidModule20 = `
 	*2.Wallet Creation on Ethereum*
 						
-	*Step 1*: Open sentinel App click create/restore wallet
+	*Step 1*: Open Sentinel App click create/restore wallet
 
 	*Step 2*: Enter a Anonymous ID password to Create Account
 
@@ -230,12 +235,12 @@ var (
 	Socks5GreetingMsg = `Hey %s, welcome to the Sentinel Socks5 Proxy Bot for Telegram.
 			Please select a blockchain network for payments to this bot.`
 
-	Socks5EthereumMsg = "Ethereum is currently not available Please choose Tendermint Network"
+	Socks5EthereumMsg = "Ethereum is currently not available. Please choose the Tendermint Network"
 
-	NodeAttachedAlready = "you already have a node assigned to your username. Please use /mynode to access it"
+	NodeAttachedAlready = "You already have a node assigned to your username. Please use /mynode to access it"
 
-	CheckWalletOptionsError = "error while fetching user wallet address. in case you have not attached your wallet address, please share your wallet address again."
-	Success                 = "Congratulations!! please click the button below to connect to the sentinel dVPN node and next time use /mynode to access this node"
+	CheckWalletOptionsError = "Error while fetching user wallet address. in case you have not attached your wallet address, please share your wallet address again."
+	Success                 = "Congratulations!! Please click the button below to connect to the Sentinel dVPN node and next time use /mynode to access this node"
 	AskToSelectANode        = `Please select a node ID from the list below and reply in the format of
 1 for Node 1, 2 for Node 2 and so on...`
 	UserInfo = `Bandwidth Duration Left: <b>%0.0f days</b>
@@ -254,19 +259,19 @@ Ethereum Wallet Attached: <b>%s</b>`
 	NoTMNodes         = "No nodes available right now. please check again later or try our Ethereum network"
 	InvalidOption     = "This is an invalid option, please use /help to check out all commands"
 	HelpMsg           = `
-		<b>here is the available commands list and their usage</b>
+		<b>Here are the available commands and their utility</b>
 
 		1. /help - to get help about commands
-		2. /start - to start sentinel bot
-		3. /walkthrough - to get sentinel app walkthrough
-		4. /tm {latestblock| validators} - to explore the sentinel tendermint testnet
-		5. /sps - to get sentinel proxy service for telegram
+		2. /start - start the Sentinel bot
+		3. /walkthrough - to get Sentinel app walkthrough
+		4. /tm {latestblock| validators} - to explore the Sentinel-Turing-1 Testnet
+		5. /sps - to get Sentinel proxy service for telegram
 		6. /restart_sps -  to restart the process of sps
 		7. /sps_info - to get details about sps node
-		8. /sps_wallet - to know attached wallet address
-		9. /mynode - to get list of assigned sps proxy nodes
-		10. /updates - to get updates about sentinel Network
-		11. /about - about sentinel network
+		8. /mynode - to get list of assigned sps proxy nodes
+		9. /updates - to get updates about Sentinel Network
+		10. /about - to know about Sentinel Network
+		11. /restart - to restart the Sentinel Network Bot
 	`
 
 )

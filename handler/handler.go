@@ -17,7 +17,7 @@ func HandleGreet(Bot *tgbotapi.BotAPI, update *tgbotapi.Update )  {
 	chatID := update.Message.Chat.ID
 	txt := fmt.Sprintf(en_messages.WelcomeGreetMsg, username)+"\n"+en_messages.SelectwalkthroughMsg
 	msg := tgbotapi.NewMessage(chatID,txt)
-	msg.ReplyMarkup = buttons.GetButtons("LanguageButtons")
+	// msg.ReplyMarkup = buttons.GetButtons("LanguageButtons")
 	msg.ParseMode = tgbotapi.ModeMarkdown
 	Bot.Send(msg)
 
@@ -26,7 +26,7 @@ func HandlerWalkThrough(Bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 
 	username := update.Message.From.UserName
 	chatID := update.Message.Chat.ID
-	txt := fmt.Sprintf(en_messages.WelcomeGreetMsg, username)+"\n"+en_messages.AppSelectMsg
+	txt := fmt.Sprintf(en_messages.WalkthroughGreetMsg, username)+"\n"+en_messages.AppSelectMsg
 	msg := tgbotapi.NewMessage(chatID,txt)
 	msg.ReplyMarkup = buttons.GetButtons("AppButtonsList")
 	msg.ParseMode = tgbotapi.ModeMarkdown

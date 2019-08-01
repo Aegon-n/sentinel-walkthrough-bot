@@ -77,12 +77,16 @@ func main() {
 			case "mynode":
 				eth_handlers.ShowMyNode(bot, update, db2)
 
+			case "restart":
+				handler.HandleGreet(bot, &update)
+
 			case "restart_sps":
 				eth_handlers.Restart(bot, update, db2)
+				
 			case "sps_info":
 				eth_handlers.ShowMyInfo(bot, update, db2)
-			case "sps_wallet":
-				handlers.ShowEthWallet(bot, update, db)
+			/*case "sps_wallet":
+				handlers.ShowEthWallet(bot, update, db) */
 			case "about":
 				handlers.AboutSentinel(bot, update)
 			}
