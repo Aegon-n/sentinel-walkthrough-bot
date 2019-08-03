@@ -9,15 +9,27 @@ import (
 	"github.com/Aegon-n/sentinel-bot/eth-socks-proxy/dbo/models"
 	"github.com/Aegon-n/sentinel-bot/eth-socks-proxy/helpers"
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/constants"
+	"github.com/Aegon-n/sentinel-bot/handler/buttons"
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/templates"
 	tgbotapi "gopkg.in/telegram-bot-api.v4"
 )
 
+func HandleSPS(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
+	username := helpers.GetUserName(u)
+	ChatID := helpers.GetchatID(u)
+	greet := fmt.Sprintf(templates.GreetingMsg, username)
+	opts := buttons.GetButtons("SpsButtonsList")
+	msg := tgbotapi.NewMessage(ChatID, greet+"\n\n"+"Choose an option from the list below: ")
+	msg.ReplyMarkup = opts
+	b.Send(msg)
+	return
+}
 func HandleSocks5Proxy(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
-
-	greet := fmt.Sprintf(templates.GreetingMsg, u.Message.From.UserName)
+	username := helpers.GetUserName(u)
+	ChatID := helpers.GetchatID(u)
+	greet := fmt.Sprintf(templates.GreetingMsg, username)
 	helpers.Send(b, u, greet)
-	_, err := db.Read(constants.AssignedNodeURI, u.Message.From.UserName)
+	_, err := db.Read(constants.AssignedNodeURI, username)
 	if err == nil {
 		helpers.Send(b, u, templates.NodeAttachedAlready)
 		return
@@ -27,7 +39,7 @@ func HandleSocks5Proxy(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 		helpers.Send(b, u, templates.NoEthNodes)
 		return
 	}
-	err = db.Insert("ChatID", u.Message.From.UserName, strconv.FormatInt(u.Message.Chat.ID, 10))
+	err = db.Insert("ChatID", username, strconv.FormatInt(ChatID, 10))
 	if err != nil {
 		helpers.Send(b, u, templates.Error)
 	}
@@ -44,9 +56,9 @@ func HandleSocks5Proxy(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 	}
 	fmt.Println(txt)
 	// msg.ReplyMarkup = buttons.GetNodeListButtons(len(nodes))
-	db.SetStatus(u.Message.From.UserName, "gotnodelist")
+	db.SetStatus(username, "gotnodelist")
 	helpers.Send(b, u, txt)
-	msg := tgbotapi.NewMessage(u.Message.Chat.ID, templates.AskToSelectANode)
+	msg := tgbotapi.NewMessage(ChatID, templates.AskToSelectANode)
 	numericKeyboard := helpers.GetNumaricKeyBoard(len(nodes))
 	msg.ReplyMarkup = numericKeyboard
 	b.Send(msg)
@@ -79,13 +91,14 @@ func Socks5InputHandler(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 }
 
 func ShowMyNode(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
-	status, err := db.GetStatus(u.Message.From.UserName)
+	username := helpers.GetUserName(u)
+	status, err := db.GetStatus(username)
 	if err != nil {
 		helpers.Send(b, u, templates.NoAssignedNodes)
 		return
 	}
 	if status == constants.AssignedNodeURI {
-		kv, err := db.Read(constants.AssignedNodeURI, u.Message.From.UserName)
+		kv, err := db.Read(constants.AssignedNodeURI, username)
 		if err != nil {
 			helpers.Send(b, u, templates.NoAssignedNodes)
 			return
@@ -151,30 +164,60 @@ func Restart(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 	return
 }
 func ShowMyInfo(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
-	token, err := db.Read("TOKEN", u.Message.From.UserName)
+	username := helpers.GetUserName(u)
+	token, err := db.Read("TOKEN", username)
 	if err != nil {
 		helpers.Send(b, u, templates.Error)
 		return
 	}
-	node, err := db.Read("NodeIP", u.Message.From.UserName)
+	NodeIP, err := db.Read("NodeIP", username)
 	if err != nil {
 		helpers.Send(b, u, templates.Error)
 		return
 	}
-	usage, err := helpers.GetDataUsage(u, node.Value, token.Value)
+	usage, err := helpers.GetDataUsage(username, NodeIP.Value, token.Value)
 	if err != nil {
 		log.Println(err)
 		helpers.Send(b, u, templates.Error)
 		return
 	}
+	NodeInfo := ""
+	nodes, _  := helpers.GetNodes()
+	for _, node := range nodes {
+		if node.IP == NodeIP.Value {
+			NodeInfo = fmt.Sprintf(templates.NodeList, "1", node.Location.City, node.Location.Country, node.NetSpeed.Download/float64(1000000), node.Load.CPU, "%")
+			break
+		}
+	}
 	txt := fmt.Sprintf(templates.DATACONSUMPTION, usage.Down/float64(1048576))
 	helpers.Send(b, u, txt)
-	NodeInfo, _ := db.Read("NodeInfo", u.Message.From.UserName)
-	helpers.Send(b, u, NodeInfo.Value)
+	helpers.Send(b, u, NodeInfo)
 	return
 }
+func DisconnectProxy(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
+	username := helpers.GetUserName(u)
+	status, err := db.GetStatus(username)
+	if err != nil {
+		log.Println(err)
+		helpers.Send(b, u, templates.NoAssignedNodes)
+		return
+	}
+	if status != constants.AssignedNodeURI {
+		helpers.Send(b, u, templates.NoAssignedNodes)
+		return
+	} 
+	node, _ := db.Read("NodeIP", username)
+	token,_ := db.Read("TOKEN", username)
+	helpers.Send(b, u, templates.DisableProxy)
+	helpers.DisconnectNode(b, username, node.Value, token.Value)
+	err = db.RemoveUser(username)
+	if err != nil {
+		helpers.Send(b, u, templates.Error)
+		return
+	}
+}
 
-func answeredQuery(bot *tgbotapi.BotAPI, u tgbotapi.Update) {
+func AnsweredQuery(bot *tgbotapi.BotAPI, u tgbotapi.Update) {
 	queryId := u.CallbackQuery.ID
 	config := tgbotapi.CallbackConfig{queryId, "", false, "", 0}
 	bot.AnswerCallbackQuery(config)

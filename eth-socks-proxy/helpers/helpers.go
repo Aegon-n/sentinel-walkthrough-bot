@@ -5,41 +5,64 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"math"
 	"net/http"
 	"strconv"
 	"strings"
-	"math"
-	"github.com/jasonlvhit/gocron"
+
 	"github.com/Aegon-n/sentinel-bot/eth-socks-proxy/buttons"
 	"github.com/Aegon-n/sentinel-bot/eth-socks-proxy/dbo/ldb"
 	"github.com/Aegon-n/sentinel-bot/eth-socks-proxy/dbo/models"
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/constants"
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/templates"
+	"github.com/jasonlvhit/gocron"
 	tgbotapi "gopkg.in/telegram-bot-api.v4"
 )
 
+func GetUserName(u tgbotapi.Update) string {
+	var username string
+	if u.CallbackQuery != nil {
+		username = u.CallbackQuery.Message.Chat.UserName
+	}
+	if u.Message != nil {
+		username = u.Message.From.UserName
+	}
+	return username
+}
+
+func GetchatID(u tgbotapi.Update) int64 {
+	var chatID int64
+	if u.CallbackQuery != nil {
+		chatID = u.CallbackQuery.Message.Chat.ID
+	}
+	if u.Message != nil {
+		chatID = u.Message.Chat.ID
+	}
+	return chatID
+}
+
 func GetNumaricKeyBoard(n int) tgbotapi.ReplyKeyboardMarkup {
-	btnlist := [][]tgbotapi.KeyboardButton{{},{}}
-	rows := math.Ceil(float64(n)/float64(4))
+	btnlist := [][]tgbotapi.KeyboardButton{{}, {}}
+	rows := math.Ceil(float64(n) / float64(4))
 	fmt.Println(rows)
 	number := 0
-	for j:= 0; j < int(rows); j++ {
+	for j := 0; j < int(rows); j++ {
 		list := []tgbotapi.KeyboardButton{}
-	for i := 0; i < 4; i++ {
-		number++;
-		if number > n {
-			break
+		for i := 0; i < 4; i++ {
+			number++
+			if number > n {
+				break
+			}
+			list = append(list, tgbotapi.NewKeyboardButton(strconv.Itoa(number)))
 		}
-		list = append(list, tgbotapi.NewKeyboardButton(strconv.Itoa(number)))
+		btnlist = append(btnlist, list)
 	}
-	btnlist = append(btnlist, list)
-}
-	
+
 	fmt.Println(btnlist)
 	return tgbotapi.ReplyKeyboardMarkup{
-		Keyboard: btnlist,
+		Keyboard:        btnlist,
 		OneTimeKeyboard: true,
-		ResizeKeyboard: true,
+		ResizeKeyboard:  true,
 	}
 }
 
@@ -215,10 +238,10 @@ func DisconnectNode(b *tgbotapi.BotAPI, username string, ip string, token string
 
 }
 
-func GetDataUsage(u tgbotapi.Update, ip, token string) (models.Usage, error) {
+func GetDataUsage(UserName, ip, token string) (models.Usage, error) {
 	var body models.VpnUsage
 	var usage models.Usage
-	values := map[string]string{"account_addr": u.Message.From.UserName, "token": token}
+	values := map[string]string{"account_addr":UserName, "token": token}
 	fmt.Println(values)
 	jsonValue, _ := json.Marshal(values)
 	url := fmt.Sprintf("http://%s:3000/usage", ip)
@@ -237,33 +260,33 @@ func GetDataUsage(u tgbotapi.Update, ip, token string) (models.Usage, error) {
 
 func CheckAndDisconnectExpiredUsers(bot *tgbotapi.BotAPI, user models.User, db ldb.BotDB) {
 	var body models.LimitResponse
-		url := fmt.Sprintf("http://%s:3000/limit_reached_ids", user.Node)
-		resp, err := http.Get(url)
+	url := fmt.Sprintf("http://%s:3000/limit_reached_ids", user.Node)
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	if err := json.NewDecoder(resp.Body).Decode(&body); err != nil {
+		log.Println(err)
+		return
+	}
+	fmt.Println(body.ClientList)
+	if contains(body.ClientList, strings.ToLower(user.TelegramUsername)) {
+		chatId, err := strconv.Atoi(user.ChatID)
 		if err != nil {
 			log.Println(err)
 			return
 		}
-
-		if err := json.NewDecoder(resp.Body).Decode(&body); err != nil {
-			log.Println(err)
-			return
-		}
-		fmt.Println(body.ClientList)
-		if contains(body.ClientList, strings.ToLower(user.TelegramUsername)) {
-			chatId, err := strconv.Atoi(user.ChatID)
-			if err != nil {
-				log.Println(err)
-				return
-			}
-			msg := tgbotapi.NewMessage(int64(chatId), fmt.Sprintf(templates.LIMITEXCEEDED, user.TelegramUsername))
-			bot.Send(msg)
-			DisconnectNode(bot, user.TelegramUsername, user.Node, user.Token)
-			db.RemoveUser(user.TelegramUsername)
-		}
+		msg := tgbotapi.NewMessage(int64(chatId), fmt.Sprintf(templates.LIMITEXCEEDED, user.TelegramUsername))
+		bot.Send(msg)
+		DisconnectNode(bot, user.TelegramUsername, user.Node, user.Token)
+		db.RemoveUser(user.TelegramUsername)
+	}
 }
 
-func CheckLimitExceededUsers(bot *tgbotapi.BotAPI, db ldb.BotDB){
-	AllUsers, err := db.Iterate() 
+func CheckLimitExceededUsers(bot *tgbotapi.BotAPI, db ldb.BotDB) {
+	AllUsers, err := db.Iterate()
 	if err != nil {
 		log.Println(err)
 		return
@@ -277,9 +300,9 @@ func CheckLimitExceededUsers(bot *tgbotapi.BotAPI, db ldb.BotDB){
 
 func contains(s []string, e string) bool {
 	for _, a := range s {
-			if a == e {
-					return true
-			}
+		if a == e {
+			return true
+		}
 	}
 	return false
 }
