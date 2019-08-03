@@ -101,5 +101,22 @@
     {"1": "Socks5-Proxy-1"},
     {"2": "Socks5-Proxy-2"},
     {"3": "Socks5-Proxy-3"}
+  ],
+  "HomeButtonsList": [
+    {"About Sentinel Network": "about"},
+    {"Sentinel Proxy Service (SPS)": "sps"},
+    {"Sentinel Network Overview": "sno"}
+  ],
+  "SpsButtonsList": [
+    {"List Nodes": "list_nodes"},
+    {"My Node": "my_node"}
+  ],
+  "SentinelNetworkButtons": [
+    {"Downloads": "Downloads-Home"},
+    {"Guides": "Guides-Home"}
+  ],
+  "DownloadsButtonsList": [
+    {"Desktop": "Downloads-Desktop"},
+    {"Mobile": "Downloads-Mobile"}
   ]
 }

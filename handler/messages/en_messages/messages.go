@@ -4,7 +4,8 @@ var (
 	LangSelectMsg = map[string]string{"English":"Please choose your language from the list below: ","Russian":"Пожалуйста, выберите ваш язык из списка ниже"}
 	LangChosenMsg = "LangChosenMsg"
 	SelectwalkthroughMsg = "Please select /help to know commands available for the Sentinel Network bot"
-	WelcomeGreetMsg = `Hey @%s,
+	SelectSpsMessage = "To start using Sentinel's SOCKS5 Proxy Service, use the /sps command"
+	WelcomeGreetMsg = `Hello @%s,
 
 *Welcome to the Sentinel Network*`
 	WalkthroughGreetMsg = `Hey @%s,

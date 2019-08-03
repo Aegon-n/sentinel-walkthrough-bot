@@ -35,6 +35,8 @@ type Buttons struct {
 	SocksNetworkButtonList		[]map[string]string		`json: "SocksNetworkButtonList"`
 	BandwidthSelect				[]map[string]string		`json: "BandwidthSelect"`
 	NodesList					[]map[string]string		`json: "NodesList"`
+	HomeButtonsList		[]map[string]string		`json: "HomeButtonsList"`
+	SpsButtonsList    []map[string]string		`json: "SpsButtonsList"`
 }
 
 func init() {
@@ -133,6 +135,14 @@ func GetButtons(buttontype string) tgbotapi.InlineKeyboardMarkup {
 		return genModuleButtonList(ButtonList.LanguageButtons)
 
 	}
+	if buttontype == "HomeButtonsList" {
+		return genBtnClmn(ButtonList.HomeButtonsList)
+
+	}
+	if buttontype == "SpsButtonsList" {
+		return genModuleButtonList(ButtonList.SpsButtonsList)
+
+	}
 	if buttontype == "UpdatesButtonList"{
 		return genBtnRow(ButtonList.UpdatesButtonList)
 	}
@@ -175,6 +185,17 @@ func genBtnRow(data []map[string]string) tgbotapi.InlineKeyboardMarkup {
 	}
 	return tgbotapi.InlineKeyboardMarkup{InlineKeyboard: list}
 }
+
+func genBtnClmn(data []map[string]string) tgbotapi.InlineKeyboardMarkup {
+	list := [][]tgbotapi.InlineKeyboardButton{{},{},{},{}}
+	for idx, b := range data {
+		for k,v := range b {
+			list[idx] = append(list[idx], tgbotapi.NewInlineKeyboardButtonData(k, v))
+		}
+	}
+	return tgbotapi.InlineKeyboardMarkup{InlineKeyboard: list}
+}
+
 func GetNodeListButtons(nodeslen int) tgbotapi.InlineKeyboardMarkup {
 	list := [][]tgbotapi.InlineKeyboardButton{{},{},{}}
 	log.Println(nodeslen)

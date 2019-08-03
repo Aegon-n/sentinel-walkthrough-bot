@@ -1,7 +1,7 @@
 package templates
 
 const (
-	GreetingMsg = `Hey @%s, welcome to the Sentinel Socks5 Proxy Bot for Telegram.`
+	GreetingMsg = `Hey @%s, welcome to the Sentinel Socks5 Proxy Service (SPS) for Telegram.`
 
 	// Please select a blockchain network for payments to this bot.`
 	NodeAttachedAlready = "You already have a node assigned to your username. Please use /mynode to access it"
@@ -32,10 +32,14 @@ However, you can use /refund to claim  your amount`
 	BWPeriods         = "You have opted for %s of unlimited bandwidth"
 	Error             = "Could not read user info"
 	BWAttachmentError = "Error occurred while adding user details for bandwidth requirements"
-	ConnectMessage    = "If you are not connected to the proxy, Please click on the button below to connect to Sentinel's SOCKS5 Proxy"
+	ConnectMessage    = "If you are not connected to the proxy, please click on the button below to connect to Sentinel's SOCKS5 Proxy"
 	NoEthNodes        = "No nodes available right now. please check again later or try our Tendermint network"
 	NoTMNodes         = "No nodes available right now. please check again later or try our Ethereum network"
 	NoAssignedNodes   = "There are no nodes assigned for you.. Get a node from here /sps"
+	DisableProxy			= `Proxy is disconnected!! 
+Please disable/remove proxy in telegram settings
+
+To disconnect/terminate, go to Settings -> Data & Storage -> Proxy Settings -> Long tap on the connected proxy to Delete/Remove Proxy `
 	InvalidOption     = "Invalid option"
 	FollowSequence    = "Please follow the flow for the bot to work efficiently for you"
 	NoNetworkSelected = "You have not selected a blockchain network to part of. Please select a network"

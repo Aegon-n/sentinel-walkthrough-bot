@@ -6,14 +6,16 @@ import (
 
 	"github.com/Aegon-n/sentinel-bot/handler"
 	"github.com/Aegon-n/sentinel-bot/handler/modules"
-	updates2 "github.com/Aegon-n/sentinel-bot/handler/updates"
-	"github.com/Aegon-n/sentinel-bot/locale"
-	"github.com/Aegon-n/sentinel-bot/socks5-proxy/dbo"
+
+	// updates2 "github.com/Aegon-n/sentinel-bot/handler/updates"
 	dbo2 "github.com/Aegon-n/sentinel-bot/eth-socks-proxy/dbo"
-	"github.com/Aegon-n/sentinel-bot/socks5-proxy/handlers"
 	eth_handlers "github.com/Aegon-n/sentinel-bot/eth-socks-proxy/handler"
 	eth_helpers "github.com/Aegon-n/sentinel-bot/eth-socks-proxy/helpers"
-	tmExplorer "github.com/Aegon-n/sentinel-bot/tm-explorer"
+	"github.com/Aegon-n/sentinel-bot/locale"
+	"github.com/Aegon-n/sentinel-bot/socks5-proxy/dbo"
+	"github.com/Aegon-n/sentinel-bot/socks5-proxy/handlers"
+
+	// tmExplorer "github.com/Aegon-n/sentinel-bot/tm-explorer"
 	"github.com/fatih/color"
 
 	tgbotapi "gopkg.in/telegram-bot-api.v4"
@@ -45,12 +47,11 @@ func main() {
 	}
 	db2, err := dbo2.NewDB()
 	if err != nil {
-		log.Println("h",err)
+		log.Println("h", err)
 		log.Fatal(err)
 	}
 	//nodes, err := helpers.GetNodes()
 	go eth_helpers.ExpiredUsersJob(bot, db2)
-
 
 	for update := range updates {
 
@@ -65,12 +66,12 @@ func main() {
 				handler.HandleHelp(bot, &update)
 			/*case "locale":
 			handler.HandleLocalization(bot, &update)*/
-			case "tm":
+			/*case "tm":
 				tmExplorer.HandleTMExplorer(bot, &update)
 
 			case "updates":
 				handler.HandleUpdates(bot, &update)
-
+			*/
 			case "sps":
 				eth_handlers.HandleSocks5Proxy(bot, update, db2)
 
@@ -82,11 +83,9 @@ func main() {
 
 			case "restart_sps":
 				eth_handlers.Restart(bot, update, db2)
-				
-			case "sps_info":
-				eth_handlers.ShowMyInfo(bot, update, db2)
-			/*case "sps_wallet":
-				handlers.ShowEthWallet(bot, update, db) */
+
+			case "disconnect_proxy":
+				eth_handlers.DisconnectProxy(bot, update, db2)
 			case "about":
 				handlers.AboutSentinel(bot, update)
 			}
@@ -94,6 +93,7 @@ func main() {
 
 		if update.CallbackQuery != nil {
 			log.Println(update.CallbackQuery)
+			eth_handlers.AnsweredQuery(bot, update)
 			module := strings.Split(update.CallbackQuery.Data, "-")
 			log.Println(module)
 
@@ -106,7 +106,7 @@ func main() {
 			case "Mobile":
 				modules.HandleMobileModules(bot, &update, module[1])
 
-			case "Medium":
+			/*case "Medium":
 				//log.Println(update)
 				updates2.MediumUpdates(bot, &update)
 
@@ -117,7 +117,17 @@ func main() {
 				updates2.Twitter_updates(bot, &update)
 
 			case "Socks5":
-				handlers.HandleSocks5InlineButtons(bot, update, db)
+				handlers.HandleSocks5InlineButtons(bot, update, db)*/
+			case "about":
+				handlers.AboutSentinel(bot, update)
+			case "sps":
+				eth_handlers.HandleSPS(bot, update, db2)
+			case "list_nodes":
+				eth_handlers.HandleSocks5Proxy(bot, update, db2)
+			case "my_node":
+				eth_handlers.ShowMyNode(bot, update, db2)
+			case "sno":
+				handler.HandlerWalkThrough(bot, &update)
 
 			default:
 				handler.HandleCallbackQuery(bot, &update, db)

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/Aegon-n/sentinel-bot/handler/buttons"
 	"github.com/Aegon-n/sentinel-bot/handler/dbo"
+	"github.com/Aegon-n/sentinel-bot/handler/helpers"
 	"github.com/Aegon-n/sentinel-bot/handler/messages/en_messages"
 	"github.com/Aegon-n/sentinel-bot/handler/updates"
 	"github.com/Aegon-n/sentinel-bot/locale"
@@ -15,18 +16,19 @@ import (
 func HandleGreet(Bot *tgbotapi.BotAPI, update *tgbotapi.Update )  {
 	username := update.Message.From.UserName
 	chatID := update.Message.Chat.ID
-	txt := fmt.Sprintf(en_messages.WelcomeGreetMsg, username)+"\n"+en_messages.SelectwalkthroughMsg
-	msg := tgbotapi.NewMessage(chatID,txt)
+	txt := fmt.Sprintf(en_messages.WelcomeGreetMsg, username)+"\n\n\n"+en_messages.SelectwalkthroughMsg
+	// msg := tgbotapi.NewMessage(chatID,txt)
 	// msg.ReplyMarkup = buttons.GetButtons("LanguageButtons")
-	msg.ParseMode = tgbotapi.ModeMarkdown
-	Bot.Send(msg)
-
+	msg2 := tgbotapi.NewMessage(chatID, txt+"\n\n"+"Choose an option from the list below: ")
+	msg2.ReplyMarkup = buttons.GetButtons("HomeButtonsList")
+	msg2.ParseMode = tgbotapi.ModeMarkdown
+	Bot.Send(msg2)
 }
 func HandlerWalkThrough(Bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 
-	username := update.Message.From.UserName
-	chatID := update.Message.Chat.ID
-	txt := fmt.Sprintf(en_messages.WalkthroughGreetMsg, username)+"\n"+en_messages.AppSelectMsg
+	username := helpers.GetUserName(update)
+	chatID := helpers.GetchatID(update)
+	txt := fmt.Sprintf(en_messages.WalkthroughGreetMsg, username)+"\n\n"+en_messages.AppSelectMsg
 	msg := tgbotapi.NewMessage(chatID,txt)
 	msg.ReplyMarkup = buttons.GetButtons("AppButtonsList")
 	msg.ParseMode = tgbotapi.ModeMarkdown
@@ -51,7 +53,7 @@ func HandleCallbackQuery(bot *tgbotapi.BotAPI, update *tgbotapi.Update, db ldb.B
 	switch update.CallbackQuery.Data {
 
 	case "Home":
-		handleHome(bot, update, update.CallbackQuery.From.UserName)
+		HandlerWalkThrough(bot, update)
 
 	case "Sentinel-Desktop":
 		handleAppVersion(bot, update, "Desktop")
