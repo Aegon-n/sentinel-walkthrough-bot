@@ -104,8 +104,7 @@
   ],
   "HomeButtonsList": [
     {"About Sentinel Network": "about"},
-    {"Sentinel Proxy Service (SPS)": "sps"},
-    {"Sentinel Network Overview": "sno"}
+    {"Sentinel Proxy Service (SPS)": "sps"}
   ],
   "SpsButtonsList": [
     {"List Nodes": "list_nodes"},
