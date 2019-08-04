@@ -264,15 +264,12 @@ Ethereum Wallet Attached: <b>%s</b>`
 
 		1. /help - to get help about commands
 		2. /start - start the Sentinel bot
-		3. /walkthrough - to get Sentinel app walkthrough
-		4. /tm {latestblock| validators} - to explore the Sentinel-Turing-1 Testnet
-		5. /sps - to get Sentinel proxy service for telegram
+		3. /about - to know about Sentinel Network
+		4. /sps - to get Sentinel proxy service for telegram
+		5. /mynode - to get list of assigned sps proxy nodes
 		6. /restart_sps -  to restart the process of sps
-		7. /sps_info - to get details about sps node
-		8. /mynode - to get list of assigned sps proxy nodes
-		9. /updates - to get updates about Sentinel Network
-		10. /about - to know about Sentinel Network
-		11. /restart - to restart the Sentinel Network Bot
+		7. /disconect_proxy - to disconnect the proxy
+		8. /restart - to restart the Sentinel Network Bot
 	`
 
 )
