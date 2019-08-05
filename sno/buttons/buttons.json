@@ -1,0 +1,34 @@
+{
+  "SNOButtons": [
+    {
+      "⇩Downloads": "Downloads-Home",
+      "📖Guides": "Guides-Home"
+    }
+  ],
+  "DownloadsButtonsList": [
+    {
+      "💻Desktop": "Downloads-Desktop",
+      "📱Mobile": "Downloads-Mobile"
+    },{
+      "◀Back": "sno"
+    }
+  ],
+  "DesktopDownloadsButtonsList": [
+    {
+      "🐧Linux": "Downloads-Linux",
+      "❖Windows": "Downloads-Windows",
+      "🍎Mac OS": "Downloads-MacOS"
+    }, {
+      "◀Back": "Downloads-Home",
+      "🏠Home": "Downloads-Home"
+    }
+  ],
+  "GuidesButtonsList": [
+    {
+      "Sentinel dVPN": "Guides-dVPN",
+      "Sentinel Hub": "Guides-Hub"
+    },{
+      "◀Back": "sno"
+    }
+  ]
+}

@@ -14,6 +14,7 @@ import (
 	"github.com/Aegon-n/sentinel-bot/locale"
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/dbo"
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/handlers"
+	sno_handler "github.com/Aegon-n/sentinel-bot/sno/handler"
 
 	// tmExplorer "github.com/Aegon-n/sentinel-bot/tm-explorer"
 	"github.com/fatih/color"
@@ -88,6 +89,9 @@ func main() {
 				eth_handlers.DisconnectProxy(bot, update, db2)
 			case "about":
 				handlers.AboutSentinel(bot, update)
+
+			case "downloads":
+				sno_handler.DownloadsHome(bot, update)
 			}
 		}
 
@@ -127,8 +131,11 @@ func main() {
 			case "my_node":
 				eth_handlers.ShowMyNode(bot, update, db2)
 			case "sno":
-				handler.HandlerWalkThrough(bot, &update)
-
+				sno_handler.HandleHome(bot, update)
+			case "Downloads":
+				sno_handler.HandleDownloads(bot, update)
+			case "Guides":
+				sno_handler.HandleGuides(bot, update)
 			default:
 				handler.HandleCallbackQuery(bot, &update, db)
 			}

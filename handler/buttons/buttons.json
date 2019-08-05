@@ -104,18 +104,11 @@
   ],
   "HomeButtonsList": [
     {"About Sentinel Network": "about"},
-    {"Sentinel Proxy Service (SPS)": "sps"}
+    {"Sentinel Proxy Service (SPS)": "sps"},
+    {"Sentinel Network Overview": "sno"}
   ],
   "SpsButtonsList": [
     {"List Nodes": "list_nodes"},
     {"My Node": "my_node"}
-  ],
-  "SentinelNetworkButtons": [
-    {"Downloads": "Downloads-Home"},
-    {"Guides": "Guides-Home"}
-  ],
-  "DownloadsButtonsList": [
-    {"Desktop": "Downloads-Desktop"},
-    {"Mobile": "Downloads-Mobile"}
   ]
 }

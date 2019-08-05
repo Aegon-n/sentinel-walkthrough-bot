@@ -37,6 +37,7 @@ type Buttons struct {
 	NodesList					[]map[string]string		`json: "NodesList"`
 	HomeButtonsList		[]map[string]string		`json: "HomeButtonsList"`
 	SpsButtonsList    []map[string]string		`json: "SpsButtonsList"`
+
 }
 
 func init() {
