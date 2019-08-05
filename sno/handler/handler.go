@@ -95,21 +95,17 @@ func DesktopDownloads(b *tgbotapi.BotAPI, u tgbotapi.Update) {
 func SendDownloadLink(b *tgbotapi.BotAPI, u tgbotapi.Update, version string) {
 	log.Println(version)
 	if version == "Mobile" {
-		msg := tgbotapi.NewMessage(helper.GetchatID(u), messages.MobileDownMsg)
-    b.Send(msg)
+		helper.Send(b, u, messages.MobileDownMsg)
 		
 	} else if version == "Linux" {
-		msg := tgbotapi.NewMessage(helper.GetchatID(u), messages.LinuxDownMsg)
-    b.Send(msg)
+		helper.Send(b, u, messages.LinuxDownMsg)
 		
 	}else if version == "Windows" {
 		log.Println("in win")
-		msg := tgbotapi.NewMessage(helper.GetchatID(u), messages.WinDownMsg)
-    b.Send(msg)
+		helper.Send(b, u, messages.WinDownMsg)
 		
 	}else if version == "MacOS" {
-		msg := tgbotapi.NewMessage(helper.GetchatID(u), messages.MacOSDownMsg)
-    b.Send(msg)
+		helper.Send(b, u, messages.MacOSDownMsg)
 	}
 	return
 }
@@ -117,11 +113,9 @@ func SendDownloadLink(b *tgbotapi.BotAPI, u tgbotapi.Update, version string) {
 func SendGuide(b *tgbotapi.BotAPI, u tgbotapi.Update, guide string) {
 	log.Println(guide)
 	if guide == "dVPN" {
-		msg := tgbotapi.NewMessage(helper.GetchatID(u), messages.DVPNGuide)
-    b.Send(msg)
+		helper.Send(b, u, messages.DVPNGuide)
 	} else if guide == "Hub" {
-		msg := tgbotapi.NewMessage(helper.GetchatID(u), messages.HubGuide)
-    b.Send(msg)
+		helper.Send(b, u, messages.HubGuide)
 	}
 	return
 }
