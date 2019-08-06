@@ -1,8 +1,10 @@
 {
   "SNOButtons": [
     {
-      "⇩Downloads": "Downloads-Home",
-      "📖Guides": "Guides-Home"
+      "📥Downloads": "Downloads-Home",
+      "📋Guides": "Guides-Home"
+    },{
+      "◀Back": "home"
     }
   ],
   "DownloadsButtonsList": [
@@ -10,7 +12,8 @@
       "💻Desktop": "Downloads-Desktop",
       "📱Mobile": "Downloads-Mobile"
     },{
-      "◀Back": "sno"
+      "◀Back": "sno",
+      "🏠Home": "home"
     }
   ],
   "DesktopDownloadsButtonsList": [
@@ -20,15 +23,24 @@
       "🍎Mac OS": "Downloads-MacOS"
     }, {
       "◀Back": "Downloads-Home",
-      "🏠Home": "Downloads-Home"
+      "🏠Home": "home"
     }
   ],
   "GuidesButtonsList": [
     {
-      "Sentinel dVPN": "Guides-dVPN",
-      "Sentinel Hub": "Guides-Hub"
+      "🔐Sentinel dVPN": "Guides-dVPN",
+      "❇Sentinel Hub": "Guides-Hub"
     },{
-      "◀Back": "sno"
+      "◀Back": "sno",
+      "🏠Home": "home"
+    }
+  ],
+  "DVPNStatsButtonsList": [
+    {
+      "📊Statistics": "dVPNStats-Stats",
+      "🔵 ActiveNodes": "dVPNStats-ActiveNodes"
+    },{
+      "◀Back": "home"
     }
   ]
 }

@@ -14,11 +14,20 @@ import (
 )
 
 func HandleGreet(Bot *tgbotapi.BotAPI, update *tgbotapi.Update )  {
-	username := update.Message.From.UserName
-	chatID := update.Message.Chat.ID
+	username := helpers.GetUserName(update)
+	chatID := helpers.GetchatID(update)
 	txt := fmt.Sprintf(en_messages.WelcomeGreetMsg, username)+"\n\n\n"+en_messages.SelectwalkthroughMsg
 	// msg := tgbotapi.NewMessage(chatID,txt)
 	// msg.ReplyMarkup = buttons.GetButtons("LanguageButtons")
+	if update.CallbackQuery != nil {
+		msgID := update.CallbackQuery.Message.MessageID
+		msg := tgbotapi.NewEditMessageText(chatID, msgID, txt+"\n\n"+"Choose an option from the list below: ")
+		btns := buttons.GetButtons("HomeButtonsList")
+		msg.ReplyMarkup = &btns
+		msg.ParseMode = tgbotapi.ModeMarkdown
+		Bot.Send(msg)
+		return
+	}
 	msg2 := tgbotapi.NewMessage(chatID, txt+"\n\n"+"Choose an option from the list below: ")
 	msg2.ReplyMarkup = buttons.GetButtons("HomeButtonsList")
 	msg2.ParseMode = tgbotapi.ModeMarkdown

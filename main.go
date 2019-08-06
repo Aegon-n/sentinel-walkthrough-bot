@@ -15,6 +15,7 @@ import (
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/dbo"
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/handlers"
 	sno_handler "github.com/Aegon-n/sentinel-bot/sno/handler"
+	stats_handler "github.com/Aegon-n/sentinel-bot/dVPN-Stats/handler"
 
 	// tmExplorer "github.com/Aegon-n/sentinel-bot/tm-explorer"
 	"github.com/fatih/color"
@@ -89,9 +90,12 @@ func main() {
 				eth_handlers.DisconnectProxy(bot, update, db2)
 			case "about":
 				handlers.AboutSentinel(bot, update)
-
+			case "stats":
+				stats_handler.HandleHome(bot, update)
 			case "downloads":
 				sno_handler.DownloadsHome(bot, update)
+			case "guides":
+				sno_handler.GuidesHome(bot, update)
 			}
 		}
 
@@ -122,6 +126,8 @@ func main() {
 
 			case "Socks5":
 				handlers.HandleSocks5InlineButtons(bot, update, db)*/
+			case "home":
+				handler.HandleGreet(bot, &update)
 			case "about":
 				handlers.AboutSentinel(bot, update)
 			case "sps":
@@ -136,6 +142,8 @@ func main() {
 				sno_handler.HandleDownloads(bot, update)
 			case "Guides":
 				sno_handler.HandleGuides(bot, update)
+			case "dVPNStats":
+				stats_handler.HandleStats(bot, update)
 			default:
 				handler.HandleCallbackQuery(bot, &update, db)
 			}

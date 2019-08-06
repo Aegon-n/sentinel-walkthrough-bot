@@ -20,6 +20,7 @@ type Buttons struct {
 	DownloadsButtonsList 				[]map[string]string  	`json: "DownloadsButtonsList"`
 	DesktopDownloadsButtonsList 		[]map[string]string 	`json: "DesktopDownloadsButtonsList"`
 	GuidesButtonsList        []map[string]string         `json: "GuidesButtonsList"`
+	DVPNStatsButtonsList     []map[string]string				`json: "DVPNStatsButtonsList"`
 }
 var ButtonList Buttons
 

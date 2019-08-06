@@ -19,6 +19,13 @@ func HandleSPS(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 	ChatID := helpers.GetchatID(u)
 	greet := fmt.Sprintf(templates.GreetingMsg, username)
 	opts := buttons.GetButtons("SpsButtonsList")
+	if u.CallbackQuery != nil {
+		msgID := u.CallbackQuery.Message.MessageID
+		msg1 := tgbotapi.NewEditMessageText(ChatID, msgID ,greet+"\n\n"+"Choose an option from the list below: ")
+		msg1.ReplyMarkup = &opts
+		b.Send(msg1)
+		return
+	}
 	msg := tgbotapi.NewMessage(ChatID, greet+"\n\n"+"Choose an option from the list below: ")
 	msg.ReplyMarkup = opts
 	b.Send(msg)

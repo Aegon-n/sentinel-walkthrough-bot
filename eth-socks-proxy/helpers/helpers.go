@@ -90,7 +90,7 @@ func Send(b *tgbotapi.BotAPI, u tgbotapi.Update, msg string, opts ...models.Butt
 			}
 		}
 	}
-	c.ParseMode = tgbotapi.ModeHTML
+	c.ParseMode = tgbotapi.ModeMarkdown
 	_, _ = b.Send(c)
 	//_, e := b.Send(c)
 	//color.Red("***** \n ERROR: %v \n*****", e)
@@ -115,7 +115,7 @@ func GetTelegramUsername(username string) string {
 func GetNodes() ([]models.List, error) {
 	var body models.SocksResponse
 	var N []models.List
-	resp, err := http.Get("https://api.sentinelgroup.io/client/vpn/socks-list")
+	resp, err := http.Get("https://api.sentinelgroup.io/client/vpn/list")
 	if err != nil {
 		return N, err
 	}
