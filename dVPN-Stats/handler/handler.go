@@ -74,7 +74,7 @@ func SendActiveNodes(b *tgbotapi.BotAPI, u tgbotapi.Update) {
 			node.NetSpeed.Download/float64(1000000), node.Load.CPU, "%")
 
 		txt += "\n\n"
-		if idx%20 == 0 {
+		if idx != 0 && idx%20 == 0 {
 			helper.Send(b, u, txt)
 			txt = ""
 		}

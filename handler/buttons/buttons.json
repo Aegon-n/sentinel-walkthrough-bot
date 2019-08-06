@@ -104,9 +104,9 @@
   ],
   "HomeButtonsList": [
     {"About Sentinel Network": "about"},
-    {"Sentinel Proxy Service (SPS)": "sps"},
+    {"🔐Sentinel Proxy Service (SPS)": "sps"},
     {"Sentinel Network Overview": "sno"},
-    {"Sentinel dVPN- Stats": "dVPNStats-Home"}
+    {"📊Sentinel dVPN- Stats": "dVPNStats-Home"}
 
   ],
   "SpsButtonsList": [

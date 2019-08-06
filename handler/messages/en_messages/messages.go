@@ -269,7 +269,10 @@ Ethereum Wallet Attached: <b>%s</b>`
 		5. /mynode - to get list of assigned sps proxy nodes
 		6. /restart_sps -  to restart the process of sps
 		7. /disconect_proxy - to disconnect the proxy
-		8. /restart - to restart the Sentinel Network Bot
+		8. /downloads - to get download links for Sentinel clients
+		9. /guides - Guides to participate in Sentinel Network
+		10. /stats - to Know dVPN statistics of Sentinel Network
+		11. /restart - to restart the Sentinel Network Bot
 	`
 
 )
