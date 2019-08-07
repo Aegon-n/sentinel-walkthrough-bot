@@ -8,7 +8,7 @@ import(
 	"github.com/Aegon-n/sentinel-bot/dVPN-Stats/constants"
 )
 
-func GetCount(statType, field string) (int, int, error) {
+func GetCount(statType, field string, ch chan<-int)  {
 	var active models.Active
 	var average models.Average
 	var url string
@@ -18,18 +18,15 @@ func GetCount(statType, field string) (int, int, error) {
 		} else {
 			url = constants.MasterNodestatsUrl + "sessions/active?filter=lastday&format=count"
 		}
-		resp, err := http.Get(url)
-		if err != nil {
-			log.Println("Unable get active nodes")
-			return 0, 0, err
-		}
+		resp, _ := http.Get(url)
+		
 		if err := json.NewDecoder(resp.Body).Decode(&active); err != nil {
 			log.Println("unable to decode response")
-			return 0, 0, err
+			ch <- 0
 		}
 		defer resp.Body.Close()
-		return active.Count, average.Average, nil
-
+		ch <- active.Count
+		return
 	} 
 	if field == "nodes" {
 		url = constants.MasterNodestatsUrl + "nodes/active?interval=day&format=count"
@@ -39,17 +36,18 @@ func GetCount(statType, field string) (int, int, error) {
 	resp, err := http.Get(url)
 	if err != nil {
 		log.Println("Unable get active nodes")
-		return 0, 0, err
+		ch <- 0
 	}
 	if err := json.NewDecoder(resp.Body).Decode(&average); err != nil {
 		log.Println("unable to decode response")
-		return 0, 0, err
+		ch <- 0
+		return
 	}
 	defer resp.Body.Close()
-	return active.Count, average.Average, nil
+	ch <- average.Average
 }
 
-func GetUsedBandwidth(filter string) (float64, error){
+func GetUsedBandwidth(filter string, ch chan<-float64) {
 	var bandwidth models.Bandwidth
 	var url string
   if filter == "lastday" {
@@ -60,12 +58,12 @@ func GetUsedBandwidth(filter string) (float64, error){
 	resp, err := http.Get(url)
 	if err != nil {
 		log.Println("Unable to get bandwidth stats")
-		return bandwidth.Stats, err
+		ch <- 0.0
 	}
 	if err := json.NewDecoder(resp.Body).Decode(&bandwidth); err != nil {
 		log.Println("unable to decode response")
-		return bandwidth.Stats, err
+		ch <- 0.0
 	}
 	defer resp.Body.Close()
-	return bandwidth.Stats, nil
+	ch <- bandwidth.Stats
 }

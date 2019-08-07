@@ -37,27 +37,16 @@ func HandleStats(b *tgbotapi.BotAPI, u tgbotapi.Update) {
 }
 
 func SendStats(b *tgbotapi.BotAPI, u tgbotapi.Update) {
-	active_nodes, _, err := helpers.GetCount("active", "nodes")
-	if err != nil {
-		helper.Send(b, u, messages.UnableToGetStats)
-		return
-	}
-	active_sessions, _, err := helpers.GetCount("active", "sessions")
-	if err != nil {
-		helper.Send(b, u, messages.UnableToGetStats)
-		return
-	}
-	lastday_bandwidth, err := helpers.GetUsedBandwidth("lastday")
-	if err != nil {
-		helper.Send(b, u, messages.UnableToGetStats)
-		return
-	}
-	total_bandwidth, err := helpers.GetUsedBandwidth("total")
-	if err != nil {
-		helper.Send(b, u, messages.UnableToGetStats)
-		return
-	}
-	msg := fmt.Sprintf(messages.StatsMsg, active_nodes, active_sessions, lastday_bandwidth/1024.0, total_bandwidth/(1024.0*1024.0))
+	active_nodes := make(chan int)
+	active_sessions := make(chan int)
+	lastday_bandwidth := make(chan float64)
+	total_bandwidth := make(chan float64)
+
+	go helpers.GetCount("active", "nodes", active_nodes)
+	go helpers.GetCount("active", "sessions", active_sessions)
+	go helpers.GetUsedBandwidth("lastday", lastday_bandwidth)
+	go helpers.GetUsedBandwidth("total", total_bandwidth)
+	msg := fmt.Sprintf(messages.StatsMsg, <-active_nodes, <-active_sessions, <-lastday_bandwidth/1024.0, <-total_bandwidth/(1024.0*1024.0))
 	helper.Send(b, u, msg)
 	return
 }
