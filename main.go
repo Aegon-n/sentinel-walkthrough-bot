@@ -13,7 +13,7 @@ import (
 	eth_helpers "github.com/Aegon-n/sentinel-bot/eth-socks-proxy/helpers"
 	"github.com/Aegon-n/sentinel-bot/locale"
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/dbo"
-	"github.com/Aegon-n/sentinel-bot/socks5-proxy/handlers"
+	/* "github.com/Aegon-n/sentinel-bot/socks5-proxy/handlers" */
 	sno_handler "github.com/Aegon-n/sentinel-bot/sno/handler"
 	stats_handler "github.com/Aegon-n/sentinel-bot/dVPN-Stats/handler"
 
@@ -89,7 +89,7 @@ func main() {
 			case "disconnect_proxy":
 				eth_handlers.DisconnectProxy(bot, update, db2)
 			case "about":
-				handlers.AboutSentinel(bot, update)
+				sno_handler.AboutSentinel(bot, update)
 			case "stats":
 				stats_handler.HandleHome(bot, update)
 			case "downloads":
@@ -129,7 +129,7 @@ func main() {
 			case "home":
 				handler.HandleGreet(bot, &update)
 			case "about":
-				handlers.AboutSentinel(bot, update)
+				sno_handler.AboutSentinel(bot, update)
 			case "sps":
 				eth_handlers.HandleSPS(bot, update, db2)
 			case "list_nodes":

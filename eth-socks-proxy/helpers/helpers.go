@@ -217,10 +217,6 @@ func SocksProxy(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, vpn_addr st
 	fmt.Println(result)
 	fmt.Println(result.Node)
 	TG_URL := result.Node.Vpn.TelegramLink
-	btnOpts := []models.InlineButtonOptions{
-		{Label: "Sentinel Proxy Node", URL: TG_URL},
-	}
-	opts := models.ButtonHelper{Type: constants.InlineButton, InlineKeyboardOpts: btnOpts}
 	err = db.Insert(constants.AssignedNodeURI, u.Message.From.UserName, TG_URL)
 	if err != nil {
 		log.Println("unable to insert proxy url")
@@ -231,7 +227,20 @@ func SocksProxy(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, vpn_addr st
 		log.Println("unable to set status")
 		Send(b, u, "interal bot error")
 	}
-	Send(b, u, templates.Success, opts)
+	optns := [][]tgbotapi.InlineKeyboardButton{{},{}}
+		for idx, row := range []map[string]string{{"connect": TG_URL}, {"◀Back":"sps", "🏠Home":"home"}} {
+			for k, v := range row {
+				val := v
+				if k == "connect" {
+					optns[idx] = append(optns[idx], tgbotapi.InlineKeyboardButton{Text: k, URL: &val})
+					continue
+				}
+				optns[idx] = append(optns[idx], tgbotapi.InlineKeyboardButton{Text: k, CallbackData: &val})
+			}
+		}
+	msg := tgbotapi.NewMessage(GetchatID(u), templates.Success)
+	msg.ReplyMarkup = tgbotapi.InlineKeyboardMarkup{InlineKeyboard: optns}
+	b.Send(msg)
 	return
 }
 

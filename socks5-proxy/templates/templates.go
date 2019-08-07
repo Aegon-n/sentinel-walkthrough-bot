@@ -8,8 +8,9 @@ const (
 
 	CheckWalletOptionsError = "Error while fetching user wallet address. In case you have not attached your wallet address, please share your wallet address again."
 	Success                 = "Congratulations!! please click the button below to connect to the sentinel dVPN node"
+	Choose                  = "Choose an option from the list below: "
 	AskToSelectANode        = `Please select a node from the above list: `
-	DATACONSUMPTION         = "Data consumed: %.2f MB of 1GB"
+	DATACONSUMPTION         = "*Usage Info:*\nData consumed: *%.2f MB of 1GB*"
 	LIMITEXCEEDED           = ` Hey @%s,
 You have consumed 1GB data. Proxy will disconnect now. Please disable proxy in telegram settings.
 

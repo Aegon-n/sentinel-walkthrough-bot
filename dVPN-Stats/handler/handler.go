@@ -44,8 +44,9 @@ func SendStats(b *tgbotapi.BotAPI, u tgbotapi.Update) {
 	lastday_bandwidth := make(chan float64)
 	total_bandwidth := make(chan float64)
 
-	helper.Send(b, u, "Loading.. Please wait..")
-
+	
+	mesg := tgbotapi.NewEditMessageText(u.CallbackQuery.Message.Chat.ID, u.CallbackQuery.Message.MessageID, "Loading .. Please wait ..")
+	b.Send(mesg)
 	go helpers.GetCount("active", "nodes", active_nodes)
 	go helpers.GetCount("average", "nodes", avg_nodes)
 	go helpers.GetCount("active", "sessions", active_sessions)
@@ -60,16 +61,19 @@ func SendStats(b *tgbotapi.BotAPI, u tgbotapi.Update) {
 	
 	msg := fmt.Sprintf(messages.StatsMsg, <-active_nodes, <- avg_nodes, 
 												<-active_sessions, <- avg_sessions, <-lastday_bandwidth/1024.0, <-total_bandwidth/(1024.0*1024.0))
-	helper.Send(b, u, msg)
+	btns := buttons.GetButtons("StatsFlowEndButtons")
+	helper.Send(b, u, msg, &btns)
 	return
 }
 
 func SendActiveNodes(b *tgbotapi.BotAPI, u tgbotapi.Update) {
 	nodes, err := eth.GetAllNodes()
+	socks_nodes, _ := eth.GetNodes()
 	if err != nil {
 		helper.Send(b, u, "unable get active nodes list")
 		return
 	}
+	nodes = append(nodes , socks_nodes...)
 	txt := "Here it is: *Active dVPN - nodes*\n"
 	for idx, node := range nodes {
 		txt = txt + fmt.Sprintf(messages.NodeList, strconv.Itoa(idx+1), node.Location.City, node.Location.Country,
@@ -81,6 +85,9 @@ func SendActiveNodes(b *tgbotapi.BotAPI, u tgbotapi.Update) {
 			txt = ""
 		}
 	}
-	helper.Send(b, u, txt)
+	btns := buttons.GetButtons("StatsFlowEndButtons")
+	msg := tgbotapi.NewMessage(u.CallbackQuery.Message.Chat.ID, txt)
+	msg.ReplyMarkup = btns
+	b.Send(msg)
 	return
 }

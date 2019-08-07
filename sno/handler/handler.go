@@ -95,27 +95,49 @@ func DesktopDownloads(b *tgbotapi.BotAPI, u tgbotapi.Update) {
 func SendDownloadLink(b *tgbotapi.BotAPI, u tgbotapi.Update, version string) {
 	log.Println(version)
 	if version == "Mobile" {
-		helper.Send(b, u, messages.MobileDownMsg)
+		btns := buttons.GetButtons("MobileFlowEndButtons")
+		helper.Send(b, u, messages.MobileDownMsg, &btns)
 		
 	} else if version == "Linux" {
-		helper.Send(b, u, messages.LinuxDownMsg)
+		btns := buttons.GetButtons("DesktopFlowEndButtons")
+		helper.Send(b, u, messages.LinuxDownMsg, &btns)
 		
 	}else if version == "Windows" {
-		log.Println("in win")
-		helper.Send(b, u, messages.WinDownMsg)
+		btns := buttons.GetButtons("DesktopFlowEndButtons")
+		helper.Send(b, u, messages.WinDownMsg, &btns)
 		
 	}else if version == "MacOS" {
-		helper.Send(b, u, messages.MacOSDownMsg)
+		btns := buttons.GetButtons("DesktopFlowEndButtons")
+		helper.Send(b, u, messages.MacOSDownMsg, &btns)
 	}
 	return
 }
 
 func SendGuide(b *tgbotapi.BotAPI, u tgbotapi.Update, guide string) {
 	log.Println(guide)
+	btns := buttons.GetButtons("GuideFlowEndButtons")
 	if guide == "dVPN" {
-		helper.Send(b, u, messages.DVPNGuide)
+		helper.Send(b, u, messages.DVPNGuide, &btns)
 	} else if guide == "Hub" {
-		helper.Send(b, u, messages.HubGuide)
+		helper.Send(b, u, messages.HubGuide, &btns)
 	}
+	return
+}
+func AboutSentinel(b *tgbotapi.BotAPI, u tgbotapi.Update) {
+	log.Println("In about")
+	chatID := helper.GetchatID(u)
+	btns := buttons.GetButtons("AboutButtons")
+	if u.CallbackQuery != nil {
+		msgID := u.CallbackQuery.Message.MessageID
+		msg := tgbotapi.NewEditMessageText(chatID, msgID, messages.AboutSentinel)
+		msg.ReplyMarkup = &btns
+		msg.ParseMode = tgbotapi.ModeMarkdown
+		b.Send(msg)
+		return
+	}
+	msg := tgbotapi.NewMessage(chatID, messages.AboutSentinel)
+	msg.ReplyMarkup = btns
+	msg.ParseMode = tgbotapi.ModeMarkdown
+	b.Send(msg)
 	return
 }

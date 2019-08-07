@@ -42,5 +42,34 @@
     },{
       "◀Back": "home"
     }
+  ],
+  "AboutButtons": [
+    {
+      "◀Back": "home"
+    }
+  ],
+  "DesktopFlowEndButtons": [
+    {
+      "◀Back": "Downloads-Desktop",
+      "🏠Home": "home"
+    }
+  ],
+  "MobileFlowEndButtons": [
+    {
+      "◀Back": "Downloads-Home",
+      "🏠Home": "home"
+    }
+  ],
+  "GuideFlowEndButtons": [
+    {
+      "◀Back": "Guides-Home",
+      "🏠Home": "home"
+    }
+  ],
+  "StatsFlowEndButtons": [
+    {
+      "◀Back": "dVPNStats-Home",
+      "🏠Home": "home"
+    }
   ]
 }

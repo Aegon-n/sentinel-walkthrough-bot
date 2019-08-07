@@ -136,6 +136,7 @@ type UserResp struct {
 type InlineButtonOptions struct {
 	Label string
 	URL   string
+	CallbackData string
 }
 
 type ButtonHelper struct {

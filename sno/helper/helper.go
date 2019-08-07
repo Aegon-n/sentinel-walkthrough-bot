@@ -23,6 +23,16 @@ func GetchatID(u tgbotapi.Update) int64 {
 	}
 	return chatID
 }
+func GetMsgID(u tgbotapi.Update) int {
+	var msgID int
+	if u.CallbackQuery != nil {
+		msgID = u.CallbackQuery.Message.MessageID
+	}
+	if u.Message != nil {
+		msgID = u.Message.MessageID
+	}
+	return msgID
+}
 
 func Send(b *tgbotapi.BotAPI, u tgbotapi.Update, txt string, btns ...*tgbotapi.InlineKeyboardMarkup) {
 	

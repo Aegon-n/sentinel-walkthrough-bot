@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"github.com/Aegon-n/sentinel-bot/sno/helper"
 	"fmt"
 	"log"
 	"strconv"
@@ -34,8 +35,10 @@ func HandleSPS(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 func HandleSocks5Proxy(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 	username := helpers.GetUserName(u)
 	ChatID := helpers.GetchatID(u)
-	greet := fmt.Sprintf(templates.GreetingMsg, username)
-	helpers.Send(b, u, greet)
+	if u.Message != nil {
+		greet := fmt.Sprintf(templates.GreetingMsg, username)
+		helpers.Send(b, u, greet)
+	}
 	_, err := db.Read(constants.AssignedNodeURI, username)
 	if err == nil {
 		helpers.Send(b, u, templates.NodeAttachedAlready)
@@ -110,16 +113,34 @@ func ShowMyNode(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 			helpers.Send(b, u, templates.NoAssignedNodes)
 			return
 		}
-		ShowMyInfo(b, u, db)
-		btnOpts := []models.InlineButtonOptions{
-			{Label: "Connect", URL: kv.Value},
+		txt := ShowMyInfo(b, u, db)
+		if txt == "" {
+			log.Println("text is empty")
+			return
 		}
-		opts := models.ButtonHelper{
-			Type: constants.InlineButton, InlineKeyboardOpts: btnOpts,
+		optns := [][]tgbotapi.InlineKeyboardButton{{},{}}
+		for idx, row := range []map[string]string{{"connect": kv.Value}, {"◀Back":"sps", "🏠Home":"home"}} {
+			for k, v := range row {
+				val := v
+				if k == "connect" {
+					optns[idx] = append(optns[idx], tgbotapi.InlineKeyboardButton{Text: k, URL: &val})
+					continue
+				}
+				optns[idx] = append(optns[idx], tgbotapi.InlineKeyboardButton{Text: k, CallbackData: &val})
+			}
 		}
-
-		helpers.Send(b, u, templates.ConnectMessage, opts)
-		return
+		if u.CallbackQuery != nil {
+		msg := tgbotapi.NewEditMessageText(helper.GetchatID(u), helper.GetMsgID(u), txt+"\n\n"+templates.ConnectMessage)
+		msg.ReplyMarkup = &tgbotapi.InlineKeyboardMarkup{InlineKeyboard: optns}
+		msg.ParseMode = tgbotapi.ModeMarkdown
+		b.Send(msg)
+		return 
+		}
+		msg := tgbotapi.NewMessage(helper.GetchatID(u), txt+"\n\n"+templates.ConnectMessage)
+		msg.ReplyMarkup = tgbotapi.InlineKeyboardMarkup{InlineKeyboard: optns}
+		msg.ParseMode = tgbotapi.ModeMarkdown
+		b.Send(msg)
+		return 
 	}
 	helpers.Send(b, u, templates.NoAssignedNodes)
 	return
@@ -152,8 +173,8 @@ func HandleNodeId(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []m
 		return
 	}
 	_ = db.Insert("NodeIP", u.Message.From.UserName, nodes[idx-1].IP)
-	helpers.Send(b, u, txt)
-	helpers.Send(b, u, "Please wait... \nGetting socks5 proxy... ")
+	helpers.Send(b, u, "*You have selected* \n"+txt)
+	helpers.Send(b, u, "Please wait .. Getting socks5 proxy .. ")
 	go helpers.SocksProxy(b, u, db, nodes[idx-1].AccountAddr)
 	return
 }
@@ -170,23 +191,23 @@ func Restart(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 	go HandleSocks5Proxy(b, u, db)
 	return
 }
-func ShowMyInfo(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
+func ShowMyInfo(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) string {
 	username := helpers.GetUserName(u)
 	token, err := db.Read("TOKEN", username)
 	if err != nil {
 		helpers.Send(b, u, templates.Error)
-		return
+		return ""
 	}
 	NodeIP, err := db.Read("NodeIP", username)
 	if err != nil {
 		helpers.Send(b, u, templates.Error)
-		return
+		return ""
 	}
 	usage, err := helpers.GetDataUsage(username, NodeIP.Value, token.Value)
 	if err != nil {
 		log.Println(err)
 		helpers.Send(b, u, templates.Error)
-		return
+		return ""
 	}
 	NodeInfo := ""
 	nodes, _  := helpers.GetNodes()
@@ -197,9 +218,8 @@ func ShowMyInfo(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 		}
 	}
 	txt := fmt.Sprintf(templates.DATACONSUMPTION, usage.Down/float64(1048576))
-	helpers.Send(b, u, txt)
-	helpers.Send(b, u, NodeInfo)
-	return
+	log.Println(txt + "\n\n" + NodeInfo)
+	return txt + "\n\n" + "*Node Info:*\n"+ NodeInfo
 }
 func DisconnectProxy(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 	username := helpers.GetUserName(u)
