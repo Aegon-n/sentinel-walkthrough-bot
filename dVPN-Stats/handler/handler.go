@@ -65,7 +65,7 @@ func SendStats(b *tgbotapi.BotAPI, u tgbotapi.Update) {
 }
 
 func SendActiveNodes(b *tgbotapi.BotAPI, u tgbotapi.Update) {
-	nodes, err := eth.GetNodes()
+	nodes, err := eth.GetAllNodes()
 	if err != nil {
 		helper.Send(b, u, "unable get active nodes list")
 		return

@@ -115,6 +115,22 @@ func GetTelegramUsername(username string) string {
 func GetNodes() ([]models.List, error) {
 	var body models.SocksResponse
 	var N []models.List
+	resp, err := http.Get("https://api.sentinelgroup.io/client/vpn/socks-list")
+	if err != nil {
+		return N, err
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&body); err != nil {
+		return N, err
+	}
+	defer resp.Body.Close()
+	/*if len(body.List) > 60 {
+		return body.List[:60], err
+	}*/
+	return body.List, err
+}
+func GetAllNodes() ([]models.List, error) {
+	var body models.SocksResponse
+	var N []models.List
 	resp, err := http.Get("https://api.sentinelgroup.io/client/vpn/list")
 	if err != nil {
 		return N, err
