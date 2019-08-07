@@ -5,7 +5,7 @@ type Active struct {
 }
 
 type Average struct {
-	Average    int    `json: "average"`
+	Average    float64    `json: "average"`
 }
 
 type Bandwidth struct {

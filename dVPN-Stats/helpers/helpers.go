@@ -44,7 +44,7 @@ func GetCount(statType, field string, ch chan<-int)  {
 		return
 	}
 	defer resp.Body.Close()
-	ch <- average.Average
+	ch <- int(average.Average)
 }
 
 func GetUsedBandwidth(filter string, ch chan<-float64) {

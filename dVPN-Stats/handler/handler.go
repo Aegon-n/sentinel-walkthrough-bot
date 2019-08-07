@@ -38,15 +38,28 @@ func HandleStats(b *tgbotapi.BotAPI, u tgbotapi.Update) {
 
 func SendStats(b *tgbotapi.BotAPI, u tgbotapi.Update) {
 	active_nodes := make(chan int)
+	avg_nodes := make(chan int)
 	active_sessions := make(chan int)
+	avg_sessions := make(chan int)
 	lastday_bandwidth := make(chan float64)
 	total_bandwidth := make(chan float64)
 
+	helper.Send(b, u, "Loading.. Please wait..")
+	
 	go helpers.GetCount("active", "nodes", active_nodes)
+	go helpers.GetCount("average", "nodes", avg_nodes)
 	go helpers.GetCount("active", "sessions", active_sessions)
+	go helpers.GetCount("average", "sessions", avg_sessions)
 	go helpers.GetUsedBandwidth("lastday", lastday_bandwidth)
 	go helpers.GetUsedBandwidth("total", total_bandwidth)
-	msg := fmt.Sprintf(messages.StatsMsg, <-active_nodes, <-active_sessions, <-lastday_bandwidth/1024.0, <-total_bandwidth/(1024.0*1024.0))
+
+	/* log.Println(<- active_nodes)
+	log.Println(<- active_sessions)
+	log.Println(<- lastday_bandwidth)
+	log.Println(<- total_bandwidth) */
+	
+	msg := fmt.Sprintf(messages.StatsMsg, <-active_nodes, <- avg_nodes, 
+												<-active_sessions, <- avg_sessions, <-lastday_bandwidth/1024.0, <-total_bandwidth/1024.0)
 	helper.Send(b, u, msg)
 	return
 }
