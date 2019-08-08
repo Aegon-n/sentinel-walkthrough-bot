@@ -4,16 +4,19 @@ import (
 	"fmt"
 	"github.com/Aegon-n/sentinel-bot/handler/buttons"
 	"github.com/Aegon-n/sentinel-bot/handler/dbo"
+	"github.com/Aegon-n/sentinel-bot/handler/models"
 	"github.com/Aegon-n/sentinel-bot/handler/helpers"
 	"github.com/Aegon-n/sentinel-bot/handler/messages/en_messages"
-	"github.com/Aegon-n/sentinel-bot/handler/updates"
 	"github.com/Aegon-n/sentinel-bot/locale"
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/dbo/ldb"
 	"gopkg.in/telegram-bot-api.v4"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/bson"
 	"log"
+	"context"
 )
 
-func HandleGreet(Bot *tgbotapi.BotAPI, update *tgbotapi.Update )  {
+func HandleGreet(Bot *tgbotapi.BotAPI, update *tgbotapi.Update, collection *mongo.Collection)  {
 	username := helpers.GetUserName(update)
 	chatID := helpers.GetchatID(update)
 	txt := fmt.Sprintf(en_messages.WelcomeGreetMsg, username)+"\n\n\n"+en_messages.SelectwalkthroughMsg
@@ -25,14 +28,29 @@ func HandleGreet(Bot *tgbotapi.BotAPI, update *tgbotapi.Update )  {
 		btns := buttons.GetButtons("HomeButtonsList")
 		msg.ReplyMarkup = &btns
 		msg.ParseMode = tgbotapi.ModeMarkdown
-		Bot.Send(msg)
 		return
 	}
 	msg2 := tgbotapi.NewMessage(chatID, txt+"\n\n"+"Choose an option from the list below: ")
 	msg2.ReplyMarkup = buttons.GetButtons("HomeButtonsList")
 	msg2.ParseMode = tgbotapi.ModeMarkdown
 	Bot.Send(msg2)
+	var user models.BotUser
+
+	err := collection.FindOne(context.TODO(), bson.D{{"username", username}}).Decode(&user)
+	if err != nil {
+		user = models.BotUser{UserName: username, FirstName: update.Message.Chat.FirstName, ChatID: chatID}
+		insertResult, err := collection.InsertOne(context.TODO(), user)
+		if err != nil {
+				log.Println(err)
+				return
+		}
+		fmt.Println("Inserted a single document: ", insertResult.InsertedID)
+		return
+	}
+	fmt.Printf("Found a single document: %+v\n", user)
+	
 }
+
 func HandlerWalkThrough(Bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 
 	username := helpers.GetUserName(update)
@@ -90,18 +108,6 @@ func HandleCallbackQuery(bot *tgbotapi.BotAPI, update *tgbotapi.Update, db ldb.B
 
 	case "Chinese":
 		handleLang(bot, update, "Chinese", db)
-
-
-	case "Medium":
-		updates.MediumUpdates(bot, update)
-
-
-	case "Reddit":
-		updates.Reddit_updates(bot, update)
-
-
-	case "Twitter":
-		updates.Twitter_updates(bot, update)
 
 	default:
 		chatID := update.CallbackQuery.Message.Chat.ID

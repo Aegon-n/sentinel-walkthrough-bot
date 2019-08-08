@@ -16,11 +16,12 @@ import (
 	/* "github.com/Aegon-n/sentinel-bot/socks5-proxy/handlers" */
 	sno_handler "github.com/Aegon-n/sentinel-bot/sno/handler"
 	stats_handler "github.com/Aegon-n/sentinel-bot/dVPN-Stats/handler"
-
+	post "github.com/Aegon-n/sentinel-bot/post_notifications"
 	// tmExplorer "github.com/Aegon-n/sentinel-bot/tm-explorer"
 	"github.com/fatih/color"
 
 	tgbotapi "gopkg.in/telegram-bot-api.v4"
+	mongoDb "github.com/Aegon-n/sentinel-bot/db"
 
 	"log"
 )
@@ -34,7 +35,7 @@ func main() {
 
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
-
+	stream := post.TwitterConfig()
 	updates, err := bot.GetUpdatesChan(u)
 	if err != nil {
 		color.Red("error while receiving messages: %s", err)
@@ -52,9 +53,13 @@ func main() {
 		log.Println("h", err)
 		log.Fatal(err)
 	}
+	mdb := mongoDb.NewDB()
+	collection := mdb.Database("sentinel_network_bot").Collection("bot_users")
+
+
 	//nodes, err := helpers.GetNodes()
 	go eth_helpers.ExpiredUsersJob(bot, db2)
-
+	go post.UpdatePosts(bot, stream, collection)
 	for update := range updates {
 
 		if update.Message != nil && update.Message.IsCommand() {
@@ -62,7 +67,7 @@ func main() {
 			case "walkthrough":
 				handler.HandlerWalkThrough(bot, &update)
 			case "start":
-				handler.HandleGreet(bot, &update)
+				handler.HandleGreet(bot, &update, collection)
 			case "help":
 				log.Println("in help")
 				handler.HandleHelp(bot, &update)
@@ -81,7 +86,7 @@ func main() {
 				eth_handlers.ShowMyNode(bot, update, db2)
 
 			case "restart":
-				handler.HandleGreet(bot, &update)
+				handler.HandleGreet(bot, &update, collection)
 
 			case "restart_sps":
 				eth_handlers.Restart(bot, update, db2)
@@ -127,7 +132,7 @@ func main() {
 			case "Socks5":
 				handlers.HandleSocks5InlineButtons(bot, update, db)*/
 			case "home":
-				handler.HandleGreet(bot, &update)
+				handler.HandleGreet(bot, &update, collection)
 			case "about":
 				sno_handler.AboutSentinel(bot, update)
 			case "sps":
