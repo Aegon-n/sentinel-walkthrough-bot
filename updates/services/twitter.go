@@ -27,7 +27,7 @@ func Twitter_updates(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 
 	config1 := tgbotapi.CallbackConfig{queryId, "", false, "", 0}
 	bot.AnswerCallbackQuery(config1)
-
+	client.Streams.User(&twitter.StreamUserParams{})
 	tt, _, err := client.Timelines.UserTimeline(&twitter.UserTimelineParams{ScreenName: "sentinel_co", Count: 3, TweetMode: "extended"})
 	if err != nil {
 		log.Println("can't get the twits", err)
@@ -44,22 +44,6 @@ func Twitter_updates(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 		msg.ParseMode = tgbotapi.ModeHTML
 
 		bot.Send(msg)
-		stream, err := client.Streams.Filter(&twitter.StreamFilterParams{ 
-			Follow: []string{"1867993700"},
-		})
-		if err != nil {
-			log.Println(err)
-			return
-		}
-		demux := twitter.NewSwitchDemux()
-		demux.Tweet = func(tweet *twitter.Tweet) {
-    	fmt.Println(tweet.Text)
-		}
-		demux.DM = func(dm *twitter.DirectMessage) {
-    	fmt.Println(dm.SenderID)
-		}
-		demux.HandleChan(stream.Messages)
-		
 	}
 	HandleGreet(bot, update)
 
@@ -74,14 +58,14 @@ func HandleGreet(Bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 	Bot.Send(msg)
 
 }
-func ReadPosts(stream *twitter.Stream){
+func ReadPosts(stream *twitter.Stream) {
 	forever := make(chan bool)
 	demux := twitter.NewSwitchDemux()
 	demux.Tweet = func(tweet *twitter.Tweet) {
-    	fmt.Println(tweet.Text)
+		fmt.Println(tweet.Text)
 	}
 	demux.DM = func(dm *twitter.DirectMessage) {
-    	fmt.Println(dm.SenderID)
+		fmt.Println(dm.SenderID)
 	}
 	demux.HandleChan(stream.Messages)
 

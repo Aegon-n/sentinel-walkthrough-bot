@@ -60,6 +60,7 @@ func main() {
 	//nodes, err := helpers.GetNodes()
 	go eth_helpers.ExpiredUsersJob(bot, db2)
 	go post.UpdatePosts(bot, stream, collection)
+	go post.MediumPostSheduler(bot, collection)
 	for update := range updates {
 
 		if update.Message != nil && update.Message.IsCommand() {

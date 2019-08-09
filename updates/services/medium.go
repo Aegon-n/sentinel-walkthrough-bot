@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"github.com/Medium/medium-sdk-go"
 )
 
 type obj struct {
@@ -33,6 +34,7 @@ func MediumUpdates(bot *tgbotapi.BotAPI,update *tgbotapi.Update)  {
 	if err != nil {
 		log.Fatal("Error reading response")
 	}
+
 
 
 	result := make([]obj,0)
