@@ -77,7 +77,7 @@ func CheckForNewPublication(bot *tgbotapi.BotAPI, db *mongo.Collection) {
 	if item[0].PubDate != pubDate {
 		pubDate = item[0].PubDate
 		fmt.Println("New Publication: ", item[0].Title)
-		txt := "*New Medium Post from Sentinel*\n" + item[0].Title + "\n" + item[0].Encoded[:10] + "\n" + item[0].Link
+		txt := "*New Medium Post from Sentinel*\n" + item[0].Title + "\n" + item[0].Encoded[:50] + "\n" + item[0].Link
 		users := GetAllChatIDs(db)
 		BroadcastPost(bot, users, txt)
 	}

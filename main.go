@@ -61,6 +61,7 @@ func main() {
 	go eth_helpers.ExpiredUsersJob(bot, db2)
 	go post.UpdatePosts(bot, stream, collection)
 	go post.MediumPostSheduler(bot, collection)
+	go post.RedditPostSheduler(bot, collection)
 	for update := range updates {
 
 		if update.Message != nil && update.Message.IsCommand() {
