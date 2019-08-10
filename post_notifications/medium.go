@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/jasonlvhit/gocron"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -55,7 +56,7 @@ type Rss struct {
 	} `xml:"channel"`
 }
 
-var pubDate = "Fri Aug  9 22:04:02 IST 2019"
+var pubDate = time.Now().Unix()
 
 func CheckForNewPublication(bot *tgbotapi.BotAPI, db *mongo.Collection) {
 	var body Rss
@@ -72,12 +73,14 @@ func CheckForNewPublication(bot *tgbotapi.BotAPI, db *mongo.Collection) {
 		fmt.Println("no posts")
 		return
 	}
-	item := body.Channel.Item
+	post := body.Channel.Item[0]
+	t, _ := time.Parse(time.RFC1123, post.PubDate)
+	postPublishedAt := t.Unix()
 
-	if item[0].PubDate != pubDate {
-		pubDate = item[0].PubDate
-		fmt.Println("New Publication: ", item[0].Title)
-		txt := "*New Medium Post from Sentinel*\n" + item[0].Title + "\n" + item[0].Encoded[:50] + "\n" + item[0].Link
+	if postPublishedAt > pubDate {
+		pubDate = postPublishedAt
+		fmt.Println("New Publication: ", post.Title)
+		txt := "<b>New Medium Post from Sentinel</b>\n" + post.Title + "\n" + post.Encoded[:50] + "\n" + post.Link
 		users := GetAllChatIDs(db)
 		BroadcastPost(bot, users, txt)
 	}
