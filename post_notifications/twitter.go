@@ -63,7 +63,7 @@ func TwitterConfig() *twitter.Stream {
 
 	fmt.Printf("%+v\n", client)
 	stream, err := client.Streams.Filter(&twitter.StreamFilterParams{
-		Follow: []string{"1867993700"},
+		Follow: []string{"921550402268606465"},
 	})
 	if err != nil {
 		log.Fatal(err)

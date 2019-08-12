@@ -63,7 +63,7 @@ var pubDate = float64(time.Now().Unix())
 func CheckForNewPublication(bot *tgbotapi.BotAPI, db *mongo.Collection) {
 	var body Rss
 	client := &http.Client{}
-	req, err := http.NewRequest("GET", "https://medium.com/feed/@harishmarri551", nil)
+	req, err := http.NewRequest("GET", "https://medium.com/feed/@Sentinel", nil)
 	if err != nil {
 		log.Println("error")
 	}

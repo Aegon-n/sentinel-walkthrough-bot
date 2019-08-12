@@ -47,7 +47,7 @@ func CheckForNewPost(bot *tgbotapi.BotAPI, db *mongo.Collection) {
 	var body RedditPost
 	client := &http.Client{}
 
-	req, err := http.NewRequest("GET", "https://www.reddit.com/u/Harish1551/new.json?limit=1", nil)
+	req, err := http.NewRequest("GET", "https://www.reddit.com/r/SENT/new.json?limit=1", nil)
 	if err != nil {
 		log.Println("error")
 	}
