@@ -1,32 +1,30 @@
-package updates
+package services
 
 import (
 	"encoding/json"
-	"gopkg.in/telegram-bot-api.v4"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"strings"
-	"github.com/Medium/medium-sdk-go"
+
+	"gopkg.in/telegram-bot-api.v4"
 )
 
 type obj struct {
 	ImageUrl string `json: "imageUrl"`
-	P string `json:"p"`
-	Title string `json:"title"`
-	Link string 	`json:"link"`
+	P        string `json:"p"`
+	Title    string `json:"title"`
+	Link     string `json:"link"`
 }
 
-
-func MediumUpdates(bot *tgbotapi.BotAPI,update *tgbotapi.Update)  {
-	queryId := update.CallbackQuery.ID
+func MediumUpdates(bot *tgbotapi.BotAPI, update tgbotapi.Update) {
 	chatId := update.CallbackQuery.Message.Chat.ID
-	api_url := "http://185.181.8.90:9091/feed";
+	api_url := "http://185.181.8.90:9091/feed"
 
 	resp, err := http.Get(api_url)
 
-	if(err != nil){
-		log.Print("access denide or api url is not available",err)
+	if err != nil {
+		log.Print("access denide or api url is not available", err)
 	}
 
 	data, err := ioutil.ReadAll(resp.Body)
@@ -35,22 +33,18 @@ func MediumUpdates(bot *tgbotapi.BotAPI,update *tgbotapi.Update)  {
 		log.Fatal("Error reading response")
 	}
 
-
-
-	result := make([]obj,0)
+	result := make([]obj, 0)
 	json.Unmarshal(data, &result)
 
-	config := tgbotapi.CallbackConfig{queryId,"",false,"",0}
-	bot.AnswerCallbackQuery(config)
-
-	for i,res := range result{
-			if i > 2 {
-				break
-			}
-			resupdates := strings.Split(res.Link, "?")[0]
-			msg := tgbotapi.NewMessage(chatId,resupdates)
-			msg.ParseMode = tgbotapi.ModeMarkdown
-			bot.Send(msg)
+	for i, res := range result {
+		if i > 2 {
+			break
+		}
+		resupdates := strings.Split(res.Link, "?")[0]
+		msg := tgbotapi.NewMessage(chatId, resupdates)
+		msg.ParseMode = tgbotapi.ModeMarkdown
+		bot.Send(msg)
 	}
-	HandleGreet(bot,update)
+	msg2 := tgbotapi.NewMessage(chatId, "click /updates to see updates menu\nclick /start to see home menu")
+	bot.Send(msg2)
 }

@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/Aegon-n/sentinel-bot/post_notifications/messages"
 	"github.com/jasonlvhit/gocron"
 	"go.mongodb.org/mongo-driver/mongo"
 	tgbotapi "gopkg.in/telegram-bot-api.v4"
@@ -56,7 +57,7 @@ type Rss struct {
 	} `xml:"channel"`
 }
 
-var pubDate = time.Now().Unix()
+var pubDate = float64(time.Now().Unix())
 
 func CheckForNewPublication(bot *tgbotapi.BotAPI, db *mongo.Collection) {
 	var body Rss
@@ -70,24 +71,32 @@ func CheckForNewPublication(bot *tgbotapi.BotAPI, db *mongo.Collection) {
 	defer resp.Body.Close()
 
 	if len(body.Channel.Item) == 0 {
-		fmt.Println("no posts")
+		fmt.Println("No Medium posts")
 		return
 	}
 	post := body.Channel.Item[0]
 	t, _ := time.Parse(time.RFC1123, post.PubDate)
-	postPublishedAt := t.Unix()
+	postPublishedAt := float64(t.Unix())
 
 	if postPublishedAt > pubDate {
 		pubDate = postPublishedAt
 		fmt.Println("New Publication: ", post.Title)
-		txt := "<b>New Medium Post from Sentinel</b>\n" + post.Title + "\n" + post.Encoded[:50] + "\n" + post.Link
+		txt := fmt.Sprintf(messages.MediumPost, post.Creator, post.Title, post.Link)
 		users := GetAllChatIDs(db)
-		BroadcastPost(bot, users, txt)
+		broadcastMediumPost(bot, users, txt)
 	}
+}
+func broadcastMediumPost(bot *tgbotapi.BotAPI, chatIDs []int64, text string) {
+	for _, id := range chatIDs {
+		msg := tgbotapi.NewMessage(id, text)
+		msg.ParseMode = tgbotapi.ModeMarkdown
+		bot.Send(msg)
+	}
+	return
 }
 
 func MediumPostSheduler(bot *tgbotapi.BotAPI, db *mongo.Collection) {
 	s := gocron.NewScheduler()
-	s.Every(5).Seconds().Do(CheckForNewPublication, bot, db)
+	s.Every(4).Seconds().Do(CheckForNewPublication, bot, db)
 	<-s.Start()
 }

@@ -63,6 +63,7 @@ func GetNumaricKeyBoard(n int) tgbotapi.ReplyKeyboardMarkup {
 		Keyboard:        btnlist,
 		OneTimeKeyboard: true,
 		ResizeKeyboard:  true,
+		Selective:       true,
 	}
 }
 
@@ -91,6 +92,7 @@ func Send(b *tgbotapi.BotAPI, u tgbotapi.Update, msg string, opts ...models.Butt
 		}
 	}
 	c.ParseMode = tgbotapi.ModeMarkdown
+
 	_, _ = b.Send(c)
 	//_, e := b.Send(c)
 	//color.Red("***** \n ERROR: %v \n*****", e)
@@ -227,17 +229,18 @@ func SocksProxy(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, vpn_addr st
 		log.Println("unable to set status")
 		Send(b, u, "interal bot error")
 	}
-	optns := [][]tgbotapi.InlineKeyboardButton{{},{}}
-		for idx, row := range []map[string]string{{"connect": TG_URL}, {"◀Back":"sps", "🏠Home":"home"}} {
-			for k, v := range row {
-				val := v
-				if k == "connect" {
-					optns[idx] = append(optns[idx], tgbotapi.InlineKeyboardButton{Text: k, URL: &val})
-					continue
-				}
-				optns[idx] = append(optns[idx], tgbotapi.InlineKeyboardButton{Text: k, CallbackData: &val})
+	optns := [][]tgbotapi.InlineKeyboardButton{{}, {}}
+	for idx, row := range []map[string]string{{"connect": TG_URL}, {"◀Back": "sps", "🏠Home": "home"}} {
+		for k, v := range row {
+			val := v
+			if k == "connect" {
+				optns[idx] = append(optns[idx], tgbotapi.InlineKeyboardButton{Text: k, URL: &val})
+				continue
 			}
+			optns[idx] = append(optns[idx], tgbotapi.InlineKeyboardButton{Text: k, CallbackData: &val})
 		}
+	}
+
 	msg := tgbotapi.NewMessage(GetchatID(u), templates.Success)
 	msg.ReplyMarkup = tgbotapi.InlineKeyboardMarkup{InlineKeyboard: optns}
 	b.Send(msg)
@@ -266,7 +269,7 @@ func DisconnectNode(b *tgbotapi.BotAPI, username string, ip string, token string
 func GetDataUsage(UserName, ip, token string) (models.Usage, error) {
 	var body models.VpnUsage
 	var usage models.Usage
-	values := map[string]string{"account_addr":UserName, "token": token}
+	values := map[string]string{"account_addr": UserName, "token": token}
 	fmt.Println(values)
 	jsonValue, _ := json.Marshal(values)
 	url := fmt.Sprintf("http://%s:3000/usage", ip)

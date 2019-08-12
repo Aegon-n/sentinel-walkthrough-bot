@@ -1,19 +1,20 @@
-package updates
+package services
 
 import (
 	"encoding/json"
-	"gopkg.in/telegram-bot-api.v4"
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	"gopkg.in/telegram-bot-api.v4"
 )
 
 type Response struct {
-	Kind 	string 					`json: "kind"`
-	Data  map[string]interface{} 	`json: "data"`
+	Kind string                 `json: "kind"`
+	Data map[string]interface{} `json: "data"`
 }
-func Reddit_updates(bot *tgbotapi.BotAPI,update * tgbotapi.Update){
-	queryId := update.CallbackQuery.ID
+
+func Reddit_updates(bot *tgbotapi.BotAPI, update tgbotapi.Update) {
 	Api_url := "https://www.reddit.com/r/SENT/new.json?limit=3"
 
 	chatID := update.CallbackQuery.Message.Chat.ID
@@ -44,21 +45,15 @@ func Reddit_updates(bot *tgbotapi.BotAPI,update * tgbotapi.Update){
 	var result Response
 	json.Unmarshal(data, &result)
 
-	config := tgbotapi.CallbackConfig{queryId,"",false,"",0}
-	bot.AnswerCallbackQuery(config)
-
 	nums := []int{2, 3, 4}
-	for i,_ := range nums{
+	for i, _ := range nums {
 
 		text := result.Data["children"].([]interface{})[i].(map[string]interface{})["data"].(map[string]interface{})["selftext"].(string)
 		urls := result.Data["children"].([]interface{})[i].(map[string]interface{})["data"].(map[string]interface{})["url"].(string)
-		msg := tgbotapi.NewMessage(chatID,text+urls)
-		msg.ParseMode = tgbotapi.ModeHTML
+		msg := tgbotapi.NewMessage(chatID, text+"\n"+urls)
 		bot.Send(msg)
 
 	}
-
-
-	HandleGreet(bot,update)
-
+	msg2 := tgbotapi.NewMessage(chatID, "click /updates to see updates menu\nclick /start to see home menu")
+	bot.Send(msg2)
 }

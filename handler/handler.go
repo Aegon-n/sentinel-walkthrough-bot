@@ -1,25 +1,26 @@
 package handler
 
 import (
+	"context"
 	"fmt"
+	"log"
+
 	"github.com/Aegon-n/sentinel-bot/handler/buttons"
 	"github.com/Aegon-n/sentinel-bot/handler/dbo"
-	"github.com/Aegon-n/sentinel-bot/handler/models"
 	"github.com/Aegon-n/sentinel-bot/handler/helpers"
 	"github.com/Aegon-n/sentinel-bot/handler/messages/en_messages"
+	"github.com/Aegon-n/sentinel-bot/handler/models"
 	"github.com/Aegon-n/sentinel-bot/locale"
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/dbo/ldb"
-	"gopkg.in/telegram-bot-api.v4"
-	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/bson"
-	"log"
-	"context"
+	"go.mongodb.org/mongo-driver/mongo"
+	"gopkg.in/telegram-bot-api.v4"
 )
 
-func HandleGreet(Bot *tgbotapi.BotAPI, update *tgbotapi.Update, collection *mongo.Collection)  {
+func HandleGreet(Bot *tgbotapi.BotAPI, update *tgbotapi.Update, collection *mongo.Collection) {
 	username := helpers.GetUserName(update)
 	chatID := helpers.GetchatID(update)
-	txt := fmt.Sprintf(en_messages.WelcomeGreetMsg, username)+"\n\n\n"+en_messages.SelectwalkthroughMsg
+	txt := fmt.Sprintf(en_messages.WelcomeGreetMsg, username) + "\n\n\n" + en_messages.SelectwalkthroughMsg
 	// msg := tgbotapi.NewMessage(chatID,txt)
 	// msg.ReplyMarkup = buttons.GetButtons("LanguageButtons")
 	if update.CallbackQuery != nil {
@@ -28,6 +29,7 @@ func HandleGreet(Bot *tgbotapi.BotAPI, update *tgbotapi.Update, collection *mong
 		btns := buttons.GetButtons("HomeButtonsList")
 		msg.ReplyMarkup = &btns
 		msg.ParseMode = tgbotapi.ModeMarkdown
+		Bot.Send(msg)
 		return
 	}
 	msg2 := tgbotapi.NewMessage(chatID, txt+"\n\n"+"Choose an option from the list below: ")
@@ -41,22 +43,22 @@ func HandleGreet(Bot *tgbotapi.BotAPI, update *tgbotapi.Update, collection *mong
 		user = models.BotUser{UserName: username, FirstName: update.Message.Chat.FirstName, ChatID: chatID}
 		insertResult, err := collection.InsertOne(context.TODO(), user)
 		if err != nil {
-				log.Println(err)
-				return
+			log.Println(err)
+			return
 		}
 		fmt.Println("Inserted a single document: ", insertResult.InsertedID)
 		return
 	}
 	fmt.Printf("Found a single document: %+v\n", user)
-	
+
 }
 
 func HandlerWalkThrough(Bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 
 	username := helpers.GetUserName(update)
 	chatID := helpers.GetchatID(update)
-	txt := fmt.Sprintf(en_messages.WalkthroughGreetMsg, username)+"\n\n"+en_messages.AppSelectMsg
-	msg := tgbotapi.NewMessage(chatID,txt)
+	txt := fmt.Sprintf(en_messages.WalkthroughGreetMsg, username) + "\n\n" + en_messages.AppSelectMsg
+	msg := tgbotapi.NewMessage(chatID, txt)
 	msg.ReplyMarkup = buttons.GetButtons("AppButtonsList")
 	msg.ParseMode = tgbotapi.ModeMarkdown
 	Bot.Send(msg)
@@ -71,7 +73,7 @@ func HandleUpdates(Bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 }
 func HandleHelp(Bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 	chatID := update.Message.Chat.ID
-	msg := tgbotapi.NewMessage(chatID,en_messages.HelpMsg)
+	msg := tgbotapi.NewMessage(chatID, en_messages.HelpMsg)
 	msg.ParseMode = tgbotapi.ModeHTML
 	Bot.Send(msg)
 }
@@ -117,7 +119,7 @@ func HandleCallbackQuery(bot *tgbotapi.BotAPI, update *tgbotapi.Update, db ldb.B
 	}
 }
 
-func handleHome(Bot *tgbotapi.BotAPI, update *tgbotapi.Update ,username string){
+func handleHome(Bot *tgbotapi.BotAPI, update *tgbotapi.Update, username string) {
 
 	queryID := update.CallbackQuery.ID
 	answeredCallback(Bot, queryID)
@@ -133,7 +135,7 @@ func handleHome(Bot *tgbotapi.BotAPI, update *tgbotapi.Update ,username string){
 	Bot.Send(btns)
 }
 
-func handleAppVersion(Bot *tgbotapi.BotAPI, update *tgbotapi.Update, version string){
+func handleAppVersion(Bot *tgbotapi.BotAPI, update *tgbotapi.Update, version string) {
 	queryID := update.CallbackQuery.ID
 	answeredCallback(Bot, queryID)
 	chatID := update.CallbackQuery.Message.Chat.ID
@@ -156,7 +158,7 @@ func handleAppVersion(Bot *tgbotapi.BotAPI, update *tgbotapi.Update, version str
 	Bot.Send(btns)
 
 }
-func handleOs(Bot *tgbotapi.BotAPI, update *tgbotapi.Update, os string){
+func handleOs(Bot *tgbotapi.BotAPI, update *tgbotapi.Update, os string) {
 	queryID := update.CallbackQuery.ID
 	answeredCallback(Bot, queryID)
 	chatID := update.CallbackQuery.Message.Chat.ID
@@ -184,8 +186,8 @@ func handleOs(Bot *tgbotapi.BotAPI, update *tgbotapi.Update, os string){
 	Bot.Send(btns)
 }
 
-func answeredCallback(Bot *tgbotapi.BotAPI, queryId string){
-	config := tgbotapi.CallbackConfig{queryId,"",false,"",0}
+func answeredCallback(Bot *tgbotapi.BotAPI, queryId string) {
+	config := tgbotapi.CallbackConfig{queryId, "", false, "", 0}
 	Bot.AnswerCallbackQuery(config)
 }
 func handleExit(Bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
@@ -200,7 +202,7 @@ func handleExit(Bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 func HandleLocalization(Bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 	chatID := update.Message.Chat.ID
 	lang := dbo.GetUserLang(update.Message.From.UserName)
-	msg := tgbotapi.NewMessage(chatID,en_messages.LangSelectMsg[lang])
+	msg := tgbotapi.NewMessage(chatID, en_messages.LangSelectMsg[lang])
 	msg.ReplyMarkup = buttons.GetButtons("LanguageButtons")
 	Bot.Send(msg)
 }
@@ -208,11 +210,11 @@ func HandleLocalization(Bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 func handleLang(Bot *tgbotapi.BotAPI, update *tgbotapi.Update, lang string, db ldb.BotDB) {
 	queryID := update.CallbackQuery.ID
 	answeredCallback(Bot, queryID)
-	err := db.Insert("lang",update.CallbackQuery.From.UserName, lang)
+	err := db.Insert("lang", update.CallbackQuery.From.UserName, lang)
 	if err != nil {
 		log.Fatal("Error adding user language preferences..")
 	}
 	log.Println("Added user language preferences")
-	msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, locale.LocalizeTemplate(en_messages.LangChosenMsg,struct{Langchosen string}{lang},lang))
+	msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, locale.LocalizeTemplate(en_messages.LangChosenMsg, struct{ Langchosen string }{lang}, lang))
 	Bot.Send(msg)
 }

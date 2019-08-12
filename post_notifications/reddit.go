@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/Aegon-n/sentinel-bot/post_notifications/messages"
 	"github.com/jasonlvhit/gocron"
 	"go.mongodb.org/mongo-driver/mongo"
 	tgbotapi "gopkg.in/telegram-bot-api.v4"
@@ -20,6 +21,7 @@ type RedditPost struct {
 type Post struct {
 	ApprovedAtUtc  interface{} `json:"approved_at_utc"`
 	Selftext       string      `json:"selftext"`
+	Subredit       string      `json:"subreddit_name_prefixed"`
 	AuthorFullname string      `json:"author_fullname"`
 	Clicked        bool        `json:"clicked"`
 	Title          string      `json:"title"`
@@ -28,7 +30,7 @@ type Post struct {
 	Likes          interface{} `json:"likes"`
 	Author         string      `json:"author"`
 	URL            string      `json:"url"`
-	Created        float64     `json:"created"`
+	CreatedUTC     float64     `json:"created_utc"`
 	IsVideo        bool        `json:"is_video"`
 }
 type Children struct {
@@ -39,7 +41,7 @@ type Data struct {
 	Children []Children `json:"children"`
 }
 
-var created = float64(time.Now().Unix())
+var last_created = float64(time.Now().Unix())
 
 func CheckForNewPost(bot *tgbotapi.BotAPI, db *mongo.Collection) {
 	var body RedditPost
@@ -67,15 +69,23 @@ func CheckForNewPost(bot *tgbotapi.BotAPI, db *mongo.Collection) {
 		return
 	}
 	post := body.Data.Children[0].Data
-
-	if post.Created > created {
-		created = post.Created
+	if post.CreatedUTC > last_created {
+		last_created = post.CreatedUTC
 		fmt.Println("New Publication: ", post.Title, "\n", post.Selftext)
-		txt := "*New Reddit Post from Sentinel*\n" + post.Title + "\n" + post.Selftext[0:50] + "\n" + post.URL
+		txt := fmt.Sprintf(messages.RedditPost, post.Subredit, post.Title, post.URL)
 		users := GetAllChatIDs(db)
-		BroadcastPost(bot, users, txt)
+		fmt.Println(users)
+		go broadcastRedditPost(bot, users, txt)
 
 	}
+}
+func broadcastRedditPost(bot *tgbotapi.BotAPI, chatIDs []int64, text string) {
+	for _, id := range chatIDs {
+		msg := tgbotapi.NewMessage(id, text)
+		msg.ParseMode = tgbotapi.ModeMarkdown
+		bot.Send(msg)
+	}
+	return
 }
 
 func RedditPostSheduler(bot *tgbotapi.BotAPI, db *mongo.Collection) {

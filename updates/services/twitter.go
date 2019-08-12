@@ -1,18 +1,15 @@
-package updates
+package services
 
 import (
 	"fmt"
 	"log"
 
-	"github.com/Aegon-n/sentinel-bot/handler/messages/en_messages"
 	"github.com/dghubble/go-twitter/twitter"
 	"github.com/dghubble/oauth1"
 	tgbotapi "gopkg.in/telegram-bot-api.v4"
 )
 
-func Twitter_updates(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
-
-	queryId := update.CallbackQuery.ID
+func Twitter_updates(bot *tgbotapi.BotAPI, update tgbotapi.Update) {
 
 	chatID := update.CallbackQuery.Message.Chat.ID
 
@@ -25,8 +22,6 @@ func Twitter_updates(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 	// twitter client
 	client := twitter.NewClient(httpClient)
 
-	config1 := tgbotapi.CallbackConfig{queryId, "", false, "", 0}
-	bot.AnswerCallbackQuery(config1)
 	client.Streams.User(&twitter.StreamUserParams{})
 	tt, _, err := client.Timelines.UserTimeline(&twitter.UserTimelineParams{ScreenName: "sentinel_co", Count: 3, TweetMode: "extended"})
 	if err != nil {
@@ -42,21 +37,10 @@ func Twitter_updates(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 		msg := tgbotapi.NewMessage(chatID, "@"+tt[i].User.ScreenName+" #tweeted on "+tt[i].CreatedAt+"\n"+tt[i].FullText)
 
 		msg.ParseMode = tgbotapi.ModeHTML
-
 		bot.Send(msg)
 	}
-	HandleGreet(bot, update)
-
-}
-
-func HandleGreet(Bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
-	username := update.CallbackQuery.Message.Chat.UserName
-	chatID := update.CallbackQuery.Message.Chat.ID
-	txt := fmt.Sprintf(en_messages.WelcomeGreetMsg, username) + "\n" + en_messages.SelectwalkthroughMsg
-	msg := tgbotapi.NewMessage(chatID, txt)
-	msg.ParseMode = tgbotapi.ModeMarkdown
-	Bot.Send(msg)
-
+	msg2 := tgbotapi.NewMessage(chatID, "click /updates to see updates menu\nclick /start to see home menu")
+	bot.Send(msg2)
 }
 func ReadPosts(stream *twitter.Stream) {
 	forever := make(chan bool)

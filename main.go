@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"strings"
 
@@ -14,14 +15,14 @@ import (
 	"github.com/Aegon-n/sentinel-bot/locale"
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/dbo"
 	/* "github.com/Aegon-n/sentinel-bot/socks5-proxy/handlers" */
-	sno_handler "github.com/Aegon-n/sentinel-bot/sno/handler"
 	stats_handler "github.com/Aegon-n/sentinel-bot/dVPN-Stats/handler"
 	post "github.com/Aegon-n/sentinel-bot/post_notifications"
+	sno_handler "github.com/Aegon-n/sentinel-bot/sno/handler"
 	// tmExplorer "github.com/Aegon-n/sentinel-bot/tm-explorer"
-	"github.com/fatih/color"
-
-	tgbotapi "gopkg.in/telegram-bot-api.v4"
 	mongoDb "github.com/Aegon-n/sentinel-bot/db"
+	social_media "github.com/Aegon-n/sentinel-bot/updates/handler"
+	"github.com/fatih/color"
+	tgbotapi "gopkg.in/telegram-bot-api.v4"
 
 	"log"
 )
@@ -56,7 +57,6 @@ func main() {
 	mdb := mongoDb.NewDB()
 	collection := mdb.Database("sentinel_network_bot").Collection("bot_users")
 
-
 	//nodes, err := helpers.GetNodes()
 	go eth_helpers.ExpiredUsersJob(bot, db2)
 	go post.UpdatePosts(bot, stream, collection)
@@ -76,11 +76,11 @@ func main() {
 			/*case "locale":
 			handler.HandleLocalization(bot, &update)*/
 			/*case "tm":
-				tmExplorer.HandleTMExplorer(bot, &update)
-
-			case "updates":
-				handler.HandleUpdates(bot, &update)
+			tmExplorer.HandleTMExplorer(bot, &update)
 			*/
+			case "updates":
+				social_media.HandleUpdatesHome(bot, update)
+
 			case "sps":
 				eth_handlers.HandleSocks5Proxy(bot, update, db2)
 
@@ -121,18 +121,17 @@ func main() {
 			case "Mobile":
 				modules.HandleMobileModules(bot, &update, module[1])
 
-			/*case "Medium":
-				//log.Println(update)
-				updates2.MediumUpdates(bot, &update)
+			case "Updates":
+				social_media.HandleUpdates(bot, update)
+				/*
+					case "Reddit":
+						updates2.Reddit_updates(bot, &update)
 
-			case "Reddit":
-				updates2.Reddit_updates(bot, &update)
+					case "Twitter":
+						updates2.Twitter_updates(bot, &update)
 
-			case "Twitter":
-				updates2.Twitter_updates(bot, &update)
-
-			case "Socks5":
-				handlers.HandleSocks5InlineButtons(bot, update, db)*/
+					case "Socks5":
+						handlers.HandleSocks5InlineButtons(bot, update, db)*/
 			case "home":
 				handler.HandleGreet(bot, &update, collection)
 			case "about":
@@ -156,9 +155,20 @@ func main() {
 			}
 		}
 		if update.Message != nil && !update.Message.IsCommand() && len(update.Message.Text) > 0 {
+			if update.Message.From.IsBot {
+				fmt.Println(update.Message.Text)
+				if update.Message.Text == "Please wait .. Getting socks5 proxy .." {
+					messageID := update.Message.MessageID
+					chatID := update.Message.Chat.ID
+					d := tgbotapi.NewDeleteMessage(chatID, messageID)
+					bot.Send(d)
+					continue
+				}
+			}
 			eth_handlers.Socks5InputHandler(bot, update, db2)
 			/* TMState := helpers.GetState(bot, update, constants.TMState, db)
 			color.Green("******* APP STATE = %d *******", TMState) */
+
 		}
 
 	}

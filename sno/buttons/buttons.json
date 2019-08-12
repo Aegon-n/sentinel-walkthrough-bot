@@ -45,6 +45,9 @@
   ],
   "AboutButtons": [
     {
+      "Social Media Updates": "Updates-Home"
+    },
+    {
       "◀Back": "home"
     }
   ],
@@ -69,6 +72,22 @@
   "StatsFlowEndButtons": [
     {
       "◀Back": "dVPNStats-Home",
+      "🏠Home": "home"
+    }
+  ],
+  "UpdatesHomeBtns": [
+    {
+      "Medium": "Updates-Medium",
+      "Twitter": "Updates-Twitter",
+      "Reddit": "Updates-Reddit"
+    },
+    {
+      "◀Back": "about"
+    }
+  ],
+  "UpdatesFlowEndBtns": [
+    {
+      "◀Back": "Updates-Home",
       "🏠Home": "home"
     }
   ]

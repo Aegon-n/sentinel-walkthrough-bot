@@ -1,16 +1,17 @@
 package handler
 
 import (
-	"github.com/Aegon-n/sentinel-bot/sno/helper"
 	"fmt"
 	"log"
 	"strconv"
 
+	"github.com/Aegon-n/sentinel-bot/sno/helper"
+
 	"github.com/Aegon-n/sentinel-bot/eth-socks-proxy/dbo/ldb"
 	"github.com/Aegon-n/sentinel-bot/eth-socks-proxy/dbo/models"
 	"github.com/Aegon-n/sentinel-bot/eth-socks-proxy/helpers"
-	"github.com/Aegon-n/sentinel-bot/socks5-proxy/constants"
 	"github.com/Aegon-n/sentinel-bot/handler/buttons"
+	"github.com/Aegon-n/sentinel-bot/socks5-proxy/constants"
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/templates"
 	tgbotapi "gopkg.in/telegram-bot-api.v4"
 )
@@ -22,7 +23,7 @@ func HandleSPS(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 	opts := buttons.GetButtons("SpsButtonsList")
 	if u.CallbackQuery != nil {
 		msgID := u.CallbackQuery.Message.MessageID
-		msg1 := tgbotapi.NewEditMessageText(ChatID, msgID ,greet+"\n\n"+"Choose an option from the list below: ")
+		msg1 := tgbotapi.NewEditMessageText(ChatID, msgID, greet+"\n\n"+"Choose an option from the list below: ")
 		msg1.ReplyMarkup = &opts
 		b.Send(msg1)
 		return
@@ -118,8 +119,8 @@ func ShowMyNode(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 			log.Println("text is empty")
 			return
 		}
-		optns := [][]tgbotapi.InlineKeyboardButton{{},{}}
-		for idx, row := range []map[string]string{{"connect": kv.Value}, {"◀Back":"sps", "🏠Home":"home"}} {
+		optns := [][]tgbotapi.InlineKeyboardButton{{}, {}}
+		for idx, row := range []map[string]string{{"connect": kv.Value}, {"◀Back": "sps", "🏠Home": "home"}} {
 			for k, v := range row {
 				val := v
 				if k == "connect" {
@@ -130,23 +131,24 @@ func ShowMyNode(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 			}
 		}
 		if u.CallbackQuery != nil {
-		msg := tgbotapi.NewEditMessageText(helper.GetchatID(u), helper.GetMsgID(u), txt+"\n\n"+templates.ConnectMessage)
-		msg.ReplyMarkup = &tgbotapi.InlineKeyboardMarkup{InlineKeyboard: optns}
-		msg.ParseMode = tgbotapi.ModeMarkdown
-		b.Send(msg)
-		return 
+			msg := tgbotapi.NewEditMessageText(helper.GetchatID(u), helper.GetMsgID(u), txt+"\n\n"+templates.ConnectMessage)
+			msg.ReplyMarkup = &tgbotapi.InlineKeyboardMarkup{InlineKeyboard: optns}
+			msg.ParseMode = tgbotapi.ModeMarkdown
+			b.Send(msg)
+			return
 		}
 		msg := tgbotapi.NewMessage(helper.GetchatID(u), txt+"\n\n"+templates.ConnectMessage)
 		msg.ReplyMarkup = tgbotapi.InlineKeyboardMarkup{InlineKeyboard: optns}
 		msg.ParseMode = tgbotapi.ModeMarkdown
 		b.Send(msg)
-		return 
+		return
 	}
 	helpers.Send(b, u, templates.NoAssignedNodes)
 	return
 }
 
 func HandleNodeId(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []models.List) {
+
 	log.Println("came here")
 	status, err := db.GetStatus(u.Message.From.UserName)
 	if err != nil {
@@ -173,7 +175,14 @@ func HandleNodeId(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []m
 		return
 	}
 	_ = db.Insert("NodeIP", u.Message.From.UserName, nodes[idx-1].IP)
-	helpers.Send(b, u, "*You have selected* \n"+txt)
+	text := "*You have selected* \n" + txt
+	chatID := helper.GetchatID(u)
+	msg := tgbotapi.NewMessage(chatID, text)
+	msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
+	msg.ParseMode = tgbotapi.ModeMarkdown
+	msg.ReplyToMessageID = helper.GetMsgID(u)
+	b.Send(msg)
+
 	helpers.Send(b, u, "Please wait .. Getting socks5 proxy .. ")
 	go helpers.SocksProxy(b, u, db, nodes[idx-1].AccountAddr)
 	return
@@ -210,7 +219,7 @@ func ShowMyInfo(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) string {
 		return ""
 	}
 	NodeInfo := ""
-	nodes, _  := helpers.GetNodes()
+	nodes, _ := helpers.GetNodes()
 	for _, node := range nodes {
 		if node.IP == NodeIP.Value {
 			NodeInfo = fmt.Sprintf(templates.NodeList, "1", node.Location.City, node.Location.Country, node.NetSpeed.Download/float64(1000000), node.Load.CPU, "%")
@@ -219,7 +228,7 @@ func ShowMyInfo(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) string {
 	}
 	txt := fmt.Sprintf(templates.DATACONSUMPTION, usage.Down/float64(1048576))
 	log.Println(txt + "\n\n" + NodeInfo)
-	return txt + "\n\n" + "*Node Info:*\n"+ NodeInfo
+	return txt + "\n\n" + "*Node Info:*\n" + NodeInfo
 }
 func DisconnectProxy(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 	username := helpers.GetUserName(u)
@@ -232,9 +241,9 @@ func DisconnectProxy(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 	if status != constants.AssignedNodeURI {
 		helpers.Send(b, u, templates.NoAssignedNodes)
 		return
-	} 
+	}
 	node, _ := db.Read("NodeIP", username)
-	token,_ := db.Read("TOKEN", username)
+	token, _ := db.Read("TOKEN", username)
 	helpers.Send(b, u, templates.DisableProxy)
 	helpers.DisconnectNode(b, username, node.Value, token.Value)
 	err = db.RemoveUser(username)
