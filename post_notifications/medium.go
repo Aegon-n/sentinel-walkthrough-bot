@@ -99,7 +99,7 @@ func CheckForNewPublication(bot *tgbotapi.BotAPI, db *mongo.Collection) {
 func broadcastMediumPost(bot *tgbotapi.BotAPI, chatIDs []int64, text string) {
 	for _, id := range chatIDs {
 		msg := tgbotapi.NewMessage(id, text)
-		msg.ParseMode = tgbotapi.ModeMarkdown
+		msg.ParseMode = tgbotapi.ModeHTML
 		bot.Send(msg)
 	}
 	return
