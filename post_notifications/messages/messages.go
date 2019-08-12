@@ -1,8 +1,8 @@
 package messages
 
 const (
-	TwitterMsg = "*Tweet from %s *\n%s"
-	RetweetMsg = "*Retweet from %s*\n%s"
+	TwitterMsg = "<b>Tweet from %s </b>\n%s"
+	RetweetMsg = "<b>Retweet from %s</b>\n%s"
 	MediumPost = "*New Medium post from %s*\n*title: %s*\n link: [%s]"
 	RedditPost = "*New Reddit post from %s*\n*title: %s*\nlink: [%s]"
 )

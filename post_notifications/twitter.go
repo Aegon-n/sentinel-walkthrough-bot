@@ -63,7 +63,7 @@ func TwitterConfig() *twitter.Stream {
 
 	fmt.Printf("%+v\n", client)
 	stream, err := client.Streams.Filter(&twitter.StreamFilterParams{
-		Follow: []string{"921550402268606465"},
+		Follow: []string{"1867993700"},
 	})
 	if err != nil {
 		log.Fatal(err)
@@ -77,10 +77,23 @@ func UpdatePosts(bot *tgbotapi.BotAPI, stream *twitter.Stream, collection *mongo
 	forever := make(chan bool)
 	demux := twitter.NewSwitchDemux()
 	demux.Tweet = func(tweet *twitter.Tweet) {
-		fmt.Println("New Tweet:\n", tweet.User.Name, "\n", tweet.CreatedAt, "\n", "\n", tweet.FullText)
-		txt := fmt.Sprintf(messages.TwitterMsg, tweet.User.Name, tweet.FullText)
-		users := GetAllChatIDs(collection)
-		broadcastTweet(bot, users, txt)
+
+		fmt.Println(tweet.ExtendedTweet)
+		if tweet.ExtendedTweet != nil && tweet.ExtendedTweet.FullText != "" {
+			fmt.Println("New Tweet:\n", tweet.User.Name, "\n", tweet.CreatedAt, "\n", "\n", tweet.FullText)
+			txt := fmt.Sprintf(messages.TwitterMsg, tweet.User.Name, tweet.ExtendedTweet.FullText)
+			users := GetAllChatIDs(collection)
+			broadcastTweet(bot, users, txt)
+		} else {
+			fmt.Println("New Tweet:\n", tweet.User.Name, "\n", tweet.CreatedAt, "\n", "\n", tweet.Text)
+			var txt string
+			txt = fmt.Sprintf(messages.TwitterMsg, tweet.User.Name, tweet.Text)
+			if tweet.Text[:2] == "RT" {
+				txt = fmt.Sprintf(messages.RetweetMsg, tweet.User.Name, tweet.Text)
+			}
+			users := GetAllChatIDs(collection)
+			broadcastTweet(bot, users, txt)
+		}
 	}
 	demux.DM = func(dm *twitter.DirectMessage) {
 		fmt.Println(dm.SenderID)
@@ -121,7 +134,7 @@ func GetAllChatIDs(collection *mongo.Collection) []int64 {
 func broadcastTweet(bot *tgbotapi.BotAPI, chatIDs []int64, text string) {
 	for _, id := range chatIDs {
 		msg := tgbotapi.NewMessage(id, text)
-		msg.ParseMode = tgbotapi.ModeMarkdown
+		msg.ParseMode = tgbotapi.ModeHTML
 		bot.Send(msg)
 	}
 	return
