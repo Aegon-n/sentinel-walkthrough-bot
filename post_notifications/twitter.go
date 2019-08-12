@@ -77,8 +77,8 @@ func UpdatePosts(bot *tgbotapi.BotAPI, stream *twitter.Stream, collection *mongo
 	forever := make(chan bool)
 	demux := twitter.NewSwitchDemux()
 	demux.Tweet = func(tweet *twitter.Tweet) {
-		fmt.Println("New Tweet:\n", tweet.User.Name, "\n", tweet.CreatedAt, "\n", "\n", tweet.Text)
-		txt := fmt.Sprintf(messages.TwitterMsg, tweet.User.Name, tweet.Text)
+		fmt.Println("New Tweet:\n", tweet.User.Name, "\n", tweet.CreatedAt, "\n", "\n", tweet.FullText)
+		txt := fmt.Sprintf(messages.TwitterMsg, tweet.User.Name, tweet.FullText)
 		users := GetAllChatIDs(collection)
 		broadcastTweet(bot, users, txt)
 	}
