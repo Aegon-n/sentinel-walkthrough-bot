@@ -2,20 +2,46 @@ package services
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"fmt"
 	"log"
 	"net/http"
+	"time"
 
+	"github.com/Aegon-n/sentinel-bot/updates/messages"
 	"gopkg.in/telegram-bot-api.v4"
 )
 
-type Response struct {
-	Kind string                 `json: "kind"`
-	Data map[string]interface{} `json: "data"`
+type RedditPost struct {
+	Kind string `json:"kind"`
+	Data Data   `json:"data"`
+}
+
+type Post struct {
+	ApprovedAtUtc  interface{} `json:"approved_at_utc"`
+	Selftext       string      `json:"selftext"`
+	Subredit       string      `json:"subreddit_name_prefixed"`
+	AuthorFullname string      `json:"author_fullname"`
+	Clicked        bool        `json:"clicked"`
+	Title          string      `json:"title"`
+	Name           string      `json:"name"`
+	SelftextHTML   string      `json:"selftext_html"`
+	Likes          interface{} `json:"likes"`
+	Author         string      `json:"author"`
+	URL            string      `json:"url"`
+	CreatedUTC     float64     `json:"created_utc"`
+	IsVideo        bool        `json:"is_video"`
+}
+type Children struct {
+	Kind string `json:"kind"`
+	Data Post   `json:"data"`
+}
+type Data struct {
+	Children []Children `json:"children"`
 }
 
 func Reddit_updates(bot *tgbotapi.BotAPI, update tgbotapi.Update) {
 	Api_url := "https://www.reddit.com/r/SENT/new.json?limit=3"
+	var body RedditPost
 
 	chatID := update.CallbackQuery.Message.Chat.ID
 	//msg := tgbotapi.MessageConfig{}
@@ -37,20 +63,19 @@ func Reddit_updates(bot *tgbotapi.BotAPI, update tgbotapi.Update) {
 	if err != nil {
 		log.Fatal("Error while getting response..")
 	}
-	data, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Fatal("Error reading response")
+	if err := json.NewDecoder(resp.Body).Decode(&body); err != nil {
+		log.Println("Error")
 	}
+	defer resp.Body.Close()
 
-	var result Response
-	json.Unmarshal(data, &result)
+	for _, child := range body.Data.Children {
 
-	nums := []int{2, 3, 4}
-	for i, _ := range nums {
-
-		text := result.Data["children"].([]interface{})[i].(map[string]interface{})["data"].(map[string]interface{})["selftext"].(string)
-		urls := result.Data["children"].([]interface{})[i].(map[string]interface{})["data"].(map[string]interface{})["url"].(string)
-		msg := tgbotapi.NewMessage(chatID, text+"\n"+urls)
+		text := child.Data.Selftext
+		urls := child.Data.URL
+		date := time.Unix(int64(child.Data.CreatedUTC), 0)
+		p_date := date.Format(time.RFC1123)
+		msg := tgbotapi.NewMessage(chatID, fmt.Sprintf(messages.RedditPost, p_date, text, urls))
+		msg.ParseMode = tgbotapi.ModeMarkdown
 		bot.Send(msg)
 
 	}

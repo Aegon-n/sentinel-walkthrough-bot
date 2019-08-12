@@ -77,23 +77,18 @@ func UpdatePosts(bot *tgbotapi.BotAPI, stream *twitter.Stream, collection *mongo
 	forever := make(chan bool)
 	demux := twitter.NewSwitchDemux()
 	demux.Tweet = func(tweet *twitter.Tweet) {
-
-		fmt.Println(tweet.ExtendedTweet)
-		if tweet.ExtendedTweet != nil && tweet.ExtendedTweet.FullText != "" {
-			fmt.Println("New Tweet:\n", tweet.User.Name, "\n", tweet.CreatedAt, "\n", "\n", tweet.FullText)
-			txt := fmt.Sprintf(messages.TwitterMsg, tweet.User.Name, tweet.ExtendedTweet.FullText)
-			users := GetAllChatIDs(collection)
-			broadcastTweet(bot, users, txt)
-		} else {
-			fmt.Println("New Tweet:\n", tweet.User.Name, "\n", tweet.CreatedAt, "\n", "\n", tweet.Text)
-			var txt string
-			txt = fmt.Sprintf(messages.TwitterMsg, tweet.User.Name, tweet.Text)
-			if tweet.Text[:2] == "RT" {
-				txt = fmt.Sprintf(messages.RetweetMsg, tweet.User.Name, tweet.Text)
-			}
-			users := GetAllChatIDs(collection)
-			broadcastTweet(bot, users, txt)
+		fmt.Println(tweet.IDStr)
+		fmt.Println("New Tweet:\n", tweet.User.Name, "\n", tweet.CreatedAt, "\n",
+			"\n", tweet.Text)
+		var txt string
+		txt = fmt.Sprintf(messages.TwitterMsg, tweet.User.Name, tweet.Text,
+			tweet.User.ScreenName, tweet.IDStr)
+		if len(tweet.Text) > 2 && tweet.Text[:2] == "RT" {
+			txt = fmt.Sprintf(messages.RetweetMsg, tweet.User.Name, tweet.Text,
+				tweet.User.ScreenName, tweet.IDStr)
 		}
+		users := GetAllChatIDs(collection)
+		broadcastTweet(bot, users, txt)
 	}
 	demux.DM = func(dm *twitter.DirectMessage) {
 		fmt.Println(dm.SenderID)

@@ -2,11 +2,13 @@ package services
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"strings"
 
+	"github.com/Aegon-n/sentinel-bot/updates/messages"
 	"gopkg.in/telegram-bot-api.v4"
 )
 
@@ -41,7 +43,7 @@ func MediumUpdates(bot *tgbotapi.BotAPI, update tgbotapi.Update) {
 			break
 		}
 		resupdates := strings.Split(res.Link, "?")[0]
-		msg := tgbotapi.NewMessage(chatId, resupdates)
+		msg := tgbotapi.NewMessage(chatId, fmt.Sprintf(messages.MediumPost, resupdates))
 		msg.ParseMode = tgbotapi.ModeMarkdown
 		bot.Send(msg)
 	}

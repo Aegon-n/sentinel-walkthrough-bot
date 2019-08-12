@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/Aegon-n/sentinel-bot/post_notifications/messages"
@@ -61,9 +62,17 @@ var pubDate = float64(time.Now().Unix())
 
 func CheckForNewPublication(bot *tgbotapi.BotAPI, db *mongo.Collection) {
 	var body Rss
-	resp, err := http.Get("https://medium.com/feed/@Sentinel")
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", "https://medium.com/feed/@harishmarri551", nil)
 	if err != nil {
 		log.Println("error")
+	}
+	req.Header.Set("User-Agent", "Chrome")
+
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Println(err)
+		return
 	}
 	if err := xml.NewDecoder(resp.Body).Decode(&body); err != nil {
 		log.Println("Error")
@@ -81,7 +90,8 @@ func CheckForNewPublication(bot *tgbotapi.BotAPI, db *mongo.Collection) {
 	if postPublishedAt > pubDate {
 		pubDate = postPublishedAt
 		fmt.Println("New Publication: ", post.Title)
-		txt := fmt.Sprintf(messages.MediumPost, post.Creator, post.Title, post.Link)
+		link := strings.Split(post.Link, "?")[0]
+		txt := fmt.Sprintf(messages.MediumPost, post.Creator, post.Title, link)
 		users := GetAllChatIDs(db)
 		broadcastMediumPost(bot, users, txt)
 	}
@@ -97,6 +107,6 @@ func broadcastMediumPost(bot *tgbotapi.BotAPI, chatIDs []int64, text string) {
 
 func MediumPostSheduler(bot *tgbotapi.BotAPI, db *mongo.Collection) {
 	s := gocron.NewScheduler()
-	s.Every(4).Seconds().Do(CheckForNewPublication, bot, db)
+	s.Every(3).Seconds().Do(CheckForNewPublication, bot, db)
 	<-s.Start()
 }

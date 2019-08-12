@@ -47,7 +47,7 @@ func CheckForNewPost(bot *tgbotapi.BotAPI, db *mongo.Collection) {
 	var body RedditPost
 	client := &http.Client{}
 
-	req, err := http.NewRequest("GET", "https://www.reddit.com/r/SENT/new.json?limit=1", nil)
+	req, err := http.NewRequest("GET", "https://www.reddit.com/u/Harish1551/new.json?limit=1", nil)
 	if err != nil {
 		log.Println("error")
 	}
@@ -72,7 +72,7 @@ func CheckForNewPost(bot *tgbotapi.BotAPI, db *mongo.Collection) {
 	if post.CreatedUTC > last_created {
 		last_created = post.CreatedUTC
 		fmt.Println("New Publication: ", post.Title, "\n", post.Selftext)
-		txt := fmt.Sprintf(messages.RedditPost, post.Subredit, post.Title, post.URL)
+		txt := fmt.Sprintf(messages.RedditPost, post.Subredit, post.Title, post.Selftext, post.URL)
 		users := GetAllChatIDs(db)
 		fmt.Println(users)
 		go broadcastRedditPost(bot, users, txt)

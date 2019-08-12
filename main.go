@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"strings"
 
@@ -155,16 +154,7 @@ func main() {
 			}
 		}
 		if update.Message != nil && !update.Message.IsCommand() && len(update.Message.Text) > 0 {
-			if update.Message.From.IsBot {
-				fmt.Println(update.Message.Text)
-				if update.Message.Text == "Please wait .. Getting socks5 proxy .." {
-					messageID := update.Message.MessageID
-					chatID := update.Message.Chat.ID
-					d := tgbotapi.NewDeleteMessage(chatID, messageID)
-					bot.Send(d)
-					continue
-				}
-			}
+
 			eth_handlers.Socks5InputHandler(bot, update, db2)
 			/* TMState := helpers.GetState(bot, update, constants.TMState, db)
 			color.Green("******* APP STATE = %d *******", TMState) */
