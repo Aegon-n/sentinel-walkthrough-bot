@@ -77,7 +77,7 @@ func HandleHelp(Bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 	msg.ParseMode = tgbotapi.ModeHTML
 	Bot.Send(msg)
 }
-func HandleCallbackQuery(bot *tgbotapi.BotAPI, update *tgbotapi.Update, db ldb.BotDB) {
+func HandleCallbackQuery(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 
 	switch update.CallbackQuery.Data {
 
@@ -102,14 +102,14 @@ func HandleCallbackQuery(bot *tgbotapi.BotAPI, update *tgbotapi.Update, db ldb.B
 	case "Exit":
 		handleExit(bot, update)
 
-	case "English":
+	/* case "English":
 		handleLang(bot, update, "English", db)
 
 	case "Russian":
 		handleLang(bot, update, "Russian", db)
 
 	case "Chinese":
-		handleLang(bot, update, "Chinese", db)
+		handleLang(bot, update, "Chinese", db) */
 
 	default:
 		chatID := update.CallbackQuery.Message.Chat.ID

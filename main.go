@@ -12,7 +12,6 @@ import (
 	eth_handlers "github.com/Aegon-n/sentinel-bot/eth-socks-proxy/handler"
 	eth_helpers "github.com/Aegon-n/sentinel-bot/eth-socks-proxy/helpers"
 	"github.com/Aegon-n/sentinel-bot/locale"
-	"github.com/Aegon-n/sentinel-bot/socks5-proxy/dbo"
 	/* "github.com/Aegon-n/sentinel-bot/socks5-proxy/handlers" */
 	stats_handler "github.com/Aegon-n/sentinel-bot/dVPN-Stats/handler"
 	post "github.com/Aegon-n/sentinel-bot/post_notifications"
@@ -43,11 +42,6 @@ func main() {
 	}
 	color.Green("started %s successfully", bot.Self.UserName)
 
-	db, err := dbo.NewDB()
-	if err != nil {
-		log.Println(err)
-		log.Fatal(err)
-	}
 	db2, err := dbo2.NewDB()
 	if err != nil {
 		log.Println("h", err)
@@ -130,7 +124,7 @@ func main() {
 						updates2.Twitter_updates(bot, &update)
 
 					case "Socks5":
-						handlers.HandleSocks5InlineButtons(bot, update, db)*/
+						handlers.HandleSocks5InlineButtons(bot, update, db) */
 			case "home":
 				handler.HandleGreet(bot, &update, collection)
 			case "about":
@@ -150,7 +144,7 @@ func main() {
 			case "dVPNStats":
 				stats_handler.HandleStats(bot, update)
 			default:
-				handler.HandleCallbackQuery(bot, &update, db)
+				handler.HandleCallbackQuery(bot, &update)
 			}
 		}
 		if update.Message != nil && !update.Message.IsCommand() && len(update.Message.Text) > 0 {

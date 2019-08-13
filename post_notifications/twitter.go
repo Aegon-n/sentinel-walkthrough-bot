@@ -73,20 +73,22 @@ func TwitterConfig() *twitter.Stream {
 	return stream
 }
 
-func UpdatePosts(bot *tgbotapi.BotAPI, stream *twitter.Stream, collection *mongo.Collection) {
+func UpdatePosts(bot *tgbotapi.BotAPI, stream *twitter.Stream,
+	collection *mongo.Collection) {
+
 	forever := make(chan bool)
 	demux := twitter.NewSwitchDemux()
 	demux.Tweet = func(tweet *twitter.Tweet) {
-		fmt.Println(tweet.IDStr)
+		// fmt.Println(tweet.User.ScreenName)
+		if tweet.User.ScreenName != "sentinel_co" {
+			return
+		}
 		fmt.Println("New Tweet:\n", tweet.User.Name, "\n", tweet.CreatedAt, "\n",
 			"\n", tweet.Text)
 		var txt string
-		txt = fmt.Sprintf(messages.TwitterMsg, tweet.User.Name, tweet.Text,
+		txt = fmt.Sprintf(messages.TwitterMsg, tweet.Text,
 			tweet.User.ScreenName, tweet.IDStr)
-		if len(tweet.Text) > 2 && tweet.Text[:2] == "RT" {
-			txt = fmt.Sprintf(messages.RetweetMsg, tweet.User.Name, tweet.Text,
-				tweet.User.ScreenName, tweet.IDStr)
-		}
+
 		users := GetAllChatIDs(collection)
 		broadcastTweet(bot, users, txt)
 	}
