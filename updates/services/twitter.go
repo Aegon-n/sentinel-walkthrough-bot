@@ -3,7 +3,6 @@ package services
 import (
 	"fmt"
 	"log"
-	"time"
 
 	"github.com/Aegon-n/sentinel-bot/updates/messages"
 	"github.com/dghubble/go-twitter/twitter"
@@ -35,12 +34,8 @@ func Twitter_updates(bot *tgbotapi.BotAPI, update tgbotapi.Update) {
 	for _, i := range threetweets {
 
 		//ind := len(tt[i].Entities.Urls)
-		t, _ := time.Parse(time.UnixDate, tt[i].CreatedAt)
-		p := t.Unix()
-		date := time.Unix(int64(p), 0)
-		p_date := date.Format(time.RFC1123)
 
-		txt := fmt.Sprintf(messages.TweetFormat, p_date, tt[i].FullText)
+		txt := fmt.Sprintf(messages.TweetFormat, tt[i].CreatedAt, tt[i].FullText)
 		msg := tgbotapi.NewMessage(chatID, txt)
 		msg.ParseMode = tgbotapi.ModeHTML
 		bot.Send(msg)

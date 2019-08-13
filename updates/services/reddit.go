@@ -72,9 +72,8 @@ func Reddit_updates(bot *tgbotapi.BotAPI, update tgbotapi.Update) {
 
 		text := child.Data.Selftext
 		urls := child.Data.URL
-		date := time.Unix(int64(child.Data.CreatedUTC), 0)
-		p_date := date.Format(time.RFC1123)
-		msg := tgbotapi.NewMessage(chatID, fmt.Sprintf(messages.RedditPost, p_date, text, urls))
+		date := time.Unix(int64(child.Data.CreatedUTC), 0).UTC()
+		msg := tgbotapi.NewMessage(chatID, fmt.Sprintf(messages.RedditPost, date, text, urls))
 		msg.ParseMode = tgbotapi.ModeMarkdown
 		bot.Send(msg)
 
