@@ -1,7 +1,7 @@
 package messages
 
 const (
-	TwitterMsg = `<b>New Tweet from </b><a href="https://www.twitter.com/sentinel_co">@sentinel_co</a>
+	TwitterMsg = `<b>New Tweet from </b>@sentinel_co
 
 %s
 

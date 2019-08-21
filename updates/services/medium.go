@@ -13,13 +13,16 @@ import (
 )
 
 type obj struct {
-	ImageUrl string `json: "imageUrl"`
+	ImageUrl string `json:"imageUrl"`
 	P        string `json:"p"`
 	Title    string `json:"title"`
 	Link     string `json:"link"`
 }
 
 func MediumUpdates(bot *tgbotapi.BotAPI, update tgbotapi.Update) {
+	conf := tgbotapi.CallbackConfig{CallbackQueryID: update.CallbackQuery.ID,
+		Text: "Please wait..\nGetting last 3 medium posts from Sentinel"}
+	bot.AnswerCallbackQuery(conf)
 	chatId := update.CallbackQuery.Message.Chat.ID
 	api_url := "http://185.181.8.90:9091/feed"
 

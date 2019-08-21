@@ -105,13 +105,13 @@
   "HomeButtonsList": [
     {"About Sentinel Network": "about"},
     {"🔐Sentinel Proxy Service (SPS)": "sps"},
-    {"Sentinel Network Overview": "sno"},
+    {"🖧Sentinel Network Overview": "sno"},
     {"📊Sentinel dVPN- Stats": "dVPNStats-Home"}
 
   ],
   "SpsButtonsList": [
-    {"List Nodes": "list_nodes"},
-    {"My Node": "my_node"},
+    {"🖧List Nodes": "list_nodes"},
+    {"💻My Node": "my_node"},
     {"◀Back": "home"}
   ]
 }

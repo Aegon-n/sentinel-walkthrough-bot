@@ -10,8 +10,8 @@ import (
 	"github.com/Aegon-n/sentinel-bot/handler/helpers"
 	"github.com/Aegon-n/sentinel-bot/handler/messages/en_messages"
 	"github.com/Aegon-n/sentinel-bot/handler/models"
-	"github.com/Aegon-n/sentinel-bot/locale"
-	"github.com/Aegon-n/sentinel-bot/socks5-proxy/dbo/ldb"
+	// "github.com/Aegon-n/sentinel-bot/locale"
+
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"gopkg.in/telegram-bot-api.v4"
@@ -207,7 +207,7 @@ func HandleLocalization(Bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 	Bot.Send(msg)
 }
 
-func handleLang(Bot *tgbotapi.BotAPI, update *tgbotapi.Update, lang string, db ldb.BotDB) {
+/*func handleLang(Bot *tgbotapi.BotAPI, update *tgbotapi.Update, lang string, db ldb.BotDB) {
 	queryID := update.CallbackQuery.ID
 	answeredCallback(Bot, queryID)
 	err := db.Insert("lang", update.CallbackQuery.From.UserName, lang)
@@ -217,4 +217,4 @@ func handleLang(Bot *tgbotapi.BotAPI, update *tgbotapi.Update, lang string, db l
 	log.Println("Added user language preferences")
 	msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, locale.LocalizeTemplate(en_messages.LangChosenMsg, struct{ Langchosen string }{lang}, lang))
 	Bot.Send(msg)
-}
+}*/

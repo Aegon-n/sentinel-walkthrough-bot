@@ -11,6 +11,7 @@ import (
 	"github.com/Aegon-n/sentinel-bot/eth-socks-proxy/dbo/models"
 	"github.com/Aegon-n/sentinel-bot/eth-socks-proxy/helpers"
 	"github.com/Aegon-n/sentinel-bot/handler/buttons"
+	sno_b "github.com/Aegon-n/sentinel-bot/sno/buttons"
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/constants"
 	"github.com/Aegon-n/sentinel-bot/socks5-proxy/templates"
 	tgbotapi "gopkg.in/telegram-bot-api.v4"
@@ -102,9 +103,16 @@ func Socks5InputHandler(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 }
 
 func ShowMyNode(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
+
 	username := helpers.GetUserName(u)
 	status, err := db.GetStatus(username)
 	if err != nil {
+		if u.CallbackQuery != nil {
+			conf := tgbotapi.CallbackConfig{CallbackQueryID: u.CallbackQuery.ID,
+				Text: "You don't have any proxy node!!\nPlease use List Nodes to connect", ShowAlert: true}
+			b.AnswerCallbackQuery(conf)
+			return
+		}
 		helpers.Send(b, u, templates.NoAssignedNodes)
 		return
 	}
@@ -114,16 +122,23 @@ func ShowMyNode(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 			helpers.Send(b, u, templates.NoAssignedNodes)
 			return
 		}
+		if u.CallbackQuery != nil {
+			conf := tgbotapi.CallbackConfig{CallbackQueryID: u.CallbackQuery.ID,
+				Text: "Please wait ..."}
+			b.AnswerCallbackQuery(conf)
+		}
 		txt := ShowMyInfo(b, u, db)
 		if txt == "" {
 			log.Println("text is empty")
 			return
 		}
-		optns := [][]tgbotapi.InlineKeyboardButton{{}, {}}
-		for idx, row := range []map[string]string{{"connect": kv.Value}, {"◀Back": "sps", "🏠Home": "home"}} {
+		optns := [][]tgbotapi.InlineKeyboardButton{{}, {}, {}}
+		for idx, row := range []map[string]string{{"🔗connect": kv.Value},
+			{"▐ ▌Pause": "pause_proxy", "❌Disconnect": "disconnect_proxy"},
+			{"◀Back": "sps", "🏠Home": "home"}} {
 			for k, v := range row {
 				val := v
-				if k == "connect" {
+				if k == "🔗connect" {
 					optns[idx] = append(optns[idx], tgbotapi.InlineKeyboardButton{Text: k, URL: &val})
 					continue
 				}
@@ -141,6 +156,12 @@ func ShowMyNode(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 		msg.ReplyMarkup = tgbotapi.InlineKeyboardMarkup{InlineKeyboard: optns}
 		msg.ParseMode = tgbotapi.ModeMarkdown
 		b.Send(msg)
+		return
+	}
+	if u.CallbackQuery != nil {
+		conf := tgbotapi.CallbackConfig{CallbackQueryID: u.CallbackQuery.ID,
+			Text: "You don't have any proxy node!!\nPlease use List Nodes to connect", ShowAlert: true}
+		b.AnswerCallbackQuery(conf)
 		return
 	}
 	helpers.Send(b, u, templates.NoAssignedNodes)
@@ -182,8 +203,7 @@ func HandleNodeId(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, nodes []m
 	msg.ParseMode = tgbotapi.ModeMarkdown
 	msg.ReplyToMessageID = helper.GetMsgID(u)
 	b.Send(msg)
-
-	helpers.Send(b, u, "Please wait .. Getting socks5 proxy .. ")
+	// helpers.Send(b, u, "Please wait .. Getting socks5 proxy node.. ")
 	go helpers.SocksProxy(b, u, db, nodes[idx-1].AccountAddr)
 	return
 }
@@ -253,8 +273,13 @@ func DisconnectProxy(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB) {
 	}
 }
 
+func PauseProxy(b *tgbotapi.BotAPI, u tgbotapi.Update) {
+	btns := sno_b.GetButtons("MyNodeFlowEndBtns")
+	helper.Send(b, u, templates.PauseProxy, &btns)
+}
+
 func AnsweredQuery(bot *tgbotapi.BotAPI, u tgbotapi.Update) {
 	queryId := u.CallbackQuery.ID
-	config := tgbotapi.CallbackConfig{queryId, "", false, "", 0}
+	config := tgbotapi.CallbackConfig{CallbackQueryID: queryId}
 	bot.AnswerCallbackQuery(config)
 }

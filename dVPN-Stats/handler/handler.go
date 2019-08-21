@@ -1,20 +1,22 @@
 package handler
 
 import (
-	"github.com/Aegon-n/sentinel-bot/sno/buttons"
 	"fmt"
-	"gopkg.in/telegram-bot-api.v4"
 	"log"
-	"strings"
 	"strconv"
-	"github.com/Aegon-n/sentinel-bot/sno/helper"
+	"strings"
+
 	"github.com/Aegon-n/sentinel-bot/dVPN-Stats/helpers"
-	eth "github.com/Aegon-n/sentinel-bot/eth-socks-proxy/helpers"
 	"github.com/Aegon-n/sentinel-bot/dVPN-Stats/messages"
+	eth "github.com/Aegon-n/sentinel-bot/eth-socks-proxy/helpers"
+	"github.com/Aegon-n/sentinel-bot/sno/buttons"
+	"github.com/Aegon-n/sentinel-bot/sno/helper"
+	"gopkg.in/telegram-bot-api.v4"
 )
+
 func HandleHome(b *tgbotapi.BotAPI, u tgbotapi.Update) {
 	username := helper.GetUserName(u)
-	txt := fmt.Sprintf(messages.StatsHomeMsg, username)+"\n\n"+messages.ChooseOption
+	txt := fmt.Sprintf(messages.StatsHomeMsg, username) + "\n\n" + messages.ChooseOption
 	btns := buttons.GetButtons("DVPNStatsButtonsList")
 	helper.Send(b, u, txt, &btns)
 	return
@@ -22,17 +24,17 @@ func HandleHome(b *tgbotapi.BotAPI, u tgbotapi.Update) {
 func HandleStats(b *tgbotapi.BotAPI, u tgbotapi.Update) {
 	module := strings.Split(u.CallbackQuery.Data, "-")[1]
 	switch module {
-		case "Home":
-			log.Println("in stats home")
-			go HandleHome(b, u)
-		case "Stats":
-			log.Println("in stats")
-			go SendStats(b, u)
-			return
-		case "ActiveNodes":
-			log.Println("in active nodes")
-			go SendActiveNodes(b, u)
-			return	
+	case "Home":
+		log.Println("in stats home")
+		go HandleHome(b, u)
+	case "Stats":
+		log.Println("in stats")
+		go SendStats(b, u)
+		return
+	case "ActiveNodes":
+		log.Println("in active nodes")
+		go SendActiveNodes(b, u)
+		return
 	}
 }
 
@@ -44,9 +46,6 @@ func SendStats(b *tgbotapi.BotAPI, u tgbotapi.Update) {
 	lastday_bandwidth := make(chan float64)
 	total_bandwidth := make(chan float64)
 
-	
-	mesg := tgbotapi.NewEditMessageText(u.CallbackQuery.Message.Chat.ID, u.CallbackQuery.Message.MessageID, "Loading .. Please wait ..")
-	b.Send(mesg)
 	go helpers.GetCount("active", "nodes", active_nodes)
 	go helpers.GetCount("average", "nodes", avg_nodes)
 	go helpers.GetCount("active", "sessions", active_sessions)
@@ -58,9 +57,12 @@ func SendStats(b *tgbotapi.BotAPI, u tgbotapi.Update) {
 	log.Println(<- active_sessions)
 	log.Println(<- lastday_bandwidth)
 	log.Println(<- total_bandwidth) */
-	
-	msg := fmt.Sprintf(messages.StatsMsg, <-active_nodes, <- avg_nodes, 
-												<-active_sessions, <- avg_sessions, <-lastday_bandwidth/1024.0, <-total_bandwidth/(1024.0*1024.0))
+	conf := tgbotapi.CallbackConfig{CallbackQueryID: u.CallbackQuery.ID,
+		Text: "Loading Statistics ...\nPlease wait ..."}
+	b.AnswerCallbackQuery(conf)
+
+	msg := fmt.Sprintf(messages.StatsMsg, <-active_nodes, <-avg_nodes,
+		<-active_sessions, <-avg_sessions, <-lastday_bandwidth/1024.0, <-total_bandwidth/(1024.0*1024.0))
 	btns := buttons.GetButtons("StatsFlowEndButtons")
 	helper.Send(b, u, msg, &btns)
 	return
@@ -73,7 +75,7 @@ func SendActiveNodes(b *tgbotapi.BotAPI, u tgbotapi.Update) {
 		helper.Send(b, u, "unable get active nodes list")
 		return
 	}
-	nodes = append(nodes , socks_nodes...)
+	nodes = append(nodes, socks_nodes...)
 	txt := "Here it is: *Active dVPN - nodes*\n"
 	for idx, node := range nodes {
 		txt = txt + fmt.Sprintf(messages.NodeList, strconv.Itoa(idx+1), node.Location.City, node.Location.Country,

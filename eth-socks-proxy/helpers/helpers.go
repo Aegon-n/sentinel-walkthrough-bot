@@ -230,10 +230,10 @@ func SocksProxy(b *tgbotapi.BotAPI, u tgbotapi.Update, db ldb.BotDB, vpn_addr st
 		Send(b, u, "interal bot error")
 	}
 	optns := [][]tgbotapi.InlineKeyboardButton{{}, {}}
-	for idx, row := range []map[string]string{{"connect": TG_URL}, {"◀Back": "sps", "🏠Home": "home"}} {
+	for idx, row := range []map[string]string{{"🔗connect": TG_URL}, {"◀Back": "sps", "🏠Home": "home"}} {
 		for k, v := range row {
 			val := v
-			if k == "connect" {
+			if k == "🔗connect" {
 				optns[idx] = append(optns[idx], tgbotapi.InlineKeyboardButton{Text: k, URL: &val})
 				continue
 			}
@@ -296,7 +296,7 @@ func CheckAndDisconnectExpiredUsers(bot *tgbotapi.BotAPI, user models.User, db l
 	}
 
 	if err := json.NewDecoder(resp.Body).Decode(&body); err != nil {
-		log.Println(err)
+		// log.Println(err)
 		return
 	}
 	// fmt.Println(body.ClientList)

@@ -11,7 +11,9 @@ import (
 )
 
 func Twitter_updates(bot *tgbotapi.BotAPI, update tgbotapi.Update) {
-
+	conf := tgbotapi.CallbackConfig{CallbackQueryID: update.CallbackQuery.ID,
+		Text: "Please wait..\nGetting last 3 tweets from Sentinel"}
+	bot.AnswerCallbackQuery(conf)
 	chatID := update.CallbackQuery.Message.Chat.ID
 
 	config := oauth1.NewConfig("ae1P8eyT1IvX7zgoalLZNFYKO", "9m2z8BswbMf66gAnz93pSIWsOfFhAHzkltaktV3XZZxB7ACx40")

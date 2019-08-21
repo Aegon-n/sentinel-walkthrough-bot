@@ -37,7 +37,7 @@
   ],
   "DVPNStatsButtonsList": [
     {
-      "📊Statistics": "dVPNStats-Stats",
+      "📈Statistics": "dVPNStats-Stats",
       "🔵 ActiveNodes": "dVPNStats-ActiveNodes"
     },{
       "◀Back": "home"
@@ -45,7 +45,7 @@
   ],
   "AboutButtons": [
     {
-      "Social Media Updates": "Updates-Home"
+      "📣Social Media Updates": "Updates-Home"
     },
     {
       "◀Back": "home"
@@ -88,6 +88,12 @@
   "UpdatesFlowEndBtns": [
     {
       "◀Back": "Updates-Home",
+      "🏠Home": "home"
+    }
+  ],
+  "MyNodeFlowEndBtns": [
+    {
+      "◀Back": "my_node",
       "🏠Home": "home"
     }
   ]

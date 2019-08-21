@@ -17,18 +17,19 @@ type B struct {
 }
 
 type Buttons struct {
-	SNOButtons                  []map[string]string `json: "SNOButtons"`
-	DownloadsButtonsList        []map[string]string `json: "DownloadsButtonsList"`
-	DesktopDownloadsButtonsList []map[string]string `json: "DesktopDownloadsButtonsList"`
-	GuidesButtonsList           []map[string]string `json: "GuidesButtonsList"`
-	DVPNStatsButtonsList        []map[string]string `json: "DVPNStatsButtonsList"`
-	AboutButtons                []map[string]string `json: "AboutButtons"`
-	DesktopFlowEndButtons       []map[string]string `json: "DesktopFlowEndButtons"`
-	MobileFlowEndButtons        []map[string]string `json: "MobileFlowEndButtons"`
-	GuideFlowEndButtons         []map[string]string `json: "GuideFlowEndButtons"`
-	StatsFlowEndButtons         []map[string]string `json: "StatsFlowEndButtons"`
-	UpdatesHomeBtns             []map[string]string `json: "UpdatesHomeBtns"`
-	UpdatesFlowEndBtns          []map[string]string `json: "UpdatesFlowEndBtns"`
+	SNOButtons                  []map[string]string `json:"SNOButtons"`
+	DownloadsButtonsList        []map[string]string `json:"DownloadsButtonsList"`
+	DesktopDownloadsButtonsList []map[string]string `json:"DesktopDownloadsButtonsList"`
+	GuidesButtonsList           []map[string]string `json:"GuidesButtonsList"`
+	DVPNStatsButtonsList        []map[string]string `json:"DVPNStatsButtonsList"`
+	AboutButtons                []map[string]string `json:"AboutButtons"`
+	DesktopFlowEndButtons       []map[string]string `json:"DesktopFlowEndButtons"`
+	MobileFlowEndButtons        []map[string]string `json:"MobileFlowEndButtons"`
+	GuideFlowEndButtons         []map[string]string `json:"GuideFlowEndButtons"`
+	StatsFlowEndButtons         []map[string]string `json:"StatsFlowEndButtons"`
+	UpdatesHomeBtns             []map[string]string `json:"UpdatesHomeBtns"`
+	UpdatesFlowEndBtns          []map[string]string `json:"UpdatesFlowEndBtns"`
+	MyNodeFlowEndBtns           []map[string]string `json:"MyNodeFlowEndBtns"`
 }
 
 var ButtonList Buttons

@@ -11,7 +11,7 @@ import (
 	dbo2 "github.com/Aegon-n/sentinel-bot/eth-socks-proxy/dbo"
 	eth_handlers "github.com/Aegon-n/sentinel-bot/eth-socks-proxy/handler"
 	eth_helpers "github.com/Aegon-n/sentinel-bot/eth-socks-proxy/helpers"
-	"github.com/Aegon-n/sentinel-bot/locale"
+	// "github.com/Aegon-n/sentinel-bot/locale"
 	/* "github.com/Aegon-n/sentinel-bot/socks5-proxy/handlers" */
 	stats_handler "github.com/Aegon-n/sentinel-bot/dVPN-Stats/handler"
 	post "github.com/Aegon-n/sentinel-bot/post_notifications"
@@ -26,7 +26,7 @@ import (
 )
 
 func main() {
-	locale.StartLocalizer()
+	// locale.StartLocalizer()
 	bot, err := tgbotapi.NewBotAPI(os.Getenv("BOT_API_KEY"))
 	if err != nil {
 		log.Fatalf("error in instantiating the bot: %v", err)
@@ -101,7 +101,7 @@ func main() {
 
 		if update.CallbackQuery != nil {
 			log.Println(update.CallbackQuery)
-			eth_handlers.AnsweredQuery(bot, update)
+			// eth_handlers.AnsweredQuery(bot, update)
 			module := strings.Split(update.CallbackQuery.Data, "-")
 			log.Println(module)
 
@@ -117,12 +117,6 @@ func main() {
 			case "Updates":
 				social_media.HandleUpdates(bot, update)
 				/*
-					case "Reddit":
-						updates2.Reddit_updates(bot, &update)
-
-					case "Twitter":
-						updates2.Twitter_updates(bot, &update)
-
 					case "Socks5":
 						handlers.HandleSocks5InlineButtons(bot, update, db) */
 			case "home":
@@ -135,6 +129,10 @@ func main() {
 				eth_handlers.HandleSocks5Proxy(bot, update, db2)
 			case "my_node":
 				eth_handlers.ShowMyNode(bot, update, db2)
+			case "disconnect_proxy":
+				eth_handlers.DisconnectProxy(bot, update, db2)
+			case "pause_proxy":
+				eth_handlers.PauseProxy(bot, update)
 			case "sno":
 				sno_handler.HandleHome(bot, update)
 			case "Downloads":

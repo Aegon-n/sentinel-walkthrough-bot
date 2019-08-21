@@ -40,6 +40,9 @@ type Data struct {
 }
 
 func Reddit_updates(bot *tgbotapi.BotAPI, update tgbotapi.Update) {
+	conf := tgbotapi.CallbackConfig{CallbackQueryID: update.CallbackQuery.ID,
+		Text: "Please wait..\nGetting last 3 reddit posts from Sentinel"}
+	bot.AnswerCallbackQuery(conf)
 	Api_url := "https://www.reddit.com/r/SENT/new.json?limit=3"
 	var body RedditPost
 

@@ -15,8 +15,8 @@ const (
 You have consumed 1GB data. Proxy will disconnect now. Please disable proxy in telegram settings.
 
 Go to Settings -> Data & Storage -> Proxy Settings -> Long tap on the
-connected proxy to Delete/Remove Proxy 
-							(or) 
+connected proxy to Delete/Remove Proxy
+							(or)
 Toggle use proxy to disable proxy.`
 
 	UserInfo = `Bandwidth Duration Left: <b>%0.0f days</b>
@@ -37,10 +37,14 @@ However, you can use /refund to claim  your amount`
 	NoEthNodes        = "No nodes available right now. please check again later or try our Tendermint network"
 	NoTMNodes         = "No nodes available right now. please check again later or try our Ethereum network"
 	NoAssignedNodes   = "There are no nodes assigned for you.. Get a node from here /sps"
-	DisableProxy			= `Proxy is disconnected!! 
+	DisableProxy      = `Proxy is disconnected!!
 Please disable/remove proxy in telegram settings
 
 To disconnect/terminate, go to Settings -> Data & Storage -> Proxy Settings -> Long tap on the connected proxy to Delete/Remove Proxy `
+	PauseProxy = `Please remove 'proxy' to pause:
+	
+Either Settings -> Data & Storage -> Proxy
+Settings -> Disable Use Proxy`
 	InvalidOption     = "Invalid option"
 	FollowSequence    = "Please follow the flow for the bot to work efficiently for you"
 	NoNetworkSelected = "You have not selected a blockchain network to part of. Please select a network"
@@ -51,8 +55,8 @@ If you do not know how to get Sentinel Utilty Tokens, please ask the team @senti
 	AboutSentinel = `Sentinel Network is a network layer that enables a true p2p and decentralized applications and resources marketplace. Sentinel enables anyone to create Public and Private networks that provide access to both free and incentivized, and also payment method agnostic (pre-paid/escrow/post-paid) Services (or dApps) & distributed resources, enabling clients to become both producers and consumers in the network.
 
 	Sentinel utilizes locking, staking and multi-sig directly from Tendermint core and Cosmos SDK and aims to fully eliminate the disadvantages of previous generation protocols, that couldn’t scale due to limitations of the blockchain they share with other dApps or that have an unsustainable economic model that reduces usability or access to the product they offer.
-	
-	
+
+
 	 Website: https://sentinel.co
 	 Github: https://github.com/sentinel-official/sentinel
 	 Twitter: http://twitter.com/Sentinel_co`

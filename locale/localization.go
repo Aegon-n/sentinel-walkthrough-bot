@@ -1,5 +1,6 @@
 package locale
 
+/*
 import (
 	"github.com/BurntSushi/toml"
 	"github.com/nicksnyder/go-i18n/v2/i18n"
@@ -69,4 +70,4 @@ func StartLocalizer() {
 	RuLocalizer = i18n.NewLocalizer(bundle, "ru")
 	// Test translation
 	// fmt.Println(Localizer.MustLocalize(&i18n.LocalizeConfig{MessageID: "HelloWorld"}))
-}
+}*/
