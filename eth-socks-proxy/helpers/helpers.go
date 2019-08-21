@@ -299,7 +299,7 @@ func CheckAndDisconnectExpiredUsers(bot *tgbotapi.BotAPI, user models.User, db l
 		log.Println(err)
 		return
 	}
-	fmt.Println(body.ClientList)
+	// fmt.Println(body.ClientList)
 	if contains(body.ClientList, strings.ToLower(user.TelegramUsername)) {
 		chatId, err := strconv.Atoi(user.ChatID)
 		if err != nil {
@@ -319,7 +319,7 @@ func CheckLimitExceededUsers(bot *tgbotapi.BotAPI, db ldb.BotDB) {
 		log.Println(err)
 		return
 	}
-	fmt.Println("All Users:\n", AllUsers)
+	// fmt.Println("All Users:\n", AllUsers)
 	for _, user := range AllUsers {
 		go CheckAndDisconnectExpiredUsers(bot, user, db)
 	}
