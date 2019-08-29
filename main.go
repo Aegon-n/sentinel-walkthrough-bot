@@ -144,6 +144,9 @@ func main() {
 			default:
 				handler.HandleCallbackQuery(bot, &update)
 			}
+			if update.CallbackQuery.Data != "dVPNStats-Stats" {
+				eth_handlers.AnsweredQuery(bot, update)
+			}
 		}
 		if update.Message != nil && !update.Message.IsCommand() && len(update.Message.Text) > 0 {
 
